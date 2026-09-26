@@ -110,20 +110,30 @@ def gmm_oof(arrays: list, y: np.ndarray, folds: np.ndarray, params: dict,
     return out, infos
 
 
+def _fit_fold(spec, X, y, g, tr, te):
+    with threadpool_limits(limits=1):
+        det = Detector(spec).fit(X.iloc[tr], y[tr], g[tr])
+        return te, det.decision_function(X.iloc[te]), det.selection
+
+
 def detector_oof(spec: DetectorSpec, table: pd.DataFrame, folds: np.ndarray,
-                 train_mask: np.ndarray | None = None) -> tuple[np.ndarray, list]:
-    """OOF raw scores for a feature-only detector (no GMM)."""
+                 train_mask: np.ndarray | None = None, n_jobs: int = 5) -> tuple[np.ndarray, list]:
+    """OOF raw scores for a feature-only detector (no GMM); outer folds run in parallel."""
+    from joblib import Parallel, delayed
+    from ..models.detector import allowlisted_columns
     y = table["label"].astype(int).values
     g = table["group_id"].values
+    cols = allowlisted_columns(table.columns, spec.feature_groups, spec.extra_features)
+    X = table[cols]  # only the columns the detector can use are shipped to workers
     train_mask = np.ones(len(table), bool) if train_mask is None else train_mask
+    jobs = [(np.where((folds != k) & train_mask)[0], np.where(folds == k)[0]) for k in np.unique(folds)]
+    res = Parallel(n_jobs=min(n_jobs, len(jobs)), backend="loky")(
+        delayed(_fit_fold)(spec, X, y, g, tr, te) for tr, te in jobs)
     out = np.full(len(table), np.nan)
     sel = []
-    for k in np.unique(folds):
-        tr = np.where((folds != k) & train_mask)[0]
-        te = np.where(folds == k)[0]
-        det = Detector(spec).fit(table.iloc[tr], y[tr], g[tr])
-        out[te] = det.decision_function(table.iloc[te])
-        sel.append(det.selection)
+    for te, s, selection in res:
+        out[te] = s
+        sel.append(selection)
     return out, sel
 
 
