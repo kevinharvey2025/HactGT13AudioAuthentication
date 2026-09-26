@@ -92,7 +92,11 @@ class TestLikeDurations:
 
     @classmethod
     def from_cache(cls):
-        return cls(np.load(config.CACHE / "test_durations.npy"))
+        """cache/test_durations.npy if prepare_data.py saw the test set, else the committed copy."""
+        cached = config.CACHE / "test_durations.npy"
+        if cached.exists():
+            return cls(np.load(cached))
+        return cls(np.loadtxt(config.REPO / "configs" / "test_durations.txt"))
 
     def sample(self, rng):
         return float(self.d[rng.integers(len(self.d))])

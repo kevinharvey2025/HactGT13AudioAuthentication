@@ -1,0 +1,11 @@
+# conda env create -f environment.yml && conda activate hearsay
+name: hearsay
+channels:
+  - conda-forge
+dependencies:
+  - python=3.11
+  - ffmpeg=6          # decoding/resampling (matches the organizers' ffmpeg resampler) + codec augmentations
+  - llvm-openmp       # libomp for lightgbm on macOS
+  - pip
+  - pip:
+      - -r requirements.txt

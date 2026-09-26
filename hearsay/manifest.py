@@ -1,13 +1,32 @@
 """One table for every clip the track uses: DiffSSD fakes, bona fide references and the test set.
 
 label: 1 = spoof (synthetic), 0 = bona fide, -1 = unknown (test). Everything downstream is keyed
-by `uid`, which also names the cached 16 kHz file (cache/wav16k/<uid>.wav).
+by `uid`, which also names the cached 16 kHz file (cache/wav16k/<uid>.wav). The `path` column is
+absolute and machine-specific; scripts/prepare_data.py rebuilds it on each machine.
 """
+import os
+import warnings
+
+import numpy as np
 import pandas as pd
 
 from . import config
 
 REAL_FAMILIES = {"real_lj", "real_libri"}
+SETUP_HINT = "see HANDOFF_DIFFUSION.md section 11 (moving to another machine)"
+
+
+def _require(df, what, allow_missing):
+    """The HF copy of DiffSSD lacks 5 generators; fail loudly instead of silently sampling missing files."""
+    exists = np.array([os.path.exists(p) for p in df.path])
+    if exists.all():
+        return df
+    counts = df[~exists].groupby("generator").size().to_dict()
+    msg = f"{what}: {int((~exists).sum())} of {len(df)} files missing, by generator {counts}; {SETUP_HINT}"
+    if not allow_missing:
+        raise FileNotFoundError(msg)
+    warnings.warn(msg + " -- dropping them (--allow-missing)")
+    return df[exists]
 
 
 def _diffssd(n_lj_voice_sentences, n_clone_per_speaker, seed):
@@ -39,6 +58,8 @@ def _diffssd(n_lj_voice_sentences, n_clone_per_speaker, seed):
 
 def _ljspeech_extra(n, exclude, seed):
     root = config.EXTERNAL / "LJSpeech-1.1"
+    if not (root / "metadata.csv").exists():
+        raise FileNotFoundError(f"{root} missing: run scripts/fetch_ljspeech.sh ({SETUP_HINT})")
     meta = pd.read_csv(root / "metadata.csv", sep="|", header=None, quoting=3, names=["id", "text", "norm"])
     meta = meta[~meta.id.isin(exclude)].sample(n, random_state=seed)
     return pd.DataFrame(dict(
@@ -48,6 +69,8 @@ def _ljspeech_extra(n, exclude, seed):
 
 def _libri10():
     root = config.EXTERNAL / "librispeech_10spk"
+    if not (root / "index.csv").exists():
+        raise FileNotFoundError(f"{root} missing: run scripts/fetch_librispeech_speakers.py ({SETUP_HINT})")
     idx = pd.read_csv(root / "index.csv")
     return pd.DataFrame(dict(
         uid="real_libri/" + idx.speaker.astype(str) + "/" + idx.utt_id, path=[str(root / f) for f in idx.file],
@@ -55,18 +78,26 @@ def _libri10():
         text_group="libri:" + idx.utt_id, source="librispeech"))
 
 
-def test_manifest():
-    tpl = pd.read_csv(config.TEST_DIR / "HGT_Hearsay_score_template.csv", sep="\t")
+def test_manifest(required=True):
+    tpl_path = config.TEST_DIR / "HGT_Hearsay_score_template.csv"
+    if not tpl_path.exists():
+        if required:
+            raise FileNotFoundError(f"test set missing at {config.TEST_DIR} ({SETUP_HINT})")
+        warnings.warn(f"no test set at {config.TEST_DIR}: building a training-only manifest")
+        return pd.DataFrame()
+    tpl = pd.read_csv(tpl_path, sep="\t")
     return pd.DataFrame(dict(
         uid="test/" + tpl.filename.str.rsplit(".", n=1).str[0], path=[str(config.TEST_DIR / f) for f in tpl.filename],
         filename=tpl.filename, label=-1, generator="unknown", family="test", speaker="unknown",
         text_group="test:" + tpl.filename, source="test"))
 
 
-def build(n_lj_voice_sentences=1000, n_clone_per_speaker=100, n_lj_extra=2000, seed=0):
-    d = _diffssd(n_lj_voice_sentences, n_clone_per_speaker, seed)
+def build(n_lj_voice_sentences=1000, n_clone_per_speaker=100, n_lj_extra=2000, seed=0,
+          allow_missing=False, require_test=True):
+    # sample first, then check files: the sample is identical on every machine that has the full data
+    d = _require(_diffssd(n_lj_voice_sentences, n_clone_per_speaker, seed), "DiffSSD", allow_missing)
     nsa_ids = set(d.loc[d.generator == "real_lj_nsa", "utterance_id"])
-    parts = [d, _ljspeech_extra(n_lj_extra, nsa_ids, seed), _libri10(), test_manifest()]
+    parts = [d, _ljspeech_extra(n_lj_extra, nsa_ids, seed), _libri10(), test_manifest(require_test)]
     cols = ["uid", "path", "label", "generator", "family", "speaker", "style", "sentence_id", "text_group", "source", "filename"]
     out = pd.concat(parts, ignore_index=True).reindex(columns=cols)
     out["speaker"] = out.speaker.astype(str)

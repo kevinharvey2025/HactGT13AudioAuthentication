@@ -1,0 +1,26 @@
+# Diffusion / neural track. Versions are the ones the pipeline was developed with (macOS arm64, MPS).
+# System dependency: ffmpeg + ffprobe on PATH (environment.yml installs ffmpeg 6 from conda-forge).
+torch==2.14.0
+torchaudio==2.11.0
+transformers==5.17.0
+huggingface_hub==1.33.0
+numpy==2.4.6
+scipy==1.17.1
+pandas==3.0.6
+pyarrow==25.0.1
+scikit-learn==1.9.1
+lightgbm==4.7.0
+shap==0.51.0
+librosa==0.11.0
+soundfile==0.14.0
+soxr==1.1.0
+matplotlib==3.11.2
+tqdm==4.70.1
+mutagen==1.48.1
+tabulate==0.10.0
+# Track D (diffusion) only
+speechbrain==1.1.1
+vocos==0.1.0
+diffusers==0.40.0
+accelerate==1.15.0
+# optional, not on PyPI: NVIDIA BigVGAN (D1 bigvgan_22k) and sp-uhh/sgmse (D4) -- clone onto PYTHONPATH
