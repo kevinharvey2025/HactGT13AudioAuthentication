@@ -3,7 +3,7 @@
 **Written:** 2026-09-26, ~19:40 EDT, by the Claude session that built the track.
 **For:** the next Claude agent continuing this work.
 **Spec you are implementing:** `plans/signal_processing_prompt.md`. The challenge brief `HackGT13_Hearsay_Audio Authentication.pdf` overrides it on any challenge rule.
-**Git:** branch `dsp-track`, pushed to `origin` (GitHub `kevinharvey2025/HactGT13AudioAuthentication`). Tip at handoff: this document's commit, on top of `d9e1a3a`.
+**Git:** the DSP work lives on **`main`**. Branch `dsp-track` (commits `2ae34d6`…`b671408`, pushed to `origin` = GitHub `kevinharvey2025/HactGT13AudioAuthentication`) was merged into `main` as `16887fd` on 2026-09-26; its only changes were additions. New DSP commits go straight to `main` via `scripts/dsp_git_commit.sh` (§1). At the time of writing, local `main` is **not pushed**; check `git status -sb` before assuming `origin/main` has it.
 
 ---
 
@@ -37,11 +37,14 @@ Another Claude session works in the **same working tree**: session name `hactgt1
 - **Their paths (never modify):** `hearsay/`, `scripts/*` without the `dsp_` prefix, other files in `configs/` and `tests/`, `cache/` other than `cache/dsp`, `runs/diffusion/`, `artifacts/diffusion/`, `reports/diffusion/`, `logs/`, `predict.py`, `Dockerfile`, `requirements.txt`, `environment.yml`, `README_DIFFUSION.md`, `HANDOFF_DIFFUSION.md`.
 - **`data/` is theirs and read-only for us:** they created the symlinks and downloaded `data/external/`.
 - **Git protocol:**
-  - They commit their paths to `main` with explicit pathspecs.
-  - We commit only to `dsp-track`, using `scripts/dsp_git_commit.sh <message-file>`. It builds the commit through a private `GIT_INDEX_FILE`, so it never switches HEAD, never touches the shared index, and never stages their files.
+  - They commit their paths to `main` with explicit pathspecs (`git add <paths>; git commit -- <paths>`).
+  - We commit DSP paths to `main` with `scripts/dsp_git_commit.sh <message-file>`.
+    - It builds the tree in a private `GIT_INDEX_FILE` (the `main` tip plus DSP paths from the working tree), then runs `commit-tree`.
+    - It advances `main` with a compare-and-swap `update-ref` and syncs only the DSP entries of the shared index.
+    - If the other session committed in the meantime, the swap fails harmlessly: rerun the script.
+    - `scripts/dsp_git_commit.sh msg.txt dsp-track` commits to the old branch instead.
   - **Never** run `git checkout`/`git switch` in this tree, and never `git add -A`, `git add .` or `git commit -a`.
-  - Push with `git push origin dsp-track`.
-  - `dsp-track` branched from `main` at `7f7fca4`, so it contains their first three commits as ancestors. Merging `dsp-track` into `main` is the user's call, and the file sets are disjoint.
+  - Push only when the user asks (`git push origin main`). The user explicitly asked for the `dsp-track` pushes and the merge. `dsp-track` is fully merged and kept only as history.
 - You can message that session with the `SendMessage` tool (find it via `ListAgents`). They offered to ingest our per-file test scores for their fusion if we write them keyed by test filename under `runs/dsp/<run>/`.
 - Plain files in `plans/`, such as `plans/AASISTand_AntiDeepfake_prompt.md`, belong to the user. Leave them alone.
 
@@ -178,7 +181,7 @@ The full table (all generators, plus digital-silence fraction and occupied bandw
 | `scripts/dsp_robustness.py` | frozen-bundle robustness on the holdout sample | **never run** |
 | `scripts/dsp_augment_train.py` | augmented training manifest | **never run** |
 | `scripts/dsp_profile_quick.py` | technical profile (§4.2) | ran (from the scratchpad version) |
-| `scripts/dsp_git_commit.sh` | private-index commit to `dsp-track` | used for commits 3 and 4 |
+| `scripts/dsp_git_commit.sh` | private-index + compare-and-swap commit of DSP paths (default branch `main`) | used for every DSP commit |
 
 ## 7. Known risks and gaps in not-yet-run code (check these first)
 
@@ -249,8 +252,8 @@ The `--where column=value` filter (repeatable) works on `validate`, `extract`, `
 9. **Build and run Docker offline** (`--network none`), then diff the TSV against the local run.
 10. **Throughput:** take a ≤500-clip stratified sample (include long LibriSpeech and short test clips), run `extract` with a fresh `--cache-dir`, and record wall time, files/s, per-module mean runtime (from records) and worker max RSS. Record the machine load at the time. Extrapolate to 1,671 test files.
 11. **Write `README_DSP.md` and `reports/dsp/*.md`** from saved JSON only. Include the ablation table (plan §11 layout), what helped and what did not, limitations, and figures.
-    - Then commit with `scripts/dsp_git_commit.sh msg.txt` and `git push origin dsp-track`.
-    - Ask the user whether to merge into `main` or open a PR (GitHub suggested `https://github.com/kevinharvey2025/HactGT13AudioAuthentication/pull/new/dsp-track`).
+    - Then commit with `scripts/dsp_git_commit.sh msg.txt` (goes to `main`).
+    - Push (`git push origin main`) only when the user asks.
 12. Do **not** submit anything to the organizers, contact them, or use the NSA one-time draft review. Tell the user that they can.
 
 ## 11. Mapping to the plan's completion report (plan §18)
@@ -269,7 +272,7 @@ The `--where column=value` filter (repeatable) works on `validate`, `extract`, `
 
 - Is external bona fide data (LibriSpeech, LJSpeech-1.1) permitted by the organizers? The challenge PDF recommends such datasets; the plan leaves it open.
 - What is the team name (needed for the TSV file name)? What is the official detection metric, and what is the deadline?
-- Should `dsp-track` be merged into `main`, and should the trained bundle be committed so the Docker build works from a clean clone?
+- Should the trained bundle (`artifacts/dsp/model`, gitignored) be committed so the Docker build works from a clean clone? (`dsp-track` has already been merged into `main`.)
 - Label policy for edited or replay audio: not needed for DiffSSD, but relevant to the HEARSAY test set.
 
 ## 13. Things not to do

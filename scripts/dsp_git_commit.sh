@@ -1,38 +1,41 @@
 #!/bin/zsh
-# Commit DSP-track paths to branch `dsp-track` WITHOUT touching HEAD, the shared
-# index, or the working tree. The working tree is shared with another Claude
-# session that commits its own paths to `main`; `git checkout`, `git add -A`,
-# `git commit -a` would disturb it or sweep up its files.
+# Commit DSP-track paths onto a branch (default: main) WITHOUT switching branches,
+# staging through the shared index, or touching other files. The working tree is
+# shared with another Claude session that commits its own paths; `git checkout`,
+# `git add -A`, `git add .` or `git commit -a` would disturb it or sweep up its files.
 #
-# Usage: scripts/dsp_git_commit.sh <commit-message-file>
-# The first commit bases dsp-track on main; later commits stack on dsp-track.
+# How: build the new tree in a private GIT_INDEX_FILE (branch tip + DSP paths from
+# the working tree), commit it with commit-tree, and advance the branch with a
+# compare-and-swap update-ref (fails safely if someone committed meanwhile; just
+# rerun). If the branch is the checked-out HEAD, the shared index entries for the
+# DSP paths only are then synced to HEAD so `git status` stays clean.
+#
+# Usage: scripts/dsp_git_commit.sh <commit-message-file> [branch]
 set -euo pipefail
 cd "$(dirname "$0")/.."
-BR=dsp-track
 MSG="$1"
-IDX="$(mktemp -t dsp_index)"
-rm -f "$IDX"
-export GIT_INDEX_FILE="$IDX"
-if git rev-parse --verify -q "refs/heads/$BR" >/dev/null; then
-  PARENT=$(git rev-parse "refs/heads/$BR"); OLD=$PARENT
-else
-  PARENT=$(git rev-parse refs/heads/main); OLD=""
-fi
-git read-tree "$PARENT"
-PATHS=()
+BR="${2:-main}"
+DSP_PATHS=()
 for p in hearsay_dsp configs/dsp.yaml tests/dsp README_DSP.md HANDOFF_DSP.md Dockerfile.dsp \
          Dockerfile.dsp.dockerignore requirements-dsp.txt reports/dsp; do
-  [[ -e "$p" ]] && PATHS+=("$p")
+  [[ -e "$p" ]] && DSP_PATHS+=("$p")
 done
-for p in scripts/dsp_*(N); do PATHS+=("$p"); done
-git add -- "${PATHS[@]}"
-TREE=$(git write-tree)
+for p in scripts/dsp_*(N); do DSP_PATHS+=("$p"); done
+
+PARENT=$(git rev-parse "refs/heads/$BR")
+IDX="$(mktemp -t dsp_index)"
+rm -f "$IDX"
+GIT_INDEX_FILE="$IDX" git read-tree "$PARENT"
+GIT_INDEX_FILE="$IDX" git add -- "${DSP_PATHS[@]}"
+TREE=$(GIT_INDEX_FILE="$IDX" git write-tree)
+rm -f "$IDX"
 if [[ "$TREE" == "$(git rev-parse "$PARENT^{tree}")" ]]; then
-  echo "nothing new to commit on $BR"; rm -f "$IDX"; exit 0
+  echo "nothing new to commit on $BR"; exit 0
 fi
 COMMIT=$(git commit-tree "$TREE" -p "$PARENT" -F "$MSG")
-if [[ -n "$OLD" ]]; then git update-ref "refs/heads/$BR" "$COMMIT" "$OLD"; else git update-ref "refs/heads/$BR" "$COMMIT"; fi
-rm -f "$IDX"
-unset GIT_INDEX_FILE
+git update-ref -m "dsp_git_commit.sh" "refs/heads/$BR" "$COMMIT" "$PARENT"
+if [[ "$(git symbolic-ref -q HEAD)" == "refs/heads/$BR" ]]; then
+  git reset -q -- "${DSP_PATHS[@]}"   # sync shared index for DSP paths only
+fi
 git log --oneline -1 "$BR"
 git show --stat --format="" "$BR" | tail -3
