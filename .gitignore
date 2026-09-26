@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+
+# Data and generated outputs (large / regenerable)
+data/
+cache/
+runs/
+artifacts/
+
+# logs and OS files
+logs/
+.DS_Store
