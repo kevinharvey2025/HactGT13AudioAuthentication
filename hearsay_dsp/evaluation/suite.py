@@ -77,13 +77,16 @@ def _record_runtime(recs: list) -> dict:
     return {m: float(np.nanmean(v)) for m, v in rt.items()}
 
 
-def run_suite(manifest: str, cfg: dict, out_dir: str, parts=None) -> dict:
+def run_suite(manifest: str, cfg: dict, out_dir: str, parts=None, where=None) -> dict:
     parts = parts or ["gmm", "pretrained", "features", "fusion", "logo", "audit"]
     out = Path(out_dir)
     out.mkdir(parents=True, exist_ok=True)
     seed = cfg["run"]["seed"]
     t0 = time.time()
     df = read_manifest(manifest)
+    for cond in where or []:  # e.g. "dataset=diffssd" for the DiffSSD-as-provided view
+        col, val = cond.split("=", 1)
+        df = df[df[col].astype(str).isin(val.split(","))]
     dev = select_training_rows(df).reset_index(drop=True)
     table, recs = load_table_from_rows(dev, cfg)
     ok = table["decode_status"] != "error"

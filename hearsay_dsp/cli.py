@@ -308,7 +308,7 @@ def cmd_report(args) -> int:
 def cmd_experiment(args) -> int:
     from .evaluation.suite import run_suite
     cfg = _cfg(args)
-    run_suite(args.manifest, cfg, args.out, args.parts.split(",") if args.parts else None)
+    run_suite(args.manifest, cfg, args.out, args.parts.split(",") if args.parts else None, args.where)
     return 0
 
 
