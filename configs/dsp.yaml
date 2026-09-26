@@ -1,0 +1,35 @@
+# HEARSAY DSP track configuration. Values not listed here come from
+# hearsay_dsp/config.py DEFAULTS; the full merged config is stored in every
+# model bundle and its hash is recorded in every prediction trace.
+run:
+  seed: 20260926
+  n_jobs: 7
+  cache_dir: cache/dsp
+
+decode:
+  stream_policy: first
+  analysis_sr: 16000
+  quantize_bits: 16
+
+features:
+  max_hz: 7000.0          # classifier features never use energy above 7 kHz
+  low_band_max_hz: 3400.0   # telephone band
+
+routing:
+  mode: all_eligible      # or "confidence" (band chosen on out-of-fold training scores)
+
+model:
+  gmm:
+    feature: custom       # 0-7 kHz LFCC without c0
+    frames: nonsilent     # digital-silence frames excluded
+    n_components: 64
+    max_frames_per_clip: 60
+    max_frames_total: 120000
+    max_iter: 100
+    reg_covar: 0.0001
+    n_init: 1
+  classifier: lr
+  feature_groups: [cep, spec, lpc, bg, phase, pros]
+  calibration:
+    method: sigmoid
+    prior: 0.5
