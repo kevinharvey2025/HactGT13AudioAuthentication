@@ -162,7 +162,7 @@ def _extract_one(path: str, cfg: dict, modules) -> dict:
 
 def extract_paths(paths, cfg: dict, modules=ALL_MODULES, n_jobs: int | None = None,
                   log_every: int = 500) -> list[dict]:
-    n_jobs = int(n_jobs or cfg["run"]["n_jobs"])
+    n_jobs = max(1, min(int(n_jobs or cfg["run"]["n_jobs"]), os.cpu_count() or 1))
     paths = [str(p) for p in paths]
     t0 = time.perf_counter()
     results = []
