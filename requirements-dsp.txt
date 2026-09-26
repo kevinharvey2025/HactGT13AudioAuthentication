@@ -1,0 +1,16 @@
+# HEARSAY DSP track - tested with Python 3.13.13 (macOS arm64) and python:3.13-slim (Docker).
+# Inference/runtime
+numpy==2.5.3
+scipy==1.18.1
+scikit-learn==1.9.1
+pandas==3.0.6
+soundfile==0.14.0          # bundles libsndfile (WAV/FLAC/OGG/MP3)
+av==18.1.0                 # PyAV, bundles FFmpeg libraries (MP3/M4A/MP4/AAC/Opus decode; codec augmentation)
+praat-parselmouth==0.4.7   # Praat pitch / jitter / shimmer / HNR (GPL-3.0)
+joblib==1.6.0
+threadpoolctl==3.7.0
+PyYAML==6.0.3
+cffi==2.1.1
+pycparser==3.0
+python-dateutil==2.9.0.post0
+six==1.17.0
