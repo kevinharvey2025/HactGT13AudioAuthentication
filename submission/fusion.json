@@ -27,7 +27,8 @@
  ],
  "platt": {
   "coef": 6.739576633142029,
-  "intercept": -0.25291746344544125
+  "intercept": -1.1002153238326449,
+  "prior": 0.3
  },
  "team": "SideQuests",
  "label": "final",

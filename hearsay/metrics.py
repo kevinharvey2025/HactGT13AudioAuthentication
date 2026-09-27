@@ -10,11 +10,20 @@ def eer(y, s):
     return float((fpr[i] + fnr[i]) / 2)
 
 
-# The organizers' scoring package (data/HackGTMinDCF: ASVspoof 5 track-1 evaluation with Pspoof
-# changed 0.05 -> 0.5 and Cfa 10 -> 4) ranks by minDCF. It treats bona fide as the target class;
-# in our polarity (1 = synthetic) "miss" = a real clip flagged as fake and "false alarm" = a fake
-# passed as real, so a missed fake costs 4x a false alarm at equal priors.
-DCF = dict(p_spoof=0.5, c_miss=1.0, c_fa=4.0)
+# The organizers' scoring (ASVspoof 5 track-1 evaluation package, calculate_metrics.py) ranks by minDCF with
+# Pspoof = 0.3 and Cfa = 4 (defaults 0.05 / 10; confirmed by the organizers — the copy in data/HackGTMinDCF
+# still shows 0.5). It treats bona fide as the target class; in our polarity (1 = synthetic) "miss" = a real
+# clip flagged as fake and "false alarm" = a fake passed as real. Normalized: FPR + (4*0.3)/(1*0.7) * FNR
+# = FPR + 1.714 * FNR.
+DCF = dict(p_spoof=0.3, c_miss=1.0, c_fa=4.0)
+
+
+def bayes_threshold(p_spoof=DCF["p_spoof"], c_miss=DCF["c_miss"], c_fa=DCF["c_fa"], calib_prior=0.5):
+    """Posterior threshold on P(synthetic) calibrated at `calib_prior` for the organizers' costs: flag when
+    c_fa * pi * LR > c_miss * (1 - pi), i.e. LR > c_miss (1 - pi) / (c_fa pi)."""
+    lr = c_miss * (1 - p_spoof) / (c_fa * p_spoof)
+    odds = lr * calib_prior / (1 - calib_prior)
+    return odds / (1 + odds)
 
 
 def min_dcf(y, s, p_spoof=DCF["p_spoof"], c_miss=DCF["c_miss"], c_fa=DCF["c_fa"]):

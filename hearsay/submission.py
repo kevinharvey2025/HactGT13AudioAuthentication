@@ -17,12 +17,17 @@ TEMPLATE = config.TEST_DIR / "HGT_Hearsay_score_template.csv"
 
 
 class Platt:
-    """P(synthetic) from a raw score by class-balanced logistic regression (prior 0.5: test
-    prevalence is unknown). Monotone, so AUC/EER/minDCF of the calibrated score are unchanged."""
+    """P(synthetic) from a raw score: class-balanced logistic regression (a prior-0.5 posterior), then the
+    log-odds are shifted to the evaluation prior (the organizers score with Pspoof = 0.3). Monotone, so
+    AUC/EER/minDCF of the calibrated score are unchanged."""
+
+    def __init__(self, prior=0.5):
+        self.prior = prior
 
     def fit(self, s, y):
         self.lr = LogisticRegression(C=1e4, class_weight="balanced").fit(np.asarray(s, float).reshape(-1, 1), y)
-        self.coef, self.intercept = float(self.lr.coef_[0, 0]), float(self.lr.intercept_[0])
+        self.coef = float(self.lr.coef_[0, 0])
+        self.intercept = float(self.lr.intercept_[0]) + float(np.log(self.prior / (1 - self.prior)))
         return self
 
     def __call__(self, s):
@@ -47,7 +52,7 @@ def write(scores, out_path, template=TEMPLATE):
         raise ValueError(f"{int(bad.sum())} template files lack a valid score, e.g. "
                          f"{list(ref.filename[bad][:5])}; refusing to write {out_path}")
     out = pd.DataFrame({"filename": ref.filename, "cm-score": vals.to_numpy()})
-    out.to_csv(out_path, sep="\t", index=False, float_format="%.6f", lineterminator="\n")
+    out.to_csv(out_path, sep="\t", index=False, float_format="%.10f", lineterminator="\n")
     validate(out_path, template)
     return out
 
@@ -67,13 +72,14 @@ def validate(pred_path, template=TEMPLATE):
     return True
 
 
-def describe(prob):
+def describe(prob, calib_prior=0.3):
     """Test-score distribution. An extreme flagged fraction usually means domain shift, not prevalence."""
+    from . import metrics
     p = np.asarray(prob, float)
     q = np.quantile(p, [0.01, 0.05, 0.25, 0.5, 0.75, 0.95, 0.99])
-    # Bayes decision for the organizers' costs at prior 0.5 (Cfa 4, Cmiss 1): flag when p > 0.2
+    thr = metrics.bayes_threshold(calib_prior=calib_prior)   # organizers' costs: 0.2 when calibrated at Pspoof
     return dict(n=len(p), mean=float(p.mean()), quantiles=dict(zip(["q01", "q05", "q25", "q50", "q75", "q95", "q99"], q.round(4).tolist())),
-                frac_ge_0_5=float((p >= 0.5).mean()), frac_gt_0_2=float((p > 0.2).mean()))
+                frac_ge_0_5=float((p >= 0.5).mean()), bayes_threshold=round(thr, 4), frac_flagged_bayes=float((p > thr).mean()))
 
 
 def save_summary(path, **kw):

@@ -40,6 +40,7 @@ def main():
     ap.add_argument("--calib", default="val,itw", help="eval sets used for z-norm statistics and calibration")
     ap.add_argument("--report", default="val,holdout,itw", help="eval sets to report metrics on")
     ap.add_argument("--view", default="both", choices=["clean", "aug", "both"], help="eval views used")
+    ap.add_argument("--prior", type=float, default=metrics.DCF["p_spoof"], help="calibration prior (organizers' Pspoof)")
     ap.add_argument("--team", default=config.TEAM)
     ap.add_argument("--label", default="")
     ap.add_argument("--out", default=str(config.RUNS / "submission"))
@@ -93,13 +94,14 @@ def main():
             summary["fused"][s] = {k: round(float(m[k]), 4) for k in ("auc", "eer", "min_dcf")}
     ycal = np.concatenate([fused[s][0] for s in calib if s in fused])
     scal = np.concatenate([fused[s][1] for s in calib if s in fused])
-    platt = submission.Platt().fit(scal, ycal)
+    platt = submission.Platt(prior=a.prior).fit(scal, ycal)
     prob = pd.Series(np.clip(platt(fused_test.to_numpy()), 1e-6, 1 - 1e-6), index=fused_test.index)
     name = submission.output_name(a.team).replace(".tsv", f"_{a.label}.tsv" if a.label else ".tsv")
     submission.write(prob, out / name)
     pd.DataFrame({"filename": prob.index, "prob": prob.values, "fused_z": fused_test.values,
                   **{f"z_{n}": zt[n].reindex(prob.index).values for n in systems}}).to_csv(out / name.replace(".tsv", "_scores.csv"), index=False)
-    summary.update(platt=dict(coef=platt.coef, intercept=platt.intercept), test=submission.describe(prob.values),
+    summary.update(platt=dict(coef=platt.coef, intercept=platt.intercept, prior=a.prior),
+                   dcf=metrics.DCF, test=submission.describe(prob.values, calib_prior=a.prior),
                    calib_sets=calib, views=views, file=str(out / name))
     # everything predict.py needs to reproduce these probabilities offline
     json.dump(dict(systems=spec, platt=summary["platt"], team=a.team, label=a.label,

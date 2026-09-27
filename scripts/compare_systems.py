@@ -74,9 +74,10 @@ def main():
         ycal = np.concatenate([np.tile(ytab[s], 2) for s in ("val", "itw")])
         scal = np.concatenate([np.concatenate([np.mean([z[k][s][v] for k in keys], 0) for v in ("score_clean", "score_aug")])
                                for s in ("val", "itw")])
-        pl = submission.Platt().fit(scal, ycal)
+        pl = submission.Platt(prior=metrics.DCF["p_spoof"]).fit(scal, ycal)
         pt = pl(pd.concat([zt[k] for k in keys], axis=1).mean(1).to_numpy())
-        r["test_frac_gt_0_2"], r["test_frac_gt_0_5"] = round(float((pt > 0.2).mean()), 3), round(float((pt > 0.5).mean()), 3)
+        thr = metrics.bayes_threshold(calib_prior=metrics.DCF["p_spoof"])
+        r["test_frac_flagged"], r["test_frac_gt_0_5"] = round(float((pt > thr).mean()), 3), round(float((pt > 0.5).mean()), 3)
         return r
 
     singles = sorted((evaluate([k]) for k in S), key=lambda r: r["select"])
@@ -90,7 +91,7 @@ def main():
     df = pd.DataFrame(rows).sort_values("select")
     df.to_csv(config.RUNS / "compare.csv", index=False)
     cols = ["system", "select", "val_clean_mindcf", "val_aug_mindcf", "itw_clean_mindcf", "itw_aug_mindcf", "itw_clean_eer",
-            "holdout_clean_mindcf", "holdout_aug_mindcf", "test_frac_gt_0_2", "test_frac_gt_0_5"]
+            "holdout_clean_mindcf", "holdout_aug_mindcf", "test_frac_flagged", "test_frac_gt_0_5"]
     pd.set_option("display.width", 250)
     pd.set_option("display.max_colwidth", 70)
     print(df[cols].head(a.top).to_string(index=False))

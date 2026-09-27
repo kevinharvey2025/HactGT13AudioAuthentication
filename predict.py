@@ -32,7 +32,7 @@ import torch
 
 REPO = Path(__file__).resolve().parent
 sys.path.insert(0, str(REPO))
-from hearsay import antideepfake, audio, config, submission  # noqa: E402
+from hearsay import antideepfake, audio, config, metrics, submission  # noqa: E402
 from hearsay.forensics import triage  # noqa: E402
 
 AUDIO_EXT = {".wav", ".mp3", ".m4a", ".mp4", ".aac", ".ogg", ".opus", ".flac", ".wma", ".webm", ".aiff", ".aif", ".amr"}
@@ -154,7 +154,8 @@ def main():
             if t["filename"] in scores:
                 p = float(scores[t["filename"]])
                 t["cm_score"] = round(p, 6)
-                t["decision_at_bayes_threshold"] = "synthetic" if p > 0.2 else "bona fide"  # organizers' costs
+                thr = metrics.bayes_threshold(calib_prior=spec["platt"].get("prior", 0.5))  # Pspoof 0.3, Cfa 4
+                t["decision_at_bayes_threshold"] = "synthetic" if p > thr else "bona fide"
             fh.write(json.dumps(t, default=str) + "\n")
     if failures:
         pd.DataFrame(failures).to_csv(out / "failures.tsv", sep="\t", index=False)
@@ -165,8 +166,8 @@ def main():
         submission.write(pd.Series(scores), out / name, template=tpl)
     else:
         pd.DataFrame({"filename": list(scores), "cm-score": list(scores.values())}).to_csv(
-            out / name, sep="\t", index=False, float_format="%.6f", lineterminator="\n")
-    print("wrote", out / name, submission.describe(prob))
+            out / name, sep="\t", index=False, float_format="%.10f", lineterminator="\n")
+    print("wrote", out / name, submission.describe(prob, calib_prior=spec["platt"].get("prior", 0.5)))
 
 
 if __name__ == "__main__":
