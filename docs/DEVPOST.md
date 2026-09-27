@@ -173,11 +173,11 @@ alone lacks, each measured against a baseline:
 
 ## What's next
 
-- **Real room acoustics.** Measured room impulse responses in training, to address reverberation.
+- **Real room acoustics.** A new evaluation view uses channels that no model trains on: simulated rooms, unseen codecs,
+  packet loss and gain control. Simulated rooms are our largest remaining weakness (minDCF about 0.5). Training with
+  measured room impulse responses is the next step.
 - **Newer generators.** Test sets from 2025–26 open-weight systems.
 - **Speaker-embedding drift detection.**
-- **Room acoustics.** A new evaluation view uses channels that no model trains on: simulated rooms, unseen codecs,
-  packet loss and gain control. It shows that simulated rooms are our largest remaining weakness (minDCF about 0.5).
 
 ## Built with
 
