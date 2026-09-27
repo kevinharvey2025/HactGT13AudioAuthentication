@@ -784,3 +784,19 @@ Cobweb/4V https://arxiv.org/abs/2402.16933 · DMCF https://arxiv.org/abs/2609.13
 Sclocchi et al. https://arxiv.org/abs/2402.16991 · Nemhauser, Wolsey & Fisher 1978 https://doi.org/10.1007/BF01588971 ·
 Snell et al. 2017 https://arxiv.org/abs/1703.05175 · ProtoPNet https://arxiv.org/abs/1806.10574 ·
 lab code https://github.com/Teachable-AI-Lab/cobweb · https://github.com/cmaclell/concept_formation
+
+### E.4 Implementation switched to the lab's code (user instruction, Sep 26 night)
+- **Concepts: `cobweb-private`** (github.com/Teachable-AI-Lab/cobweb-private, branch `karthik-experimental`, revision
+  `5012d51`; built on Raven with gcc 13 via `pip install -e .`; one local build fix: `#include <stack>` in
+  `src/cobweb_discrete_tree.cpp`, recorded in `ext/cobweb-private/LOCAL_PATCHES`). It is the ground truth for concept
+  formation: `CobwebContinuousTree` (library defaults: diagonal covariances from the parent, alpha 0.01, prior variance
+  1/(2πe)), `ifit` with multi-hot labels [source | channel], `predict` (best-first expansion, 300 nodes) for P(fake),
+  `get_leaf` + `get_basic` (the path node with the highest closed-form `expected_pmi` against the root = D(c)) for the
+  basic level. `hearsay/concepts.py` (our earlier CLASSIT re-implementation) is kept only as a smoke-test reference.
+- **Diffusion prototypes: TTCG** (Zekun Wang et al., arXiv 2605.07078; `hearsay/diffusion/ttcg.py`): per query, mode
+  ascent on an unconditional DDPM over the same whitened space at t = 50 … 400 (step 25), 32 random starts per level,
+  150 Adam steps; prototype mean m = x*/√ᾱ_t, diagonal covariance ((1 − ᾱ_t)/√ᾱ_t)·diag(∂x̂₀/∂x) from 4 Rademacher
+  finite-difference probes (arXiv 2609.13047 Eq. 9); greedy facility-location selection (K ≤ 3, root baseline) and
+  product-of-experts composition (τ = 0.5). Each selected prototype is interpreted by categorizing its mean in the
+  cobweb-private tree (basic-level concept, its sources and channels), which also tests the DMCF claim that higher
+  noise levels correspond to shallower concepts (Spearman of t vs concept depth).
