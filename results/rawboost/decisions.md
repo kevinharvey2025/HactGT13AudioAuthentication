@@ -64,3 +64,25 @@ run. Stage 3 also needs the user's approval.
 
 **Confirmation.** The arm that passes and R0 are re-scored on all 4,000 labelled ITW clips through `predict.py`'s
 whole-clip fp32 path. The 27,779 held-out ITW clips (T1) are a further check and are never used for a choice.
+
+## 1. Stage 1 decision (2026-09-27, 04:45 EDT), from `rawboost_report.py --val-only` only
+
+Holdout, In-the-Wild and the unseen views of these runs were not opened before this entry.
+
+| Run | Val-selected epoch | Val minDCF, mean of clean and aug |
+|---|---|---|
+| R0 seed 0 | 2 | 0.0168 |
+| R0 seed 1 | 3 | 0.0158 |
+| R1 (SSI) | 3 | 0.0167 |
+| R2 (LnL→ISD) | 2 | 0.0149 |
+| **R3 (LnL→ISD→SSI)** | 3 | **0.0121** |
+
+- **Reproduction check:** R0 seed 0 and seed 1 reproduce the stored `xlsr1b_d6rall` and `xlsr1b_d6rall_s1` val numbers
+  to four decimals at every epoch.
+- **Decision:** R3 has the lowest val minDCF, so it is the selected arm. Val clean is 0 for every run, so the decision
+  rests on val aug (view 1, drawn from the chain).
+- **Seed spread on val:** 0.0010 (R0 seed 0 vs seed 1). R3's lead over R0 is 0.0037 to 0.0047.
+- **Stage 2** (R4, R5, R3 seed 1) is not run tonight: it cannot finish before the team's 6 AM cutoff. The gates stay
+  unjudged until R3 seed 1 exists.
+- **Submission candidate B** uses R3 in place of the shipped XLS-R-1B member. The user asked for it as an option,
+  and it has not passed the gates.
