@@ -102,6 +102,22 @@ def _extra_reals():
         text_group="extra:" + idx.file, source=idx.source))
 
 
+def _itw(n_per_class=2000, seed=0):
+    """In-the-Wild (Mueller et al. 2022: 58 celebrities, web audio, 2022-era deepfakes). Held out from
+    AntiDeepfake's post-training, so it is our uncontaminated evaluation set: never trained on."""
+    root = config.EXTERNAL / "in_the_wild" / "release_in_the_wild"
+    if not (root / "meta.csv").exists():
+        return pd.DataFrame()
+    m = pd.read_csv(root / "meta.csv")
+    m["y"] = (m.label == "spoof").astype(int)
+    if n_per_class:
+        m = m.groupby("y").sample(n=n_per_class, random_state=seed)
+    return pd.DataFrame(dict(
+        uid="itw/" + m.file.str.rsplit(".", n=1).str[0], path=[str(root / f) for f in m.file], label=m.y,
+        generator=np.where(m.y == 1, "itw_fake", "itw_real"), family="itw", speaker="itw:" + m.speaker,
+        text_group="itw:" + m.file, source="in_the_wild"))
+
+
 def test_manifest(required=True):
     tpl_path = config.TEST_DIR / "HGT_Hearsay_score_template.csv"
     if not tpl_path.exists():
@@ -131,13 +147,18 @@ def build(n_lj_voice_sentences=1000, n_clone_per_speaker=100, n_lj_extra=2000, s
 
 def build_pool(require_test=True):
     """Every labeled clip on disk, for fine-tuning: all DiffSSD audio present, all LJSpeech-1.1 originals
-    (minus the 242 the organizers resampled), the 10 LibriSpeech speakers, optional extra reals, the test set.
+    (minus the 242 the organizers resampled), the 10 LibriSpeech speakers, optional extra reals, an
+    In-the-Wild sample (family "itw", evaluation only), the test set.
     uids match build(), so both share cache/wav16k."""
     m = _read_diffssd()
+    listed = config.REPO / "configs" / "diffssd_pool_files.txt"   # fixed list: identical pools on every machine
+    if listed.exists():
+        keep = {ln.strip() for ln in open(listed) if ln.strip() and not ln.startswith("#")}
+        m = m[m.file_name.isin(keep) | (m.label == "real")]
     m = m[[os.path.exists(p) for p in m.path]]
     d = _label_diffssd(m[m.label == "fake"], m[m.label == "real"])
     nsa_ids = set(d.loc[d.generator == "real_lj_nsa", "utterance_id"])
-    parts = [d, _ljspeech_extra(None, nsa_ids, 0), _libri10(), _extra_reals(), test_manifest(require_test)]
+    parts = [d, _ljspeech_extra(None, nsa_ids, 0), _libri10(), _extra_reals(), _itw(), test_manifest(require_test)]
     cols = ["uid", "path", "label", "generator", "family", "speaker", "style", "sentence_id", "text_group", "source", "filename"]
     out = pd.concat([p for p in parts if len(p)], ignore_index=True).reindex(columns=cols)
     out["speaker"] = out.speaker.astype(str)

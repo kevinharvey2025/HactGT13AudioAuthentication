@@ -1,8 +1,8 @@
 """Fine-tune an anti-spoofing SSL detector (AntiDeepfake encoder + its [fake, real] linear head).
 
-    python scripts/finetune_ssl.py --backbone adf_mms_300m --name mms300m_dev0 --dev-fold 0 \
+    python scripts/finetune_ssl.py --backbone adf_mms_300m --name mms300m \
         [--holdout-gens pro_diff,xtts_v2] [--epochs 4] [--lr 1e-5] [--batch 32] [--workers 16]
-    python scripts/finetune_ssl.py --backbone adf_xlsr_1b --name xlsr1b_all --dev-fold -1   # final: no dev fold
+    python scripts/finetune_ssl.py --backbone adf_xlsr_1b --name xlsr1b_final --final --epochs 3  # frozen config, all data
 
 Data: the pool (scripts/prepare_data.py --pool -> cache/manifest_pool.parquet, audio in cache/wav16k).
 Training audio is the canonical view (hearsay/audio.py: trim, crop, [augment], 7 kHz low-pass, DC removal,
@@ -11,11 +11,15 @@ distribution (clipped to 3.0-4.5 s), with a random channel augmentation (hearsay
 probability --p-aug. Both classes get exactly the same processing. Items are drawn with fixed family
 shares (--shares) so neither LJSpeech's voice nor the cloned LibriSpeech voices can stand in for the label.
 
-Dev (never trained on): speaker fold --dev-fold of splits.speaker_folds (clone speakers and their real
-LibriSpeech recordings held out; LJ texts held out) plus every clip of --holdout-gens (unseen generators).
-Epoch 0 evaluates the pretrained model before any update (zero-shot benchmark). Each epoch scores dev on
-view 0 (clean canonical) and view 1 (fixed augmentation), and the test set; the checkpoint with the best
-mean dev minDCF (organizers' costs) is kept. Scores are synthetic logits (logit_fake - logit_real).
+Splits: splits.shared_split, shared by every track (its holdout = the DSP track's holdout rules: hashed
+sentence ids, held-out clone speakers 2061/5448, LJ chapters, LibriSpeech chapters, extra-real speakers).
+Training uses 'train' rows; 'val' selects the checkpoint (mean of clean and augmented minDCF, organizers'
+costs); 'holdout' is reported every epoch but never used for any choice. --holdout-gens removes whole
+generators from training (their clips stay in val/holdout, as unseen generators). --final trains on
+every labeled row for exactly --epochs epochs (configuration frozen beforehand) and keeps the last epoch.
+Epoch 0 evaluates the pretrained model before any update (zero-shot benchmark). Evaluation audio: view 0
+(clean canonical) and view 1 (fixed augmentation); test clips view 0, uncropped.
+Scores are synthetic logits (logit_fake - logit_real).
 
 Writes runs/diffusion/ft/<name>/{config.json, log.jsonl, dev_epoch<k>.parquet, test_epoch<k>.parquet, best.pt}.
 """
@@ -169,12 +173,12 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--backbone", default="adf_mms_300m")
     ap.add_argument("--name", required=True)
-    ap.add_argument("--dev-fold", type=int, default=0, help="speaker fold held out for dev; -1 = train on everything")
-    ap.add_argument("--holdout-gens", default="", help="comma-separated generators never trained on (dev only)")
+    ap.add_argument("--final", action="store_true", help="train on every labeled row; keep the last epoch")
+    ap.add_argument("--holdout-gens", default="", help="comma-separated generators never trained on (evaluation only)")
     ap.add_argument("--epochs", type=int, default=4)
     ap.add_argument("--steps-per-epoch", type=int, default=800)
     ap.add_argument("--batch", type=int, default=32)
-    ap.add_argument("--lr", type=float, default=1e-5)
+    ap.add_argument("--lr", type=float, default=2e-6)
     ap.add_argument("--head-lr", type=float, default=1e-4)
     ap.add_argument("--p-aug", type=float, default=0.6)
     ap.add_argument("--shares", default=DEFAULT_SHARES)
@@ -183,7 +187,8 @@ def main():
                     help="freeze the bottom K transformer layers (+ positional conv, feature projection); 2B needs ~24 on a 40 GB A100")
     ap.add_argument("--workers", type=int, default=16)
     ap.add_argument("--seed", type=int, default=0)
-    ap.add_argument("--max-dev", type=int, default=6000, help="subsample dev clips (stratified by generator) for speed")
+    ap.add_argument("--max-eval", type=int, default=5000, help="subsample val/holdout clips (stratified by generator) for speed")
+    ap.add_argument("--select", default="val,itw", help="eval sets whose mean (clean+aug)/2 minDCF picks the checkpoint")
     args = ap.parse_args()
     torch.manual_seed(args.seed)
     torch.backends.cuda.matmul.allow_tf32 = True
@@ -200,24 +205,34 @@ def main():
     man = man[man.decode_ok.fillna(False)].reset_index(drop=True)
     lab = man[man.label >= 0].reset_index(drop=True)
     test = man[man.label < 0].reset_index(drop=True)
-    folds = splits.speaker_folds(lab)
+    lab["split"] = splits.shared_split(lab)
     held = [g for g in args.holdout_gens.split(",") if g]
-    is_dev = (folds == args.dev_fold) | lab.generator.isin(held).to_numpy()
-    # train: not dev, long enough for a >= 3 s crop after edge-silence trimming
-    tr = lab[~is_dev & (lab.decoded_duration >= 3.3).to_numpy()].reset_index(drop=True)
-    dev = lab[is_dev].reset_index(drop=True)
-    if len(dev) > args.max_dev:
-        dev = dev.groupby("generator", group_keys=False).sample(frac=args.max_dev / len(dev), random_state=0).reset_index(drop=True)
-    print(f"train {len(tr)} ({tr.groupby('family').size().to_dict()}), dev {len(dev)} "
-          f"({dev.groupby('family').size().to_dict()}), test {len(test)}; held-out generators {held}", flush=True)
+    use = np.array(lab.split != "itw") if args.final else np.array(lab.split == "train")   # writable copies (pandas CoW)
+    use &= ~lab.generator.isin(held).to_numpy()
+    # training rows must allow a >= 3 s crop after edge-silence trimming
+    tr = lab[use & (lab.decoded_duration >= 3.3).to_numpy()].reset_index(drop=True)
+
+    def subsample(d):
+        if len(d) <= args.max_eval:
+            return d.reset_index(drop=True)
+        return d.groupby("generator", group_keys=False).sample(frac=args.max_eval / len(d), random_state=0).reset_index(drop=True)
+    evals = {"val": subsample(lab[lab.split == "val"]), "holdout": subsample(lab[lab.split == "holdout"])}
+    if (lab.split == "itw").any():
+        evals["itw"] = subsample(lab[lab.split == "itw"])
+    if args.final:  # every row is trained on: only the test set is scored
+        evals = {}
+    if held and not args.final:  # unseen generators: their clips from every split, against all non-train reals
+        unseen = lab[lab.generator.isin(held) | ((lab.label == 0) & (lab.split != "train"))]
+        evals["unseen_gen"] = subsample(unseen)
+    print(f"train {len(tr)} ({tr.groupby('family').size().to_dict()}); eval " +
+          ", ".join(f"{k} {len(v)}" for k, v in evals.items()) + f"; test {len(test)}; held-out generators {held}", flush=True)
     babble = tr[tr.label == 0].sample(min(150, int((tr.label == 0).sum())), random_state=0).uid
 
     shares = {kv.split("=")[0]: float(kv.split("=")[1]) for kv in args.shares.split(",")}
     durations = audio.TestLikeDurations.from_cache().d
     train_ds = TrainSet(tr.uid, tr.label, args.p_aug, args.seed, babble)
     sampler = FamilyBatches(tr.family, shares, args.batch, args.steps_per_epoch, durations, args.seed)
-    dev_rows = [(u, v, False) for v in (0, 1) for u in dev.uid]
-    dev_ds = EvalSet(dev_rows, babble)
+    eval_ds = {k: EvalSet([(u, v, False) for v in (0, 1) for u in d.uid], babble) for k, d in evals.items()}
     test_ds = EvalSet([(u, 0, True) for u in test.uid], babble)
 
     model = Detector(args.backbone).to(dev_)
@@ -262,22 +277,30 @@ def main():
                 if step % 100 == 0:
                     print(f"ep {ep} step {step} loss {tot / n:.4f} ({(time.time() - t0) / n:.2f} s/step)", flush=True)
         t0 = time.time()
-        s = score(model, dev_ds, dev_, 32, args.workers)
-        s0, s1 = s[: len(dev)], s[len(dev):]
-        r = dict(epoch=ep, step=step, **dev_metrics(dev, s0, s1))
+        r = dict(epoch=ep, step=step)
+        for k, d in evals.items():
+            s = score(model, eval_ds[k], dev_, 32, args.workers)
+            s0, s1 = s[: len(d)], s[len(d):]
+            r.update({f"{k}_{m}": v for m, v in dev_metrics(d, s0, s1).items()})
+            pd.DataFrame(dict(uid=d.uid, generator=d.generator, family=d.family, label=d.label, split=d.split,
+                              score_clean=s0, score_aug=s1)).to_parquet(out / f"{k}_epoch{ep}.parquet")
         st = score(model, test_ds, dev_, 16, args.workers)
         pt = 1 / (1 + np.exp(-st))
         r.update(test_frac_gt_0_5=float((pt > 0.5).mean()), test_logit_median=float(np.median(st)), eval_s=time.time() - t0)
-        print(json.dumps({k: (round(v, 4) if isinstance(v, float) else v) for k, v in r.items()}), flush=True)
+        summary = {k: round(v, 4) for k, v in r.items() if isinstance(v, float) and ("mindcf_" not in k)}
+        print(json.dumps(dict(epoch=ep, step=step, **summary)), flush=True)
         log.write(json.dumps(r) + "\n")
         log.flush()
-        pd.DataFrame(dict(uid=dev.uid, generator=dev.generator, family=dev.family, label=dev.label,
-                          score_clean=s0, score_aug=s1)).to_parquet(out / f"dev_epoch{ep}.parquet")
         pd.DataFrame(dict(uid=test.uid, filename=test.filename, score=st)).to_parquet(out / f"test_epoch{ep}.parquet")
-        if best is None or r["select"] < best["select"]:
+        sel = [k for k in args.select.split(",") if f"{k}_select" in r]
+        r["select"] = float(np.mean([r[f"{k}_select"] for k in sel])) if sel else np.nan
+        better = args.final or best is None or r["select"] < best["select"]
+        if ep > 0 and better:
             best = r
             torch.save({k: v.to(torch.bfloat16) for k, v in model.state_dict().items()}, out / "best.pt")
             json.dump(best, open(out / "best.json", "w"), indent=1)
+        elif ep == 0 and best is None and not args.final:
+            best = r  # zero-shot is the bar a fine-tuned checkpoint must beat on val
     print("best:", json.dumps({k: (round(v, 4) if isinstance(v, float) else v) for k, v in best.items()}))
 
 

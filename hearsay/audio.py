@@ -55,11 +55,15 @@ def trim_silence(x, sr=config.SR, top_db=40.0, pad=0.05):
     return x[max(0, active[0] * frame - p): min(len(x), (active[-1] + 1) * frame + p)]
 
 
-def crop(x, dur, rng, sr=config.SR):
+START_ANCHOR_P = 0.5  # test clips look start-trimmed and hard-cut at the end (reports/forensics/audit.md)
+
+
+def crop(x, dur, rng, sr=config.SR, anchor_p=START_ANCHOR_P):
+    """A `dur`-second window: from the (trimmed) start with probability anchor_p, else at a random offset."""
     n = int(round(dur * sr))
     if len(x) <= n:
         return x
-    start = int(rng.integers(0, len(x) - n + 1))
+    start = 0 if rng.random() < anchor_p else int(rng.integers(0, len(x) - n + 1))
     return x[start: start + n]
 
 

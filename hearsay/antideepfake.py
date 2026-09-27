@@ -85,8 +85,7 @@ def load(name, device="cpu"):
         t = _rename(k[len("m_ssl.model."):])
         if t is None:
             continue
-        t = t.replace("conv.WEIGHT_G", g_key.split("encoder.pos_conv_embed.conv.")[1]).replace(
-            "conv.WEIGHT_V", v_key.split("encoder.pos_conv_embed.conv.")[1])
+        t = t.replace("encoder.pos_conv_embed.conv.WEIGHT_G", g_key).replace("encoder.pos_conv_embed.conv.WEIGHT_V", v_key)
         mapped[t] = v
     missing = sorted(set(target) - set(mapped))
     unexpected = sorted(set(mapped) - set(target))

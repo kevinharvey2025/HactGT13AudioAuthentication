@@ -640,3 +640,92 @@ Also report drop-one-module deltas and mean |SHAP| per module. Modules with no e
 - Datasets: ASVspoof 2019 LA / 2021 LA+DF / ASVspoof 5, WaveFake, In-the-Wild, MLAAD, ADD; VCTK, LibriSpeech, VOiCES.
 - Tools: librosa, torchaudio, scipy.signal, PyWavelets, FFmpeg/ffprobe, MediaInfo, SoX, Praat/parselmouth, openSMILE, ExifTool, SpeechBrain, Silero VAD, LightGBM, SHAP.
 - DARPA SemaFor program (semantic forensics).
+---
+
+## Addendum — literature review, verified facts and plan changes (Sat Sep 26 2026, night)
+
+Added after the move to MPCDF Raven. `plans/MASTER_PLAN.md` sequences all tracks; this addendum records what changes
+for Track A (detector), fusion and Track D. Numbers are from the cited sources or from our own runs where marked.
+
+### A.1 Verified facts that change this plan
+- **Metric.** The organizers' package (`data/HackGTMinDCF`) is ASVspoof 5's evaluation code with `Pspoof = 0.5`,
+  `Cfa = 4` (was 0.05 / 10). minDCF = min over thresholds of P_miss(bona fide) + 4·P_fa(spoof), i.e. in our polarity
+  FPR on reals + 4·FNR on fakes; `hearsay/metrics.py` matches their code exactly. EER at its own threshold costs 5×EER,
+  so the leader's **0.0584** needs roughly ≤1.5% missed fakes at ≤5.8% false alarms: the hardest ~1% of fakes decide
+  the ranking. Calibration does not change minDCF; it matters for fusion and actDCF only [S21].
+- **External data allowed** (the brief lists ASVspoof, WaveFake, In-the-Wild, MLAAD, ADD, VCTK, LibriSpeech, VOiCES).
+- **Test pipeline (our forensic audit, `reports/forensics/audit.md`).** Every test file is the same ffmpeg-4.2 WAV
+  (`Lavf58.29.100`). 98.0% of test lengths are exact multiples of 512 samples at 22.05 kHz (real corpora: 0–2.5%),
+  clips start trimmed and end hard-cut, and the 7.5–8 kHz band is ~44 dB down with a −20 dB edge at 7.39 kHz: a
+  librosa-style 22.05 kHz pipeline (trim/crop in 512-sample frames) resampled to 16 kHz with a resampy/kaiser-class
+  filter. It applies to both classes, so it is augmentation material, never a feature. Our canonical view already
+  removes > 7 kHz; training crops are now start-anchored with p = 0.5 (`audio.START_ANCHOR_P`).
+
+### A.2 Literature: SSL detectors (for Track A)
+- **Start from AntiDeepfake** (NII; wav2vec 2.0/HuBERT post-trained on 56k h real + 18k h artefact speech, mean-pool +
+  linear head, logits [fake, real], input standardized per clip) [S1, S2]. Zero-shot In-the-Wild (ITW) EER:
+  XLS-R-2B 1.23%, XLS-R-1B 1.35%, MMS-1B 1.82%, W2V-Large 1.91%, MMS-300M 2.90% [S2]. ITW clips average 4.3 s, like
+  ours [S18]. Run through `transformers` via `hearsay/antideepfake.py` (fairseq 0.12.2 does not install on current
+  Python); the key map is strict (every tensor placed, shapes checked).
+- **Contamination.** AntiDeepfake's post-training set includes ~140 h of DiffSSD's ~146 h of fakes, plus MLAAD,
+  ASVspoof 5, DFADD, SpoofCeleb, CodecFake and vocoded LibriTTS/VoxCeleb2 [S1]. **DiffSSD/LibriSpeech validation of
+  these backbones is optimistic.** Use an uncontaminated dev set as well: ITW (held out in [S1]) through the test
+  pipeline, plus our held-out speakers.
+- **Fine-tune gently** [S1, S8, S22, S24]: AdamW, LR 1e-6 (≤ 5e-6), 3–6k steps, early stopping on dev, 3–4 s crops
+  matched to the test (6 s crops beat 4 s in one ASVspoof 5 system [S24]; score whole test clips), weighted CE and
+  per-generator caps [S4, S8]. Post-training helped most at 4 s: XLS-R-1B 26.76 → 11.86% EER on Deepfake-Eval-2024
+  after fine-tuning, 19.96% without post-training [S1, S2]. Start from default, not `-nda`, checkpoints [S2].
+- **Augment both classes**, highest value first: codecs/band-limiting (40.73 → 5.18% EER on LA21 [S27]; codec
+  re-synthesis cut ITW 23.7 → 9.6% [S28]), reverb and noise (reverb alone took AASIST from 0.83 to 50.19% [S26]),
+  RawBoost only when matched (LA21 4.48 → 0.82% with algos 1+2; mismatched 6.64%) [S8, S39].
+- **Diversity beats volume**: 53 generation methods gave 13.03% out-of-domain EER vs 17.5–19.7% for larger
+  single-source sets [S40]; vocoded real speech as extra fakes: ITW 6.78% vs 13.52% [S10].
+- **Fusion** of 3–6 diverse systems: most top ASVspoof 5 systems were ensembles; average z-normalized logits, or
+  logistic fusion with effective spoof prior 0.8 (Cfa = 4); keep it low-parameter, dev→eval gaps were large
+  (SZU 0.027 → 0.115 minDCF) [S20, S22–S25]. A second model family for diversity: DF_Arena_1B_V_1 (self-reported ITW
+  0.91%) [S6].
+- **Do not** adapt on the unlabeled test set: AS-norm on a mixed cohort took ITW EER from 11.18 to 60.16%, and
+  pseudo-labels reinforce confident misses on the hard fakes that dominate our metric [S34].
+- **DiffSSD itself** [S30]: DiffGAN-TTS, PlayHT and UnitSpeech are its test-only generators (use them for our
+  unseen-generator split); trained on the 7 seen generators, Wav2Vec2 reached 3.00% and PaSST 3.53% EER; the hard
+  tail is ElevenLabs (PaSST 73% accuracy) and PlayHT (86%); AntiDeepfake-2B caught 81.9% of ElevenLabs fakes [S4].
+
+### A.3 Literature: Track D (diffusion) — evidence-based ranking
+1. **D6-R: resynthesize real clips with the H1 reconstructor bank, label them spoof, pair with the original** — the
+   best-supported option: vocoded training data + RawBoost took ITW EER 26.65 → 7.55% [D-W23]; vocoder/codec
+   pseudo-spoofs ITW 6.9 → 2.1% [D-MS25]; SemantiCodec hard negatives cut DiffSSD EER 21.59 → 14.48% [D-C26]. Some
+   reconstructors hurt (HiFi-GAN hard negatives raised DiffSSD EER to 38.99%) [D-C26], so gate each one.
+2. **D6-T: new TTS families** (flow matching first) not already in DiffSSD or AntiDeepfake's data [D-DF, D-Y26].
+3. **H1 residuals as a branch fused with SSL**: no minDCF gain in-domain (ASVspoof 5 eval 0.1846 vs 0.1753 baseline)
+   but better ITW EER out of domain [D-Mo26]. Pilot only; continue if residual-only AUC ≥ 0.80 on held-out generators.
+4. **H3 fingerprints**: explanation/attribution only; detectors generalize within a decoder family, not across
+   [D-AF24, D-CF+]. Grad-TTS/ProDiff/DiffGAN-TTS render through HiFi-GAN [D-DoC].
+5. **H2 (DDPM on embeddings, AudioLDM 2 curves)**: no speech precedent found; demo only unless a 1-h pilot reaches
+   held-out AUC ≥ 0.75 not explained by an SNR baseline.
+- Go bar for any Track D block: ≥ 10% relative minDCF drop on held-out generators with a CI excluding 0, and ≤ 5%
+  relative in-domain loss, over 3 seeds (ITW EER seed std reached ~5 points in [D-Mo26]). AntiDeepfake already saw
+  ~7k h of vocoded speech, so expect smaller gains than published.
+- Credible explanations (D5): validate against paired real/resynthesized ground truth [D-GR25], compare deletion to
+  random masks [D-APEX], and show prototypes are not silence/speaker/corpus clusters [MU21].
+
+### A.4 Resulting changes
+- Track A = fine-tuned AntiDeepfake (`scripts/finetune_ssl.py`, LR default lowered to 2e-6, ≤ 3.2k steps), zero-shot
+  rows as the benchmark; the frozen-WavLM head stays as the handoff baseline row.
+- Dev evidence = shared split (`splits.shared_split`) + unseen generators (diffgan_tts, playht, unit_speech) + ITW
+  through the test pipeline (uncontaminated).
+- Final score = low-parameter fusion of 2–4 diverse neural systems (+ DSP only if it helps held-out minDCF).
+- Track D: D6-R is the only option worth GPU time tonight, and only with the user's approval.
+
+### References
+[S1] https://arxiv.org/abs/2506.21090 · [S2] https://huggingface.co/nii-yamagishilab/xls-r-2b-anti-deepfake ·
+[S4] https://aclanthology.org/2026.acl-long.796.pdf · [S6] https://huggingface.co/Speech-Arena-2025/DF_Arena_1B_V_1 ·
+[S8] https://arxiv.org/abs/2202.12233 · [S10] https://arxiv.org/abs/2309.06014 · [S18] https://arxiv.org/abs/2203.16263 ·
+[S20] https://arxiv.org/abs/2408.08739 · [S21] https://github.com/asvspoof-challenge/asvspoof5/blob/main/evaluation-package/calculate_modules.py ·
+[S22] https://arxiv.org/abs/2409.01695 · [S23] https://www.isca-archive.org/asvspoof_2024/rohdin24_asvspoof.pdf ·
+[S24] https://arxiv.org/abs/2408.09933 · [S25] https://arxiv.org/abs/2408.10361 · [S26] https://arxiv.org/abs/2408.14712 ·
+[S27] https://arxiv.org/abs/2110.10491 · [S28] https://arxiv.org/abs/2405.04880 · [S30] https://arxiv.org/abs/2409.13049 ·
+[S34] https://arxiv.org/abs/2606.21584 · [S39] https://github.com/TakHemlata/SSL_Anti-spoofing · [S40] https://arxiv.org/abs/2606.08038 ·
+[D-W23] https://arxiv.org/abs/2210.10570 · [D-MS25] https://arxiv.org/abs/2509.26471 · [D-C26] https://arxiv.org/abs/2604.26465 ·
+[D-Mo26] https://arxiv.org/abs/2607.26472 · [D-DF] https://arxiv.org/abs/2409.08731 · [D-Y26] https://arxiv.org/abs/2606.08038 ·
+[D-DoC] https://arxiv.org/abs/2410.06796 · [D-AF24] https://arxiv.org/abs/2405.04181 · [D-CF+] https://arxiv.org/abs/2501.08238 ·
+[D-GR25] https://arxiv.org/abs/2506.03425 · [D-APEX] https://arxiv.org/abs/2605.10153 · [MU21] https://arxiv.org/abs/2106.12914

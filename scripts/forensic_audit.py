@@ -42,6 +42,7 @@ def file_sets(per_gen=None, seed=0):
         "nsa_real": sorted((d / "DiffSSD" / "real_speech").glob("*.wav")),
         "ljspeech": sorted((d / "external" / "LJSpeech-1.1" / "wavs").glob("*.wav")),
         "librispeech": sorted((d / "external" / "librispeech_10spk").rglob("*.flac")),
+        "extra_reals": sorted((d / "external" / "extra_reals").rglob("*.flac")),
     }
     fakes = []
     for root in [d / "DiffSSD" / "generated_speech", d / "subset_stream" / "DiffSSD" / "generated_speech"]:
@@ -135,16 +136,20 @@ def structure_one(row):
 
 
 def cmd_structure(a):
-    t = table(file_sets(a.per_gen))
-    res = pd.DataFrame(pool_map(structure_one, t.to_dict("records"), a.workers))
-    res = t.merge(res, on="path")
-    res.to_parquet(OUT / "structure.parquet")
+    if (OUT / "structure.parquet").exists() and not a.force:
+        res = pd.read_parquet(OUT / "structure.parquet")
+    else:
+        t = table(file_sets(a.per_gen))
+        res = pd.DataFrame(pool_map(structure_one, t.to_dict("records"), a.workers))
+        res = t.merge(res, on="path")
+        res.to_parquet(OUT / "structure.parquet")
     summ = {"n_files": res.groupby("set").size().to_dict(),
             "layouts": res.groupby(["set", "layout"], dropna=False).size().rename("n").reset_index().to_dict("records"),
             "ISFT": res.groupby(["set", "ISFT"], dropna=False).size().rename("n").reset_index().to_dict("records")}
     for key in ("sha256", "pcm16k_sha256"):
-        dup = res[res.duplicated(key, keep=False) & res[key].notna()]
-        groups = dup.groupby(key).apply(lambda g: sorted(g.set + ":" + g.file)).tolist()
+        sub = res[res[key].notna()]
+        dup = sub[sub.duplicated(key, keep=False)]
+        groups = [sorted(s + ":" + f for s, f in zip(g.set, g.file)) for _, g in dup.groupby(key)]
         cross = [g for g in groups if len({x.split(":")[0] for x in g}) > 1]
         summ[f"dup_groups_{key}"] = len(groups)
         summ[f"cross_set_dup_groups_{key}"] = cross[:50]
@@ -220,6 +225,9 @@ def signal_one(row):
 
 
 def cmd_signal(a):
+    if (OUT / "signal.parquet").exists() and not a.force:
+        print("signal.parquet exists (use --force to recompute)")
+        return
     t = table(file_sets(a.per_gen))
     out = pool_map(signal_one, t.to_dict("records"), a.workers)
     rows, spectra = [], []
@@ -367,42 +375,85 @@ def fp_one(path):
         return np.zeros(0, np.uint32), np.zeros(0, np.int32)
 
 
-def cmd_fingerprint(a):
-    sets = file_sets()
-    ref = table({k: v for k, v in sets.items() if k != "test"})
-    test = table({"test": sets["test"]})
-    print("fingerprinting", len(ref), "reference files and", len(test), "test clips", flush=True)
-    rfp = pool_map(fp_one, list(ref.path), a.workers, chunksize=16)
+def build_index(ref, workers):
+    rfp = pool_map(fp_one, list(ref.path), workers, chunksize=16)
     H = np.concatenate([h for h, _ in rfp])
     T = np.concatenate([t for _, t in rfp])
     F = np.concatenate([np.full(len(h), i, np.int32) for i, (h, _) in enumerate(rfp)])
     o = np.argsort(H, kind="stable")
-    H, T, F = H[o], T[o], F[o]
-    print("reference hashes:", len(H), flush=True)
-    tfp = pool_map(fp_one, list(test.path), a.workers, chunksize=8)
+    return H[o], T[o], F[o]
+
+
+def query(index, fps, names, ref):
+    H, T, F = index
     rows = []
-    for (h, t), (_, tr) in zip(tfp, test.iterrows()):
+    for (h, t), name in zip(fps, names):
         lo, hi = np.searchsorted(H, h, "left"), np.searchsorted(H, h, "right")
         n = hi - lo
-        common = n > 3000                                                  # uninformative (e.g. low-band) hashes
-        h, t, lo, hi, n = h[~common], t[~common], lo[~common], hi[~common], n[~common]
+        keep = n <= 3000                                                    # drop uninformative (very common) hashes
+        h, t, lo, hi, n = h[keep], t[keep], lo[keep], hi[keep], n[keep]
         if n.sum() == 0:
-            rows.append(dict(file=tr.file, n_hashes=len(h), best_votes=0))
+            rows.append(dict(name=name, n_hashes=len(h), best_votes=0))
             continue
         idx = np.concatenate([np.arange(a_, b_) for a_, b_ in zip(lo, hi)])
-        qt = np.repeat(t, n)
-        key = F[idx].astype(np.int64) * 100000 + (T[idx] - qt + 50000)       # (file, time offset)
+        key = F[idx].astype(np.int64) * 100000 + (T[idx] - np.repeat(t, n) + 50000)   # (file, time offset)
         u, c = np.unique(key, return_counts=True)
-        best = np.argsort(-c)[:3]
-        fid = (u[best] // 100000).astype(int)
-        second_file = [f for f in fid[1:] if f != fid[0]]
-        rows.append(dict(file=tr.file, n_hashes=len(h), best_votes=int(c[best[0]]),
-                         best_ref=ref.file.iloc[fid[0]], best_set=ref.set.iloc[fid[0]], best_source=ref.source.iloc[fid[0]],
+        best = np.argsort(-c)[:2]
+        fid = int(u[best[0]] // 100000)
+        rows.append(dict(name=name, n_hashes=len(h), best_votes=int(c[best[0]]),
+                         best_ref=ref.file.iloc[fid], best_set=ref.set.iloc[fid], best_source=ref.source.iloc[fid],
                          best_offset_s=float(((u[best[0]] % 100000) - 50000) * FP_HOP / SR),
                          runner_up_votes=int(c[best[1]]) if len(best) > 1 else 0))
     res = pd.DataFrame(rows)
     res["vote_frac"] = res.best_votes / res.n_hashes.clip(lower=1)
+    return res
+
+
+def testlike(path, seed):
+    """The test set's apparent pipeline: 22.05 kHz, trim (hop 512), start crop of 3-4 s in 512-sample frames,
+    kaiser_fast-class resampling to 16 kHz, peak-normalize to 0.998."""
+    import librosa
+    import torch
+    import torchaudio.functional as AF
+    y, _ = librosa.load(path, sr=22050, mono=True)
+    y, _ = librosa.effects.trim(y, top_db=60, frame_length=2048, hop_length=512)
+    rng = np.random.default_rng(seed)
+    n = int(rng.uniform(3.0, 4.0) * 22050) // 512 * 512
+    y = y[:n]
+    y = AF.resample(torch.from_numpy(y), 22050, SR, lowpass_filter_width=16, rolloff=0.85,
+                    resampling_method="sinc_interp_kaiser", beta=8.555910).numpy()
+    return np.round(y / (np.abs(y).max() + 1e-12) * 0.998 * 32767).astype(np.int16)
+
+
+def fp_control_one(item):
+    path, seed = item
+    try:
+        return landmarks(testlike(path, seed))
+    except Exception:
+        return np.zeros(0, np.uint32), np.zeros(0, np.int32)
+
+
+def cmd_fingerprint(a):
+    sets = file_sets()
+    ref = table({k: v for k, v in sets.items() if k != "test"})
+    test = table({"test": sets["test"]})
+    print("fingerprinting", len(ref), "reference files and", len(test), "test clips;",
+          ref.groupby("set").size().to_dict(), flush=True)
+    index = build_index(ref, a.workers)
+    print("reference hashes:", len(index[0]), flush=True)
+    # positive control: reference files pushed through the test-like pipeline must find their source
+    ctrl = ref.groupby("set", group_keys=False).sample(20, random_state=1).reset_index(drop=True)
+    cfp = pool_map(fp_control_one, [(p, i) for i, p in enumerate(ctrl.path)], a.workers, chunksize=2)
+    cres = query(index, cfp, list(ctrl.file), ref)
+    cres["true_set"], cres["hit"] = ctrl.set, cres.best_ref.eq(ctrl.file)
+    cres.to_parquet(OUT / "fingerprint_control.parquet")
+    print("POSITIVE CONTROL (test-like copies of reference files):")
+    print(cres.groupby("true_set").agg(n=("hit", "size"), hit_rate=("hit", "mean"),
+                                       vote_frac_median=("vote_frac", "median"), vote_frac_min=("vote_frac", "min")).round(3).to_string())
+    tfp = pool_map(fp_one, list(test.path), a.workers, chunksize=8)
+    res = query(index, tfp, list(test.file), ref)
     res.to_parquet(OUT / "fingerprint.parquet")
+    print("TEST:")
     print(res.vote_frac.describe().round(3).to_string())
     for thr in (0.05, 0.1, 0.2, 0.3):
         m = res.vote_frac >= thr
@@ -420,6 +471,7 @@ def main():
     ap.add_argument("stage", choices=["structure", "signal", "pipeline", "fingerprint", "report"])
     ap.add_argument("--workers", type=int, default=os.cpu_count())
     ap.add_argument("--per-gen", type=int, default=150, help="DiffSSD files per generator for per-file stages")
+    ap.add_argument("--force", action="store_true", help="recompute a stage whose output exists")
     a = ap.parse_args()
     OUT.mkdir(parents=True, exist_ok=True)
     globals()[f"cmd_{a.stage}"](a)

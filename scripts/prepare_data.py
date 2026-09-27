@@ -57,10 +57,16 @@ def main():
     man.to_parquet(config.CACHE / f"manifest{suffix}.parquet")
     print(man.groupby(["family", "generator"]).size().to_string())
 
+    old = None
+    tri_path = config.CACHE / f"triage{suffix}.parquet"
+    if args.pool and tri_path.exists():  # incremental: only clips not triaged yet
+        old = pd.read_parquet(tri_path)
+        old = old[old.uid.isin(man.uid) & old.decode_ok.fillna(False)]
+    todo = man if old is None else man[~man.uid.isin(old.uid)]
     with ProcessPoolExecutor(args.workers) as ex:
-        rows = list(tqdm(ex.map(work, zip(man.uid, man.path), chunksize=16), total=len(man)))
-    tri = pd.DataFrame(rows)
-    tri.to_parquet(config.CACHE / f"triage{suffix}.parquet")
+        rows = list(tqdm(ex.map(work, zip(todo.uid, todo.path), chunksize=16), total=len(todo)))
+    tri = pd.DataFrame(rows) if old is None else pd.concat([old, pd.DataFrame(rows)], ignore_index=True)
+    tri.to_parquet(tri_path)
     print("decode failures:", int((~tri.decode_ok).sum()))
 
     test = tri[tri.uid.str.startswith("test/")]

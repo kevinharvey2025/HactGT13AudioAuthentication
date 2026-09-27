@@ -2,7 +2,7 @@
 # Data preparation on one CPU node (no training):
 #   neural: fine-tuning pool + Track A manifest -> cache/wav16k, triage tables, test durations
 #   DSP:    leakage-checked manifests + feature extraction for the pool and the test set (cache/dsp)
-#   mpcdf.py submit raven mpcdf/prep.sbatch [-- neural|dsp ...]   (default: both)
+#   mpcdf.py submit raven mpcdf/prep.sbatch [-- pool|tracka|neural|dsp ...]   (default: neural dsp; neural = pool tracka)
 #SBATCH --job-name=hearsay-prep
 #SBATCH --time=03:00:00
 #SBATCH --ntasks=1
@@ -16,12 +16,16 @@ parts=("$@")
 [ ${#parts[@]} -eq 0 ] && parts=(neural dsp)
 N=${SLURM_CPUS_PER_TASK:-72}
 for part in "${parts[@]}"; do
-  if [ "$part" = neural ]; then
+  if [ "$part" = neural ] || [ "$part" = pool ] || [ "$part" = tracka ]; then
     use_venv neural
-    echo "=== neural pool $(date +%T)"
-    python scripts/prepare_data.py --pool --workers "$N"
-    echo "=== neural Track A manifest $(date +%T)"
-    python scripts/prepare_data.py --workers "$N"
+    if [ "$part" != tracka ]; then
+      echo "=== neural pool $(date +%T)"
+      python scripts/prepare_data.py --pool --workers "$N"     # incremental: only clips not triaged yet
+    fi
+    if [ "$part" != pool ]; then
+      echo "=== neural Track A manifest $(date +%T)"
+      python scripts/prepare_data.py --workers "$N"
+    fi
     deactivate
   elif [ "$part" = dsp ]; then
     use_venv dsp

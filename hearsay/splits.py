@@ -40,6 +40,52 @@ def speaker_folds(lab, k=K, seed=0):
     return f
 
 
+SHARED_SEED = 20260926   # scripts/dsp_build_manifests.py
+
+
+def _u01(seed, key):
+    import hashlib
+    return int(hashlib.sha256(f"{seed}:{key}".encode()).hexdigest()[:15], 16) / float(16 ** 15)
+
+
+def shared_split(lab, seed=SHARED_SEED, frac=0.2, val_frac=0.15, n_heldout_speakers=2):
+    """The split every track shares: 'holdout' (reserved evaluation), 'val' (selection, calibration,
+    fusion training) and 'train'. The holdout rules are exactly those of scripts/dsp_build_manifests.py,
+    so the DSP pool's holdout rows are holdout here too:
+      fakes: sentence id hashed into the held-out 20%, or a clone of a held-out speaker (2061, 5448);
+      LJSpeech (organizer + LJSpeech-1.1): LJ chapter hashed; LibriSpeech speakers: held-out speaker or
+      (speaker, chapter) hashed; extra reals: speaker hashed. 'val' takes a further val_frac of the
+      remaining groups with an independent hash. In-the-Wild rows form their own split 'itw' (never trained on)."""
+    sent_held = {s for s in range(5000) if _u01(seed, f"S{s}") < frac}
+    clone_spk = sorted(lab.loc[lab.family == "clone", "speaker"].unique(), key=int)
+    spk_held = set(sorted(clone_spk, key=lambda s: _u01(seed, f"P{s}"))[:n_heldout_speakers])
+    out, key = [], []
+    for r in lab.itertuples():
+        if r.family in ("lj_voice", "clone"):
+            sid = int(r.sentence_id)
+            held = sid in sent_held or (r.family == "clone" and r.speaker in spk_held)
+            k = f"S{sid}"
+        elif r.family == "real_lj":
+            ch = r.uid.split("/")[-1].split("-")[0]
+            held, k = _u01(seed, f"LJ{ch}") < frac, f"LJ{ch}"
+        elif r.family == "real_libri":
+            ch = r.uid.split("/")[-1].split("-")[1]
+            held = r.speaker in spk_held or _u01(seed, f"LS{r.speaker}-{ch}") < frac
+            k = f"LS{r.speaker}-{ch}"
+        elif r.family == "itw":  # In-the-Wild: evaluation only
+            out.append("itw")
+            key.append(f"ITW{r.uid}")
+            continue
+        else:  # real_extra: whole speakers
+            held, k = _u01(seed, f"EX{r.speaker}") < frac, f"EX{r.speaker}"
+        out.append("holdout" if held else "train")
+        key.append(k)
+    out = np.array(out, dtype=object)
+    val = np.array([_u01(seed + 1, k) < val_frac for k in key]) & (out == "train")
+    out[val] = "val"
+    return out
+
+
 def logo_splits(lab, folds):
     """Yield (generator, fold, train_idx, test_idx): train never sees `generator` or fold k."""
     real = (lab.label == 0).to_numpy()
