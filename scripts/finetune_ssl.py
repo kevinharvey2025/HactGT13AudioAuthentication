@@ -11,6 +11,12 @@ distribution (clipped to 3.0-4.5 s), with a random channel augmentation (hearsay
 probability --p-aug. Both classes get exactly the same processing. Items are drawn with fixed family
 shares (--shares) so neither LJSpeech's voice nor the cloned LibriSpeech voices can stand in for the label.
 
+RawBoost (hearsay/rawboost.py): --rawboost-algo 1-8 applies it to an item with probability --p-rawboost, after the
+chain (if drawn) and before the low-pass; --rawboost-params overrides the reference parameters ("maxF=7000,SNRmin=5").
+Its decision and draws come from a separate stream per item, so crop, chain and dither are the same with RawBoost on
+or off, and with it off the batches are bit-identical to earlier runs. The applied rate per class and family is
+logged every epoch.
+
 Splits: splits.shared_split, shared by every track (its holdout = the DSP track's holdout rules: hashed
 sentence ids, held-out clone speakers 2061/5448, LJ chapters, LibriSpeech chapters, extra-real speakers).
 Training uses 'train' rows; 'val' selects the checkpoint (mean of clean and augmented minDCF, organizers'
@@ -18,10 +24,12 @@ costs); 'holdout' is reported every epoch but never used for any choice. --holdo
 generators from training (their clips stay in val/holdout, as unseen generators). --final trains on
 every labeled row for exactly --epochs epochs (configuration frozen beforehand) and keeps the last epoch.
 Epoch 0 evaluates the pretrained model before any update (zero-shot benchmark). Evaluation audio: view 0
-(clean canonical) and view 1 (fixed augmentation); test clips view 0, uncropped.
-Scores are synthetic logits (logit_fake - logit_real).
+(clean canonical) and view 1 (fixed augmentation); --eval-views 0,1,100[,101] adds the unseen-channel views
+(hearsay/unseen.py), scored in a separate pass so views 0 and 1 are batched exactly as without them, and never used
+for selection. Test clips view 0, uncropped. Scores are synthetic logits (logit_fake - logit_real).
 
-Writes runs/diffusion/ft/<name>/{config.json, log.jsonl, dev_epoch<k>.parquet, test_epoch<k>.parquet, best.pt}.
+Writes runs/diffusion/ft/<name>/{config.json, log.jsonl, <set>_epoch<k>.parquet, test_epoch<k>.parquet, best.pt};
+the per-epoch parquets hold score_<view> for each evaluated view, and channel_<view> for the added ones.
 """
 import argparse
 import json
@@ -38,23 +46,34 @@ from torch import nn
 from torch.utils.data import DataLoader, Dataset, Sampler
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from hearsay import antideepfake, audio, augment, config, metrics, splits, views  # noqa: E402
+from hearsay import antideepfake, audio, augment, config, metrics, provenance, rawboost, splits, views  # noqa: E402
 
 SR = config.SR
 DEFAULT_SHARES = "lj_voice=0.25,clone=0.25,real_lj=0.2,real_libri=0.15,real_extra=0.15"
+RAWBOOST_STREAM = 0x5242   # "RB": an item's RawBoost stream is default_rng([seed, epoch, row, RAWBOOST_STREAM])
 
 
 # ----------------------------------------------------------------------------- data
 
 class TrainSet(Dataset):
-    """Item (row, crop_samples) -> (float32 audio of exactly crop_samples, class index: 0 fake, 1 real)."""
+    """Item (row, crop_samples) -> (float32 audio of exactly crop_samples, class index: 0 fake, 1 real, row,
+    whether RawBoost was applied)."""
 
-    def __init__(self, uids, labels, p_aug, seed, babble_uids):
+    def __init__(self, uids, labels, p_aug, seed, babble_uids, rawboost_algo=0, p_rawboost=0.0, rawboost_params=None):
         self.uids, self.labels, self.p_aug, self.seed = list(uids), np.asarray(labels), p_aug, seed
         self.babble_uids, self.babble, self.epoch = list(babble_uids), None, 0
+        self.rb_algo, self.p_rb = rawboost_algo, p_rawboost
+        self.rb_params = rawboost_params or rawboost.RawBoostParams()
 
     def __len__(self):
         return len(self.uids)
+
+    def rawboost_rng(self, i):
+        """The item's RawBoost generator if RawBoost applies to it, else None (depends on seed, epoch and row only)."""
+        if not self.rb_algo or self.p_rb <= 0:
+            return None
+        r = np.random.default_rng([self.seed, self.epoch, i, RAWBOOST_STREAM])
+        return r if r.random() < self.p_rb else None
 
     def __getitem__(self, item):
         i, n = item
@@ -63,14 +82,20 @@ class TrainSet(Dataset):
             self.babble = [audio.load_cached(u) for u in self.babble_uids]
         rng = np.random.default_rng([self.seed, self.epoch, i])
         x = audio.load_cached(self.uids[i])
+        chain, boost = rng.random() < self.p_aug, self.rawboost_rng(i)
         aug = None
-        if rng.random() < self.p_aug:
-            def aug(y, r):
-                return augment.random_chain(y, r, babble_pool=self.babble)
+        if chain or boost is not None:
+            def aug(y, r):  # the channel chain, then RawBoost; never sees the label
+                prm = {}
+                if chain:
+                    y, prm = augment.random_chain(y, r, babble_pool=self.babble)
+                if boost is not None:
+                    y, _ = rawboost.apply(y, boost, self.rb_algo, self.rb_params)
+                return y, prm
         y = audio.canonical(x, rng, durations=audio.TestLikeDurations([n / SR]), aug=aug)
         if len(y) < n:  # rare: clip shorter than the crop after trimming
             y = np.pad(y, (0, n - len(y)))
-        return torch.from_numpy(y[:n].astype(np.float32)), int(1 - self.labels[i])
+        return torch.from_numpy(y[:n].astype(np.float32)), int(1 - self.labels[i]), i, boost is not None
 
 
 class FamilyBatches(Sampler):
@@ -99,11 +124,12 @@ class FamilyBatches(Sampler):
 
 
 def collate(items):
-    return torch.stack([x for x, _ in items]), torch.tensor([y for _, y in items])
+    x, y, rows, boosted = zip(*items)
+    return torch.stack(x), torch.tensor(y), np.array(rows), np.array(boosted)
 
 
 class EvalSet(Dataset):
-    """(uid, view, is_test) -> exactly the audio views.ViewMaker gives every other module."""
+    """(uid, view, is_test) -> exactly the audio views.ViewMaker gives every other module, and its channel label."""
 
     def __init__(self, rows, babble_uids):
         self.rows, self.babble_uids, self.maker = rows, list(babble_uids), None
@@ -116,8 +142,8 @@ class EvalSet(Dataset):
             torch.set_num_threads(1)
             self.maker = views.ViewMaker([audio.load_cached(u) for u in self.babble_uids])
         uid, view, is_test = self.rows[i]
-        x, _ = self.maker(uid, view, is_test=is_test)
-        return i, x.astype(np.float32)
+        x, prm = self.maker(uid, view, is_test=is_test)
+        return i, x.astype(np.float32), prm["channel"]
 
 
 # ----------------------------------------------------------------------------- model
@@ -135,12 +161,15 @@ class Detector(nn.Module):
 
 
 @torch.inference_mode()
-def score(model, ds, device, batch, workers):
-    """Synthetic logits for every item; batches of similar length cropped to their shortest clip."""
+def score(model, ds, device, batch, workers, channels=None):
+    """Synthetic logits for every item; batches of similar length cropped to their shortest clip. Fills `channels`
+    (a list) with each item's channel label when given."""
     dl = DataLoader(ds, batch_size=None, shuffle=False, num_workers=workers, prefetch_factor=4)
-    xs = [None] * len(ds)
-    for i, x in dl:
-        xs[i] = x.numpy() if torch.is_tensor(x) else x
+    xs, ch = [None] * len(ds), [None] * len(ds)
+    for i, x, c in dl:
+        xs[i], ch[i] = (x.numpy() if torch.is_tensor(x) else x), c
+    if channels is not None:
+        channels[:] = ch
     order = np.argsort([len(x) for x in xs])
     out = np.zeros(len(xs), np.float32)
     model.eval()
@@ -165,6 +194,20 @@ def dev_metrics(dev, s0, s1):
             r[f"{name}_mindcf_{g}"] = metrics.min_dcf(y[mask], s[mask])
     r["select"] = (r["clean_min_dcf"] + r["aug_min_dcf"]) / 2
     return r
+
+
+def view_metrics(dev, extra):
+    """AUC, EER and minDCF of the added views ({name: scores}); reported, never used for selection."""
+    y = dev.label.to_numpy()
+    return {f"{name}_{k}": v for name, s in extra.items() for k, v in metrics.summary(y, s).items()
+            if k in ("auc", "eer", "min_dcf")}
+
+
+def rawboost_rates(tr, rows, boosted):
+    """Share of the epoch's training items that got RawBoost: overall, per class and per family."""
+    lab, fam = tr.label.to_numpy()[rows], tr.family.to_numpy()[rows]
+    return dict(n=int(len(rows)), all=float(boosted.mean()), fake=float(boosted[lab == 1].mean()),
+                real=float(boosted[lab == 0].mean()), family={f: float(boosted[fam == f].mean()) for f in sorted(set(fam))})
 
 
 # ----------------------------------------------------------------------------- main
@@ -193,14 +236,26 @@ def main():
     ap.add_argument("--wise-alpha", type=float, default=1.0, help="weight of the fine-tuned weights (0 = pretrained, 1 = fine-tuned)")
     ap.add_argument("--extra-fakes", default="", choices=["", "d6r"],
                     help="d6r: add copy-synthesis fakes (cache/manifest_d6r.parquet; train-split reals only)")
+    ap.add_argument("--rawboost-algo", type=int, default=0, choices=range(9),
+                    help="RawBoost (hearsay/rawboost.py): 0 off, 1 LnL, 2 ISD, 3 SSI, 4 1->2->3, 5 1->2, 6 1->3, 7 2->3, 8 1||2")
+    ap.add_argument("--p-rawboost", type=float, default=0.0, help="probability that an item gets RawBoost")
+    ap.add_argument("--rawboost-params", default="", help="overrides of the reference parameters, e.g. maxF=7000,SNRmin=5")
+    ap.add_argument("--eval-views", default="0,1", help="views scored every epoch: 0,1 plus 100 (unseen), 101 (device)")
     args = ap.parse_args()
+    rb_params = rawboost.RawBoostParams.parse(args.rawboost_params)
+    eval_views = [int(v) for v in args.eval_views.split(",")]
+    if eval_views[:2] != [0, 1] or any(v not in views.NAMES for v in eval_views):
+        raise ValueError(f"--eval-views must start with 0,1 and use views {sorted(views.NAMES)}")
+    extra_views = eval_views[2:]
     torch.manual_seed(args.seed)
     torch.backends.cuda.matmul.allow_tf32 = True
     torch.backends.cudnn.allow_tf32 = True
     dev_ = torch.device("cuda")
     out = config.RUNS / "ft" / args.name
     out.mkdir(parents=True, exist_ok=True)
-    json.dump(vars(args), open(out / "config.json", "w"), indent=1)
+    json.dump(dict(vars(args), code_version=provenance.code_version(),
+                   rawboost=rb_params.to_json() if args.rawboost_algo and args.p_rawboost > 0 else None),
+              open(out / "config.json", "w"), indent=1)
     log = open(out / "log.jsonl", "a")
 
     man = pd.read_parquet(config.CACHE / "manifest_pool.parquet")
@@ -238,9 +293,10 @@ def main():
 
     shares = {kv.split("=")[0]: float(kv.split("=")[1]) for kv in args.shares.split(",")}
     durations = audio.TestLikeDurations.from_cache().d
-    train_ds = TrainSet(tr.uid, tr.label, args.p_aug, args.seed, babble)
+    train_ds = TrainSet(tr.uid, tr.label, args.p_aug, args.seed, babble, args.rawboost_algo, args.p_rawboost, rb_params)
     sampler = FamilyBatches(tr.family, shares, args.batch, args.steps_per_epoch, durations, args.seed)
     eval_ds = {k: EvalSet([(u, v, False) for v in (0, 1) for u in d.uid], babble) for k, d in evals.items()}
+    extra_ds = {k: EvalSet([(u, v, False) for v in extra_views for u in d.uid], babble) for k, d in evals.items() if extra_views}
     test_ds = EvalSet([(u, 0, True) for u in test.uid], babble)
 
     model = Detector(args.backbone)
@@ -272,13 +328,14 @@ def main():
 
     best, step = None, 0
     for ep in range(args.epochs + 1):
+        train = {}
         if ep > 0:
             model.train()
             train_ds.epoch = sampler.epoch = ep
             dl = DataLoader(train_ds, batch_sampler=sampler, num_workers=args.workers, collate_fn=collate,
                             prefetch_factor=4, persistent_workers=False)
-            t0, tot, n = time.time(), 0.0, 0
-            for x, y in dl:
+            t0, tot, n, rows, boosted = time.time(), 0.0, 0, [], []
+            for x, y, i, b in dl:
                 x, y = x.to(dev_, non_blocking=True), y.to(dev_, non_blocking=True)
                 with torch.autocast("cuda", dtype=torch.bfloat16):
                     loss = loss_fn(model(x).float(), y)
@@ -289,16 +346,31 @@ def main():
                 sched.step()
                 step += 1
                 tot, n = tot + loss.item(), n + 1
+                rows.append(i)
+                boosted.append(b)
                 if step % 100 == 0:
                     print(f"ep {ep} step {step} loss {tot / n:.4f} ({(time.time() - t0) / n:.2f} s/step)", flush=True)
+            train = dict(train_loss=tot / n, s_per_step=(time.time() - t0) / n)
+            if args.rawboost_algo and args.p_rawboost > 0:
+                train["rawboost_applied"] = rawboost_rates(tr, np.concatenate(rows), np.concatenate(boosted))
         t0 = time.time()
-        r = dict(epoch=ep, step=step)
+        r = dict(epoch=ep, step=step, **train)
         for k, d in evals.items():
-            s = score(model, eval_ds[k], dev_, 32, args.workers)
+            ch = []
+            s = score(model, eval_ds[k], dev_, 32, args.workers, channels=ch)
             s0, s1 = s[: len(d)], s[len(d):]
             r.update({f"{k}_{m}": v for m, v in dev_metrics(d, s0, s1).items()})
-            pd.DataFrame(dict(uid=d.uid, generator=d.generator, family=d.family, label=d.label, split=d.split,
-                              score_clean=s0, score_aug=s1)).to_parquet(out / f"{k}_epoch{ep}.parquet")
+            cols = dict(uid=d.uid, generator=d.generator, family=d.family, label=d.label, split=d.split,
+                        score_clean=s0, score_aug=s1, channel_aug=ch[len(d):])
+            if extra_views:  # the added views, scored apart so views 0 and 1 are batched as without them
+                ch = []
+                se = score(model, extra_ds[k], dev_, 32, args.workers, channels=ch)
+                extra = {views.NAMES[v]: se[j * len(d): (j + 1) * len(d)] for j, v in enumerate(extra_views)}
+                r.update({f"{k}_{m}": v for m, v in view_metrics(d, extra).items()})
+                for j, v in enumerate(extra_views):
+                    cols[f"score_{views.NAMES[v]}"] = extra[views.NAMES[v]]
+                    cols[f"channel_{views.NAMES[v]}"] = ch[j * len(d): (j + 1) * len(d)]
+            pd.DataFrame(cols).to_parquet(out / f"{k}_epoch{ep}.parquet")
         st = score(model, test_ds, dev_, 16, args.workers)
         pt = 1 / (1 + np.exp(-st))
         r.update(test_frac_gt_0_5=float((pt > 0.5).mean()), test_logit_median=float(np.median(st)), eval_s=time.time() - t0)

@@ -16,6 +16,8 @@ soundfile==0.14.0
 soxr==1.1.0
 tqdm==4.70.1
 tabulate==0.10.0
+# the unseen-channel view's image-method rooms (hearsay/unseen.py; views 100/101, never in predict.py)
+pyroomacoustics==0.10.1
 # copy-synthesis vocoders (scripts/run_d6r.py)
 speechbrain==1.1.1
 vocos==0.1.0

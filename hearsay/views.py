@@ -1,10 +1,14 @@
 """(uid, view) -> the exact float32 audio a model sees, plus its channel parameters.
 
-View 0 is the clean canonical clip; views >= 1 add a random augmentation chain. All randomness
-comes from uid_rng(uid, view), so every module (SSL, resynthesis, diffusion) gets identical audio
-for the same (uid, view). Test clips are never cropped.
+View 0 is the clean canonical clip; views 1-99 add a random augmentation chain (hearsay/augment.py). Views 100
+("unseen") and 101 ("device", RawBoost-adjacent) apply channels no model trains on (hearsay/unseen.py). All
+randomness comes from uid_rng(uid, view), so every module (SSL, resynthesis, diffusion) gets identical audio for the
+same (uid, view). Test clips are never cropped.
 """
 from . import audio, augment
+
+UNSEEN, DEVICE = 100, 101
+NAMES = {0: "clean", 1: "aug", UNSEEN: "unseen", DEVICE: "device"}   # column suffixes: score_clean, score_aug, ...
 
 
 class ViewMaker:
@@ -15,7 +19,14 @@ class ViewMaker:
     def __call__(self, uid, view=0, is_test=False):
         params = {"channel": "clean"}
         aug = None
-        if view > 0:
+        if view in (UNSEEN, DEVICE):
+            from . import unseen
+
+            def aug(y, r):
+                y2, p = (unseen.random_unseen if view == UNSEEN else unseen.device)(y, r)
+                params.update(p)
+                return y2, p
+        elif view > 0:
             def aug(y, r):
                 y2, p = augment.random_chain(y, r, babble_pool=self.babble_pool)
                 params.update(p)
@@ -34,4 +45,3 @@ def babble_pool(man, n=300, seed=0):
 
 def rng_for(uid, view):
     return audio.uid_rng(uid, view, seed=1)  # separate stream for module-level randomness (e.g. diffusion noise)
-

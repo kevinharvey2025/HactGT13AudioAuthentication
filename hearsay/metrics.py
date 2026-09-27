@@ -71,6 +71,13 @@ def act_dcf(y, prob, threshold=None):
     return float((cm * (1 - p) * d[y == 0].mean() + cfa * p * (~d[y == 1]).mean()) / min(cm * (1 - p), cfa * p))
 
 
+def cllr(y, prob, prior=DCF["p_spoof"]):
+    """Log-likelihood-ratio cost (bits) of probabilities calibrated at `prior`: 0 = perfect, 1 = uninformative."""
+    y, p = np.asarray(y), np.clip(np.asarray(prob, float), 1e-6, 1 - 1e-6)
+    llr = np.log(p / (1 - p)) - np.log(prior / (1 - prior))
+    return float(0.5 * (np.log2(1 + np.exp(-llr[y == 1])).mean() + np.log2(1 + np.exp(llr[y == 0])).mean()))
+
+
 def summary(y, s, prob=None):
     """AUC/EER/minDCF always; log loss/Brier when `prob` (calibrated probabilities) is given."""
     y, s = np.asarray(y), np.asarray(s)
