@@ -1,0 +1,285 @@
+"""Fine-tune an anti-spoofing SSL detector (AntiDeepfake encoder + its [fake, real] linear head).
+
+    python scripts/finetune_ssl.py --backbone adf_mms_300m --name mms300m_dev0 --dev-fold 0 \
+        [--holdout-gens pro_diff,xtts_v2] [--epochs 4] [--lr 1e-5] [--batch 32] [--workers 16]
+    python scripts/finetune_ssl.py --backbone adf_xlsr_1b --name xlsr1b_all --dev-fold -1   # final: no dev fold
+
+Data: the pool (scripts/prepare_data.py --pool -> cache/manifest_pool.parquet, audio in cache/wav16k).
+Training audio is the canonical view (hearsay/audio.py: trim, crop, [augment], 7 kHz low-pass, DC removal,
+peak-normalize, dither) of a random crop whose length is drawn per batch from the test-duration
+distribution (clipped to 3.0-4.5 s), with a random channel augmentation (hearsay/augment.py) with
+probability --p-aug. Both classes get exactly the same processing. Items are drawn with fixed family
+shares (--shares) so neither LJSpeech's voice nor the cloned LibriSpeech voices can stand in for the label.
+
+Dev (never trained on): speaker fold --dev-fold of splits.speaker_folds (clone speakers and their real
+LibriSpeech recordings held out; LJ texts held out) plus every clip of --holdout-gens (unseen generators).
+Epoch 0 evaluates the pretrained model before any update (zero-shot benchmark). Each epoch scores dev on
+view 0 (clean canonical) and view 1 (fixed augmentation), and the test set; the checkpoint with the best
+mean dev minDCF (organizers' costs) is kept. Scores are synthetic logits (logit_fake - logit_real).
+
+Writes runs/diffusion/ft/<name>/{config.json, log.jsonl, dev_epoch<k>.parquet, test_epoch<k>.parquet, best.pt}.
+"""
+import argparse
+import json
+import math
+import os
+import sys
+import time
+from pathlib import Path
+
+import numpy as np
+import pandas as pd
+import torch
+from torch import nn
+from torch.utils.data import DataLoader, Dataset, Sampler
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from hearsay import antideepfake, audio, augment, config, metrics, splits, views  # noqa: E402
+
+SR = config.SR
+DEFAULT_SHARES = "lj_voice=0.25,clone=0.25,real_lj=0.2,real_libri=0.15,real_extra=0.15"
+
+
+# ----------------------------------------------------------------------------- data
+
+class TrainSet(Dataset):
+    """Item (row, crop_samples) -> (float32 audio of exactly crop_samples, class index: 0 fake, 1 real)."""
+
+    def __init__(self, uids, labels, p_aug, seed, babble_uids):
+        self.uids, self.labels, self.p_aug, self.seed = list(uids), np.asarray(labels), p_aug, seed
+        self.babble_uids, self.babble, self.epoch = list(babble_uids), None, 0
+
+    def __len__(self):
+        return len(self.uids)
+
+    def __getitem__(self, item):
+        i, n = item
+        if self.babble is None:  # per worker; real speech only
+            torch.set_num_threads(1)
+            self.babble = [audio.load_cached(u) for u in self.babble_uids]
+        rng = np.random.default_rng([self.seed, self.epoch, i])
+        x = audio.load_cached(self.uids[i])
+        aug = None
+        if rng.random() < self.p_aug:
+            def aug(y, r):
+                return augment.random_chain(y, r, babble_pool=self.babble)
+        y = audio.canonical(x, rng, durations=audio.TestLikeDurations([n / SR]), aug=aug)
+        if len(y) < n:  # rare: clip shorter than the crop after trimming
+            y = np.pad(y, (0, n - len(y)))
+        return torch.from_numpy(y[:n].astype(np.float32)), int(1 - self.labels[i])
+
+
+class FamilyBatches(Sampler):
+    """Batches drawn with fixed family shares; one crop length per batch (equal lengths, no padding)."""
+
+    def __init__(self, families, shares, batch, n_batches, durations, seed):
+        self.batch, self.n_batches, self.seed, self.epoch = batch, n_batches, seed, 0
+        fam = np.asarray(families)
+        present = {f: s for f, s in shares.items() if (fam == f).any()}
+        tot = sum(present.values())
+        self.groups = {f: np.where(fam == f)[0] for f in present}
+        self.p = {f: s / tot for f, s in present.items()}
+        self.d = np.clip(np.asarray(durations), 3.0, 4.5)
+
+    def __len__(self):
+        return self.n_batches
+
+    def __iter__(self):
+        rng = np.random.default_rng([self.seed, self.epoch, 7])
+        fams = list(self.groups)
+        p = np.array([self.p[f] for f in fams])
+        for _ in range(self.n_batches):
+            n = int(round(float(rng.choice(self.d)) * SR)) // 320 * 320   # whole 20 ms encoder frames
+            picks = rng.choice(len(fams), size=self.batch, p=p)
+            yield [(int(rng.choice(self.groups[fams[k]])), n) for k in picks]
+
+
+def collate(items):
+    return torch.stack([x for x, _ in items]), torch.tensor([y for _, y in items])
+
+
+class EvalSet(Dataset):
+    """(uid, view, is_test) -> exactly the audio views.ViewMaker gives every other module."""
+
+    def __init__(self, rows, babble_uids):
+        self.rows, self.babble_uids, self.maker = rows, list(babble_uids), None
+
+    def __len__(self):
+        return len(self.rows)
+
+    def __getitem__(self, i):
+        if self.maker is None:
+            torch.set_num_threads(1)
+            self.maker = views.ViewMaker([audio.load_cached(u) for u in self.babble_uids])
+        uid, view, is_test = self.rows[i]
+        x, _ = self.maker(uid, view, is_test=is_test)
+        return i, x.astype(np.float32)
+
+
+# ----------------------------------------------------------------------------- model
+
+class Detector(nn.Module):
+    def __init__(self, backbone):
+        super().__init__()
+        if not backbone.startswith("adf_"):
+            raise ValueError("only AntiDeepfake backbones carry a pretrained head; use adf_*")
+        self.enc, self.head = antideepfake.load(backbone[len("adf_"):])
+
+    def forward(self, x):                                  # x [B, T] float32 at 16 kHz
+        h = self.enc(antideepfake.standardize(x)).last_hidden_state.mean(1)
+        return self.head(h.float())                        # [B, 2] logits [fake, real]
+
+
+@torch.inference_mode()
+def score(model, ds, device, batch, workers):
+    """Synthetic logits for every item; batches of similar length cropped to their shortest clip."""
+    dl = DataLoader(ds, batch_size=None, shuffle=False, num_workers=workers, prefetch_factor=4)
+    xs = [None] * len(ds)
+    for i, x in dl:
+        xs[i] = x.numpy() if torch.is_tensor(x) else x
+    order = np.argsort([len(x) for x in xs])
+    out = np.zeros(len(xs), np.float32)
+    model.eval()
+    for k in range(0, len(order), batch):
+        idx = order[k: k + batch]
+        n = min(len(xs[j]) for j in idx) // 320 * 320
+        x = torch.from_numpy(np.stack([xs[j][:n] for j in idx])).to(device)
+        with torch.autocast("cuda", dtype=torch.bfloat16):
+            lg = model(x).float()
+        out[idx] = antideepfake.synthetic_logit(lg).cpu().numpy()
+    return out
+
+
+def dev_metrics(dev, s0, s1):
+    y = dev.label.to_numpy()
+    r = {}
+    for name, s in [("clean", s0), ("aug", s1)]:
+        m = metrics.summary(y, s)
+        r.update({f"{name}_{k}": m[k] for k in ("auc", "eer", "min_dcf")})
+        for g in sorted(dev.generator[dev.label == 1].unique()):
+            mask = (y == 0) | (dev.generator == g).to_numpy()
+            r[f"{name}_mindcf_{g}"] = metrics.min_dcf(y[mask], s[mask])
+    r["select"] = (r["clean_min_dcf"] + r["aug_min_dcf"]) / 2
+    return r
+
+
+# ----------------------------------------------------------------------------- main
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--backbone", default="adf_mms_300m")
+    ap.add_argument("--name", required=True)
+    ap.add_argument("--dev-fold", type=int, default=0, help="speaker fold held out for dev; -1 = train on everything")
+    ap.add_argument("--holdout-gens", default="", help="comma-separated generators never trained on (dev only)")
+    ap.add_argument("--epochs", type=int, default=4)
+    ap.add_argument("--steps-per-epoch", type=int, default=800)
+    ap.add_argument("--batch", type=int, default=32)
+    ap.add_argument("--lr", type=float, default=1e-5)
+    ap.add_argument("--head-lr", type=float, default=1e-4)
+    ap.add_argument("--p-aug", type=float, default=0.6)
+    ap.add_argument("--shares", default=DEFAULT_SHARES)
+    ap.add_argument("--grad-ckpt", action="store_true")
+    ap.add_argument("--freeze-layers", type=int, default=0,
+                    help="freeze the bottom K transformer layers (+ positional conv, feature projection); 2B needs ~24 on a 40 GB A100")
+    ap.add_argument("--workers", type=int, default=16)
+    ap.add_argument("--seed", type=int, default=0)
+    ap.add_argument("--max-dev", type=int, default=6000, help="subsample dev clips (stratified by generator) for speed")
+    args = ap.parse_args()
+    torch.manual_seed(args.seed)
+    torch.backends.cuda.matmul.allow_tf32 = True
+    torch.backends.cudnn.allow_tf32 = True
+    dev_ = torch.device("cuda")
+    out = config.RUNS / "ft" / args.name
+    out.mkdir(parents=True, exist_ok=True)
+    json.dump(vars(args), open(out / "config.json", "w"), indent=1)
+    log = open(out / "log.jsonl", "a")
+
+    man = pd.read_parquet(config.CACHE / "manifest_pool.parquet")
+    tri = pd.read_parquet(config.CACHE / "triage_pool.parquet")[["uid", "decode_ok", "decoded_duration"]]
+    man = man.merge(tri, on="uid", how="left")
+    man = man[man.decode_ok.fillna(False)].reset_index(drop=True)
+    lab = man[man.label >= 0].reset_index(drop=True)
+    test = man[man.label < 0].reset_index(drop=True)
+    folds = splits.speaker_folds(lab)
+    held = [g for g in args.holdout_gens.split(",") if g]
+    is_dev = (folds == args.dev_fold) | lab.generator.isin(held).to_numpy()
+    # train: not dev, long enough for a >= 3 s crop after edge-silence trimming
+    tr = lab[~is_dev & (lab.decoded_duration >= 3.3).to_numpy()].reset_index(drop=True)
+    dev = lab[is_dev].reset_index(drop=True)
+    if len(dev) > args.max_dev:
+        dev = dev.groupby("generator", group_keys=False).sample(frac=args.max_dev / len(dev), random_state=0).reset_index(drop=True)
+    print(f"train {len(tr)} ({tr.groupby('family').size().to_dict()}), dev {len(dev)} "
+          f"({dev.groupby('family').size().to_dict()}), test {len(test)}; held-out generators {held}", flush=True)
+    babble = tr[tr.label == 0].sample(min(150, int((tr.label == 0).sum())), random_state=0).uid
+
+    shares = {kv.split("=")[0]: float(kv.split("=")[1]) for kv in args.shares.split(",")}
+    durations = audio.TestLikeDurations.from_cache().d
+    train_ds = TrainSet(tr.uid, tr.label, args.p_aug, args.seed, babble)
+    sampler = FamilyBatches(tr.family, shares, args.batch, args.steps_per_epoch, durations, args.seed)
+    dev_rows = [(u, v, False) for v in (0, 1) for u in dev.uid]
+    dev_ds = EvalSet(dev_rows, babble)
+    test_ds = EvalSet([(u, 0, True) for u in test.uid], babble)
+
+    model = Detector(args.backbone).to(dev_)
+    model.enc.feature_extractor._freeze_parameters()            # CNN front-end stays as pretrained
+    if args.freeze_layers:
+        frozen = [model.enc.feature_projection, model.enc.encoder.pos_conv_embed] + list(model.enc.encoder.layers[: args.freeze_layers])
+        for mod in frozen:
+            for prm in mod.parameters():
+                prm.requires_grad_(False)
+    if args.grad_ckpt:
+        model.enc.gradient_checkpointing_enable()
+    enc_params = [p for p in model.enc.parameters() if p.requires_grad]
+    opt = torch.optim.AdamW([{"params": enc_params, "lr": args.lr}, {"params": model.head.parameters(), "lr": args.head_lr}],
+                            weight_decay=0.01)
+    total = args.epochs * args.steps_per_epoch
+    warm = max(1, int(0.1 * total))
+    sched = torch.optim.lr_scheduler.LambdaLR(
+        opt, lambda s: min(1.0, (s + 1) / warm) * 0.5 * (1 + math.cos(math.pi * min(1.0, s / total))))
+    # class weights from the family shares actually used (fake = class 0)
+    p_fake = sum(v for k, v in sampler.p.items() if k in ("lj_voice", "clone"))
+    loss_fn = nn.CrossEntropyLoss(weight=torch.tensor([0.5 / p_fake, 0.5 / (1 - p_fake)], device=dev_))
+
+    best, step = None, 0
+    for ep in range(args.epochs + 1):
+        if ep > 0:
+            model.train()
+            train_ds.epoch = sampler.epoch = ep
+            dl = DataLoader(train_ds, batch_sampler=sampler, num_workers=args.workers, collate_fn=collate,
+                            prefetch_factor=4, persistent_workers=False)
+            t0, tot, n = time.time(), 0.0, 0
+            for x, y in dl:
+                x, y = x.to(dev_, non_blocking=True), y.to(dev_, non_blocking=True)
+                with torch.autocast("cuda", dtype=torch.bfloat16):
+                    loss = loss_fn(model(x).float(), y)
+                opt.zero_grad(set_to_none=True)
+                loss.backward()
+                nn.utils.clip_grad_norm_(model.parameters(), 1.0)
+                opt.step()
+                sched.step()
+                step += 1
+                tot, n = tot + loss.item(), n + 1
+                if step % 100 == 0:
+                    print(f"ep {ep} step {step} loss {tot / n:.4f} ({(time.time() - t0) / n:.2f} s/step)", flush=True)
+        t0 = time.time()
+        s = score(model, dev_ds, dev_, 32, args.workers)
+        s0, s1 = s[: len(dev)], s[len(dev):]
+        r = dict(epoch=ep, step=step, **dev_metrics(dev, s0, s1))
+        st = score(model, test_ds, dev_, 16, args.workers)
+        pt = 1 / (1 + np.exp(-st))
+        r.update(test_frac_gt_0_5=float((pt > 0.5).mean()), test_logit_median=float(np.median(st)), eval_s=time.time() - t0)
+        print(json.dumps({k: (round(v, 4) if isinstance(v, float) else v) for k, v in r.items()}), flush=True)
+        log.write(json.dumps(r) + "\n")
+        log.flush()
+        pd.DataFrame(dict(uid=dev.uid, generator=dev.generator, family=dev.family, label=dev.label,
+                          score_clean=s0, score_aug=s1)).to_parquet(out / f"dev_epoch{ep}.parquet")
+        pd.DataFrame(dict(uid=test.uid, filename=test.filename, score=st)).to_parquet(out / f"test_epoch{ep}.parquet")
+        if best is None or r["select"] < best["select"]:
+            best = r
+            torch.save({k: v.to(torch.bfloat16) for k, v in model.state_dict().items()}, out / "best.pt")
+            json.dump(best, open(out / "best.json", "w"), indent=1)
+    print("best:", json.dumps({k: (round(v, 4) if isinstance(v, float) else v) for k, v in best.items()}))
+
+
+if __name__ == "__main__":
+    main()

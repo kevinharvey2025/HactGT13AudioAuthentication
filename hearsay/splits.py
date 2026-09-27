@@ -32,6 +32,11 @@ def speaker_folds(lab, k=K, seed=0):
     spk_fold = {s: i % k for i, s in enumerate(order)}
     m = lab.family.isin(["clone", "real_libri"])
     f[m.to_numpy()] = lab.loc[m, "speaker"].map(spk_fold).to_numpy()
+    # extra bona fide speakers (fine-tuning pool): whole speakers per fold too
+    ex = lab.family == "real_extra"
+    if ex.any():
+        es = list(np.random.default_rng(seed + 1).permutation(sorted(lab.loc[ex, "speaker"].unique())))
+        f[ex.to_numpy()] = lab.loc[ex, "speaker"].map({s: i % k for i, s in enumerate(es)}).to_numpy()
     return f
 
 

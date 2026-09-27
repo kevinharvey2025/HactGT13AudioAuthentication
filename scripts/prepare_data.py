@@ -1,6 +1,6 @@
 """Phase 0: manifest -> decoded 16 kHz cache -> T0 triage table -> test duration distribution.
 
-    python scripts/prepare_data.py [--workers 8] [--allow-missing] [--no-test]
+    python scripts/prepare_data.py [--workers 8] [--allow-missing] [--no-test] [--pool]
 
 Writes cache/manifest.parquet, cache/wav16k/<uid>.wav, cache/triage.parquet, cache/test_durations.npy.
 Needs the full DiffSSD and the NSA test set (HANDOFF_DIFFUSION.md section 11). --allow-missing drops
@@ -44,17 +44,23 @@ def main():
     ap.add_argument("--workers", type=int, default=8)
     ap.add_argument("--allow-missing", action="store_true", help="drop DiffSSD files that are not on disk")
     ap.add_argument("--no-test", action="store_true", help="build without the NSA test set")
+    ap.add_argument("--pool", action="store_true",
+                    help="the fine-tuning pool (every labeled clip on disk) -> cache/manifest_pool.parquet, triage_pool.parquet")
     args = ap.parse_args()
     config.CACHE.mkdir(parents=True, exist_ok=True)
 
-    man = manifest.build(allow_missing=args.allow_missing, require_test=not args.no_test)
-    man.to_parquet(config.CACHE / "manifest.parquet")
+    if args.pool:
+        man = manifest.build_pool(require_test=not args.no_test)
+    else:
+        man = manifest.build(allow_missing=args.allow_missing, require_test=not args.no_test)
+    suffix = "_pool" if args.pool else ""
+    man.to_parquet(config.CACHE / f"manifest{suffix}.parquet")
     print(man.groupby(["family", "generator"]).size().to_string())
 
     with ProcessPoolExecutor(args.workers) as ex:
         rows = list(tqdm(ex.map(work, zip(man.uid, man.path), chunksize=16), total=len(man)))
     tri = pd.DataFrame(rows)
-    tri.to_parquet(config.CACHE / "triage.parquet")
+    tri.to_parquet(config.CACHE / f"triage{suffix}.parquet")
     print("decode failures:", int((~tri.decode_ok).sum()))
 
     test = tri[tri.uid.str.startswith("test/")]
