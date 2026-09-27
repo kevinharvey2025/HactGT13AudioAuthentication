@@ -1,0 +1,103 @@
+{
+ "runs": {
+  "xlsr2b_d6r@3": {
+   "epoch": 3,
+   "val": {
+    "auc": 0.9997,
+    "eer": 0.0076,
+    "min_dcf": 0.0292
+   },
+   "holdout": {
+    "auc": 0.9992,
+    "eer": 0.015,
+    "min_dcf": 0.05
+   },
+   "itw": {
+    "auc": 0.9969,
+    "eer": 0.0282,
+    "min_dcf": 0.1236
+   }
+  },
+  "xlsr1b_d6r@3": {
+   "epoch": 3,
+   "val": {
+    "auc": 0.9999,
+    "eer": 0.0059,
+    "min_dcf": 0.0177
+   },
+   "holdout": {
+    "auc": 0.9993,
+    "eer": 0.0142,
+    "min_dcf": 0.0479
+   },
+   "itw": {
+    "auc": 0.9954,
+    "eer": 0.0356,
+    "min_dcf": 0.1392
+   }
+  },
+  "xlsr2b_wise030@0": {
+   "epoch": 0,
+   "val": {
+    "auc": 0.9991,
+    "eer": 0.0159,
+    "min_dcf": 0.0546
+   },
+   "holdout": {
+    "auc": 0.9983,
+    "eer": 0.0232,
+    "min_dcf": 0.0789
+   },
+   "itw": {
+    "auc": 0.9964,
+    "eer": 0.03,
+    "min_dcf": 0.1332
+   }
+  }
+ },
+ "fused": {
+  "val": {
+   "auc": 0.9998,
+   "eer": 0.0068,
+   "min_dcf": 0.0232
+  },
+  "holdout": {
+   "auc": 0.9993,
+   "eer": 0.013,
+   "min_dcf": 0.046
+  },
+  "itw": {
+   "auc": 0.9979,
+   "eer": 0.0252,
+   "min_dcf": 0.0968
+  }
+ },
+ "platt": {
+  "coef": 6.739576633142029,
+  "intercept": -0.25291746344544125
+ },
+ "test": {
+  "n": 1671,
+  "mean": 0.28685392383876834,
+  "quantiles": {
+   "q01": 0.0027,
+   "q05": 0.0035,
+   "q25": 0.0053,
+   "q50": 0.0083,
+   "q75": 0.9989,
+   "q95": 0.9999,
+   "q99": 0.9999
+  },
+  "frac_ge_0_5": 0.2788749251944943,
+  "frac_gt_0_2": 0.28426092160383004
+ },
+ "calib_sets": [
+  "val",
+  "itw"
+ ],
+ "views": [
+  "score_clean",
+  "score_aug"
+ ],
+ "file": "/raven/ptmp/karthiksing/jobs/HackGT-13-Hearsay/code/61e593e-dirty-4af30fc6/runs/diffusion/submission/SideQuests_predictions_final.tsv"
+}
