@@ -1,0 +1,37 @@
+pair,op,set,view,seed0,seed1,abs_diff
+R0 (val selection),val,val,clean,0.00000,0.00000,0.00000
+R0 (val selection),val,val,aug,0.03360,0.03166,0.00194
+R0 (val selection),val,val,unseen,0.12233,0.12552,0.00319
+R0 (val selection),val,val,device,0.00000,0.00000,0.00000
+R0 (val selection),val,holdout,clean,0.00000,0.00000,0.00000
+R0 (val selection),val,holdout,aug,0.07167,0.07177,0.00010
+R0 (val selection),val,holdout,unseen,0.12429,0.12767,0.00338
+R0 (val selection),val,holdout,device,0.00297,0.00593,0.00297
+R0 (val selection),val,itw,clean,0.03966,0.04229,0.00263
+R0 (val selection),val,itw,aug,0.13954,0.12754,0.01200
+R0 (val selection),val,itw,unseen,0.29611,0.25966,0.03646
+R0 (val selection),val,itw,device,0.06743,0.07611,0.00869
+R0 (val selection),last,val,clean,0.00000,0.00000,0.00000
+R0 (val selection),last,val,aug,0.03548,0.03166,0.00382
+R0 (val selection),last,val,unseen,0.11180,0.12552,0.01372
+R0 (val selection),last,val,device,0.00000,0.00000,0.00000
+R0 (val selection),last,holdout,clean,0.00000,0.00000,0.00000
+R0 (val selection),last,holdout,aug,0.07868,0.07177,0.00691
+R0 (val selection),last,holdout,unseen,0.12517,0.12767,0.00250
+R0 (val selection),last,holdout,device,0.00358,0.00593,0.00235
+R0 (val selection),last,itw,clean,0.03943,0.04229,0.00286
+R0 (val selection),last,itw,aug,0.13691,0.12754,0.00937
+R0 (val selection),last,itw,unseen,0.28411,0.25966,0.02446
+R0 (val selection),last,itw,device,0.07234,0.07611,0.00377
+stored (val + ITW selection),val,val,clean,0.00000,0.00000,0.00000
+stored (val + ITW selection),val,val,aug,0.03360,0.03166,0.00194
+stored (val + ITW selection),val,holdout,clean,0.00000,0.00000,0.00000
+stored (val + ITW selection),val,holdout,aug,0.07167,0.07177,0.00010
+stored (val + ITW selection),val,itw,clean,0.03966,0.04229,0.00263
+stored (val + ITW selection),val,itw,aug,0.13954,0.12754,0.01200
+stored (val + ITW selection),last,val,clean,0.00000,0.00000,0.00000
+stored (val + ITW selection),last,val,aug,0.03548,0.03166,0.00382
+stored (val + ITW selection),last,holdout,clean,0.00000,0.00000,0.00000
+stored (val + ITW selection),last,holdout,aug,0.07868,0.07177,0.00691
+stored (val + ITW selection),last,itw,clean,0.03943,0.04229,0.00286
+stored (val + ITW selection),last,itw,aug,0.13691,0.12754,0.00937

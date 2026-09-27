@@ -86,3 +86,22 @@ Holdout, In-the-Wild and the unseen views of these runs were not opened before t
   unjudged until R3 seed 1 exists.
 - **Submission candidate B** uses R3 in place of the shipped XLS-R-1B member. The user asked for it as an option,
   and it has not passed the gates.
+
+## 2. Stage 1 outcome (2026-09-27, 04:50 EDT), after the decision above
+
+**No arm passes the gates.** RawBoost has no measurable benefit on top of the current augmentation at stage 1.
+
+| Gate | Result for R3 at the val-selected epoch |
+|---|---|
+| 1 target | ITW aug −12.9% relative (0.140 → 0.121), larger than the seed spread (0.012), but the paired interval [−0.033, 0.004] includes 0. ITW unseen −2% (0.296 → 0.290), below the seed spread (0.036). Fails. |
+| 2 clean | ITW clean −0.003, holdout clean 0.000. Passes. |
+| 3 seeds | not run (stage 2). |
+| 4 cost | 0.39 s/step against 0.41. Passes. |
+
+- **The other arms.** R1 (SSI) and R2 (LnL→ISD) show no effect on any view. For R2 this fits the backbones having been
+  post-trained with the same algorithm.
+- **The unseen-channel view is hard for every system.** Its minDCF is 0.26–0.31, against 0.10–0.15 on view 1.
+  - Image-method rooms are the hardest operation, at 0.51–0.59. They matter more than codecs (0.18–0.21) or packet
+    loss and AGC (0.12–0.16).
+  - View 1 therefore overstates the shipped system's channel robustness, and room acoustics are the clear next target.
+- **R3's direction on ITW aug is consistent with a small benefit.** It needs the second seed (stage 2) before any claim.

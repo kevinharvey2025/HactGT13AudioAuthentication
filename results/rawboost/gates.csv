@@ -1,0 +1,7 @@
+run,op,itw_aug_rel,itw_aug_pass,itw_aug_seed_spread,itw_unseen_rel,itw_unseen_pass,itw_unseen_seed_spread,gate1_target,itw_clean_delta,holdout_clean_delta,gate2_clean,s_per_step,gate4_cost,gate3_seeds,passes
+rb_R1_xlsr1b_s0,last,0.01002,False,0.00937,0.01046,False,0.02446,False,0.00389,0.00140,True,0.38966,True,False,False
+rb_R1_xlsr1b_s0,val,-0.00901,False,0.01200,-0.03049,False,0.03646,False,0.00366,0.00140,True,0.38966,True,False,False
+rb_R2_xlsr1b_s0,last,-0.03923,False,0.00937,0.07120,False,0.02446,False,0.00309,0.00000,True,0.39820,True,False,False
+rb_R2_xlsr1b_s0,val,-0.00000,False,0.01200,-0.00154,False,0.03646,False,0.00034,0.00000,True,0.39820,True,False,False
+rb_R3_xlsr1b_s0,last,-0.11269,False,0.00937,0.02092,False,0.02446,False,-0.00297,0.00000,True,0.39362,True,False,False
+rb_R3_xlsr1b_s0,val,-0.12940,False,0.01200,-0.02046,False,0.03646,False,-0.00320,0.00000,True,0.39362,True,False,False
