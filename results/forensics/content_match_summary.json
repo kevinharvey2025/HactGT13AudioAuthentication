@@ -1,0 +1,19 @@
+{
+ "method": "landmark (constellation) hashing of every clip against 89,817 reference recordings (all DiffSSD, LJSpeech, LibriSpeech); a match needs many aligned hash votes far above the runner-up",
+ "test": {
+  "n": 1671,
+  "best_votes_median": 10.0,
+  "best_votes_max": 33,
+  "vote_frac_max": 0.0885,
+  "best_over_runner_up_max": 2.17,
+  "clips_matched": 0
+ },
+ "positive_control": {
+  "n": 100,
+  "hits": 100,
+  "best_votes_median": 484.0,
+  "vote_frac_median": 0.9374,
+  "best_over_runner_up_median": 35.25,
+  "what": "reference files pushed through the test pipeline (22.05 kHz trim/crop, kaiser resampling, 16 kHz PCM) and matched back"
+ }
+}

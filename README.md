@@ -1,164 +1,94 @@
-# HEARSAY — team SideQuests (HackGT 13, NSA audio authentication challenge)
+# HEARSAY: is this voice real? (team SideQuests, HackGT 13, NSA audio authentication challenge)
 
-Score any audio file 0.0–1.0 (1.0 = synthetic), say *why*, and do it reproducibly. This repository holds the
-full system: a forensic front end, fine-tuned anti-spoofing detectors, a signal-processing detector, metadata
-analysis, a concept-formation (prototype) explanation layer, and the evaluation harness that decided what goes
-into the final score.
+`predict.py` gives any audio file a score from 0 to 1 (1 = synthetic) and a trace of why. It runs the same way in
+Docker. Deliverable: [`submission/SideQuests_predictions_final.tsv`](submission/SideQuests_predictions_final.tsv).
 
-> **Status:** results tables below are filled only from runs (`runs/…` on MPCDF Raven); anything not yet run
-> says so. Final predictions: `SideQuests_predictions_final.tsv`.
+## Results
 
----
+**Official score on the NSA test set** (organizers, hidden labels), for the submitted TSV: **minDCF 0.0317, EER
+1.44%**. The best interim leaderboard entry was minDCF 0.0584 / EER 2.5%. Our out-of-domain proxy predicted it
+(In-the-Wild minDCF 0.028 [0.017, 0.040], EER 1.2%).
 
-## 1. What the organizers measure, and what that implies
+minDCF is the organizers' metric (Pspoof 0.3, Cfa 4; lower is better, 1.0 = a constant decision), [95% CI].
+In-the-Wild (ITW) is web speech and deepfakes from sources none of our models saw. "Perturbed" = the same clips
+through random codec / telephony / noise / reverb chains.
 
-- **Metric.** The organizers score with the ASVspoof 5 track-1 evaluation package (`calculate_metrics.py`) using
-  **Pspoof = 0.3 and Cfa = 4** (defaults 0.05 / 10). The primary metric is **minDCF = min over thresholds of
-  P_miss(bona fide) + (4·0.3)/(1·0.7) · P_fa(spoof)** — in our polarity, *false-alarm rate on real clips + 1.714 ×
-  miss rate on fakes* (normalized: 1.0 = a constant decision). `hearsay/metrics.py` reproduces the organizers'
-  minDCF and EER to machine precision. (The copy of the package in `data/HackGTMinDCF` shows Pspoof 0.5; the
-  organizers confirmed 0.3, and every number below uses 0.3.)
-- **Calibration.** minDCF only depends on the ranking of scores. Our probabilities are Platt-calibrated on the
-  selection sets and shifted to the evaluation prior (30% synthetic), so the Bayes-optimal decision for the
-  organizers' costs is simply *P(synthetic) > 0.2*.
-- **Interim leaderboard** (organizers, Sep 26): best minDCF 0.0584 (EER 2.5%), then 0.0753 (3.53%). Our target
-  is below that.
+| System | ITW clean | ITW perturbed | in-domain holdout, perturbed |
+|---|---|---|---|
+| best pretrained detector (AntiDeepfake XLS-R-2B, zero-shot) | 0.038 [0.024, 0.049] | 0.189 [0.162, 0.212] | 0.354 |
+| **final: 3 fine-tuned detectors + copy-synthesis fakes, ensembled** | **0.028 [0.017, 0.040]** | **0.082 [0.064, 0.097]** | **0.073** |
+| concept-based scorer: TTCG prototypes named by cobweb concepts, so every score traces to named concepts (1,000-clip subsets) | 0.043 | 0.097 | 0.095 |
 
-## 2. Forensic audit first (before any training)
+Final system on ITW: EER 1.20%. The shipped code path (`predict.py`: whole clips, CPU) on all 4,000 labeled ITW
+clips: AUC 0.9994, EER 1.30%, minDCF 0.033. The concept-based scorer is within about 0.01 minDCF of the detector it
+is built on, measured on identical clips.
+Unseen sources and channel perturbations are exactly what the NSA test set brings. All systems, confidence
+intervals, breakdowns and the tests behind every claim: [docs/EVALUATION.md](docs/EVALUATION.md).
 
-`scripts/forensic_audit.py` (details: `plans/metadata_analysis_prompt.md`, Addendum D):
-
-| Question | Finding |
-|---|---|
-| Duplicates (byte and decoded-PCM SHA-256) | none within the test set, none against any training corpus |
-| Is the test set made of training recordings? | **No.** Landmark-hash matching of every test clip against 89,817 reference recordings (DiffSSD, LJSpeech, LibriSpeech) finds nothing; the positive control (reference files pushed through the test pipeline) is matched 100/100 |
-| Container | every test file is the same ffmpeg-4.2 WAV (`LIST/INFO/ISFT=Lavf58.29.100`), consistent headers, no provenance/hidden chunks — **metadata is constant on the test set** |
-| Processing history | 98% of lengths are multiples of 512 samples at 22.05 kHz; clips are start-trimmed and hard-cut; a kaiser-class resampler cuts everything above ~7.4 kHz; peak-normalized — one librosa-style pipeline for both classes |
-
-Consequences: the test clips come from sources we do not have, so we optimise for **generalization**; the
-7.5–8 kHz band, levels, durations and container fields are removed or equalized for every class
-("canonical view"), and metadata is reported, never scored.
-
-## 3. System
+## How it works
 
 ```
-audio file ──► T0 triage (ffprobe: container, codec, rate, encoder, times; trace only)
-          ──► canonical view: ffmpeg → 16 kHz mono → trim → 7 kHz low-pass → DC removal → peak-normalize → dither
-          ──► fine-tuned anti-spoofing detectors (AntiDeepfake XLS-R / MMS encoders) → synthetic logits
-          ──► fusion (mean of z-normalized logits) → Platt calibration → cm-score
-          ──► explanations: concept path + prototype composition (concept formation), DSP findings, container facts
+audio ─► forensic triage (container, codec, rate; trace only)
+      ─► canonical view: 16 kHz, trim, 7 kHz low-pass, level-normalize (removes dataset shortcuts)
+      ─► XLS-R-2B, XLS-R-1B, MMS-1B anti-spoofing detectors, fine-tuned ─► z-normalized mean ─► calibrated P(synthetic)
+      ─► router: windowed re-scoring (partial fakes), compression cross-checks ─► trace
+      ─► concept formation + diffusion prototypes: "which learned concepts explain this clip?"
 ```
 
-| Component | Code | Role |
-|---|---|---|
-| Canonical view, augmentation | `hearsay/audio.py`, `hearsay/augment.py`, `hearsay/views.py` | identical processing for both classes; channel augmentation (codecs, telephony, noise, hum, reverb, clipping) |
-| Anti-spoofing detectors | `hearsay/antideepfake.py`, `scripts/finetune_ssl.py` | NII AntiDeepfake encoders run through `transformers` (no fairseq), fine-tuned on test-like crops |
-| Copy-synthesis fakes (Track D6-R) | `scripts/run_d6r.py`, `hearsay/diffusion/resynth.py` | real clips re-vocoded by HiFi-GAN (16 k, LJ), DiffWave (diffusion vocoder) and Vocos, used as extra fakes |
-| Concept formation (Track D5) | `hearsay/concepts.py`, `scripts/run_concepts.py`, `hearsay/diffusion/prototypes.py` | COBWEB/CLASSIT concept hierarchy + Gaussian prototypes over the detector's embedding space: basic level, prototype-based score, explanations |
-| DSP detector (D0) | `hearsay_dsp/` | LFCC-GMM, spectral, LPC, background, phase, prosody, ENF modules; LR/GMM late fusion |
-| Metadata (M0–M2) | `scripts/meta_experiments.py`, `hearsay/forensics/triage.py` | technical/tag/consistency features, interventions (tag strip/replace, re-encode) |
-| Evaluation | `hearsay/metrics.py`, `hearsay/splits.py` | organizers' minDCF; one shared split for every track; In-the-Wild as uncontaminated evaluation |
-| Submission | `scripts/make_submission.py`, `predict.py`, `hearsay/submission.py` | fusion + calibration + validated TSV |
+1. **Audit before training** ([docs/DATA.md](docs/DATA.md)). The test set shares no audio with any training corpus
+   (landmark hashing against 89,817 recordings, positive-controlled). Every test file has the same container. So
+   metadata cannot score, and the job is generalization.
+2. **Remove shortcuts.** In the training data, container fields, file times, level and leading silence alone
+   separate real from fake (AUC 0.90–1.00). Every model sees one canonical view, and every clip, real or fake, gets
+   the same channel perturbations.
+3. **Detect** ([docs/METHOD.md](docs/METHOD.md)). NII AntiDeepfake encoders, ported to `transformers` with a strict
+   weight map, then fine-tuned gently. Plain fine-tuning costs out-of-domain accuracy with every epoch. Adding
+   *copy-synthesis* fakes (real clips re-vocoded by HiFi-GAN, DiffWave and Vocos) reverses that. The three backbones
+   are ensembled and calibrated so that P > 0.2 is the organizers' Bayes decision.
+4. **Explain** ([docs/CONCEPTS.md](docs/CONCEPTS.md)). The detector's representation is organized into concepts
+   the way COBWEB models human category learning (the lab's cobweb-private). Each clip is then explained by
+   diffusion prototypes (Wang et al., TTCG) named by those concepts, e.g. "39% of the evidence ~ a 59-clip concept
+   of YourTTS / XTTS clones under a codec". The explanations are tested like a detector, and against it:
+   - **Faithfulness:** where they say which evidence is synthetic, deleting that evidence moves the detector in
+     92% of clips.
+   - **Stability:** their top source agrees 94–95% of the time across insertion orders.
+   - **The basic level:** the held-out one sits at an intermediate depth, as the concept-formation literature
+     predicts.
+   - **Auditing:** the explanations flag test clips whose score they contradict; one of these exposed a scoring
+     bug, since fixed.
+5. **Report what failed.** A signal-processing detector (AUC 0.91 in domain, worse than chance on ITW) and metadata
+   models (a shortcut) were gated out. Reverberation and clips under 2 s are the remaining weak spots.
 
-## 4. Data
-
-| Set | Use |
-|---|---|
-| DiffSSD (organizers; 70,000 fakes, 10 generators) + 242 organizer reals | training (pinned 14,895-file sample, `configs/diffssd_pool_files.txt`) |
-| LJSpeech-1.1, LibriSpeech (the 10 cloned speakers + dev/test-clean, 80 more speakers) | bona fide training data |
-| In-the-Wild (Müller et al. 2022; 4,000-clip sample) | **evaluation only** — not in AntiDeepfake's training data, unlike DiffSSD |
-| NSA sample test set (1,671 clips) | predictions only |
-
-Shared split (`hearsay.splits.shared_split`): `holdout` = the DSP track's leakage-checked rules (held-out
-sentence ids, clone speakers 2061/5448, LJ and LibriSpeech chapters, extra-real speakers), `val` = a further
-15% of groups (model selection, calibration, fusion), `train` = the rest, `itw` = In-the-Wild.
-
-## 5. Results
-
-All numbers are the organizers' minDCF (lower is better; 1.0 = no better than a constant) unless noted, measured
-on held-out clips we never trained on. **Holdout** = the shared in-domain holdout (DiffSSD generators, LJSpeech,
-LibriSpeech; *contaminated for AntiDeepfake*, which saw DiffSSD in post-training). **In-the-Wild (ITW)** = 4,000
-web clips (celebrity speech and deepfakes) held out from everything — our best proxy for unseen sources. "clean" =
-the canonical view; "aug" = the same clip through a random channel chain (codecs, telephony, noise, hum, reverb,
-clipping). Sources: `runs/diffusion/ft/*/log.jsonl`, `runs/diffusion/compare.csv`, `runs/fusion_gate.json`,
-`runs/dsp/suite_v1/report.md`, `runs/meta/metrics.json`.
-
-### 5.1 Pretrained detectors (zero-shot, our canonical view)
-
-| AntiDeepfake backbone | holdout clean / aug | ITW clean / aug | ITW EER |
-|---|---|---|---|
-| XLS-R-2B | 0.046 / 0.354 | **0.038** / 0.189 | **1.44%** |
-| XLS-R-1B | 0.044 / 0.347 | 0.050 / 0.254 | 2.08% |
-| MMS-1B | 0.056 / 0.289 | 0.065 / 0.266 | 2.64% |
-| MMS-300M | 0.055 / 0.389 | 0.097 / 0.317 | 3.84% |
-| W2V-Large | 0.130 / 0.446 | 0.064 / 0.311 | 2.56% |
-| HuBERT-XL | 0.119 / 0.471 | 0.208 / 0.450 | 8.96% |
-
-### 5.2 Fine-tuning, Track D copy-synthesis fakes, WiSE-FT and the final ensemble
-
-Fine-tuning: test-like crops, channel augmentation on both classes, family-balanced batches; epoch chosen on val + ITW.
-
-| Model (epoch) | holdout clean / aug | ITW clean / aug | ITW EER |
-|---|---|---|---|
-| XLS-R-2B, top 24 layers (2) | 0.001 / 0.069 | 0.060 / 0.153 | 2.32% |
-| XLS-R-1B (1) | 0.002 / 0.087 | 0.093 / 0.206 | 3.68% |
-| MMS-1B (1) | 0.002 / 0.092 | 0.111 / 0.223 | 4.56% |
-| MMS-300M (3) | 0.002 / 0.098 | 0.123 / 0.250 | 4.80% |
-| W2V-Large (4) | 0.006 / 0.145 | 0.098 / 0.217 | 3.76% |
-| **XLS-R-1B + D6-R copy-synthesis fakes (3)** | 0.000 / 0.075 | 0.042 / 0.139 | 1.92% |
-| **XLS-R-2B + D6-R copy-synthesis fakes (3)** | 0.000 / 0.074 | 0.041 / 0.103 | 1.68% |
-| XLS-R-2B WiSE-FT, α = 0.3 | 0.001 / 0.111 | 0.036 / 0.124 | 1.44% |
-| Ensemble v1: 2B + D6-R, 1B + D6-R, 2B WiSE (first interim TSV) | 0.000 / 0.068 | 0.028 / 0.095 | 1.12% |
-| XLS-R-2B + D6-R, all four vocoders incl. DiffWave (3) | 0.001 / 0.089 | 0.040 / 0.104 | — |
-| XLS-R-1B + D6-R, all four vocoders (2) | 0.000 / 0.072 | 0.040 / 0.140 | — |
-| MMS-1B + D6-R, all four vocoders (3) | 0.000 / 0.093 | 0.042 / 0.151 | — |
-| **Final ensemble v2** (the three all-vocoder models, mean of z-scored logits) | **0.000 / 0.073** | **0.028 / 0.082** | **1.20%** |
-
-The final ensemble through the Docker code path (`predict.py`, bf16 checkpoints, whole clips) on all 4,000 labeled
-In-the-Wild clips: **AUC 0.9994, EER 1.30%, minDCF 0.035**; it flags 28.3% of the NSA test clips at the Bayes
-threshold (P > 0.2 at the 30% prior).
-
-**What worked / what did not.**
-- Plain fine-tuning makes the detectors near-perfect in-domain and 2–5× more robust to channel perturbations, but
-  each extra epoch costs clean out-of-domain accuracy (MMS-1B's ITW error triples by epoch 2).
-- **Track D6-R** — real clips re-vocoded by HiFi-GAN (16 kHz and LJ), DiffWave (a diffusion vocoder) and Vocos,
-  used as extra fakes — reverses that: out-of-domain accuracy *improves* with training (XLS-R-1B ITW clean
-  minDCF 0.093 without vs 0.042 with, at matched selection).
-- **WiSE-FT** (interpolating pretrained and fine-tuned weights, α = 0.3) keeps the pretrained model's clean
-  generality with part of the robustness.
-- **All four vocoders** (adding DiffWave, the diffusion vocoder) make D6-R work for every backbone — MMS-1B, whose plain
-  fine-tune collapsed out of domain (ITW 0.111), reaches 0.042 — and the three-backbone ensemble of these is final.
-
-### 5.3 Other tracks (gate: a branch joins the score only if it helps held-out minDCF)
-
-| System | holdout (757 shared clips) AUC / EER / minDCF | ITW AUC / EER / minDCF | Verdict |
-|---|---|---|---|
-| Neural (XLS-R-2B + D6-R) | 1.000 / 0.0% / 0.000 | 0.999 / 1.7% / 0.042 | **the score** |
-| DSP D0 (LFCC-GMM + spectral/LPC/phase/prosody/background LR) | 0.915 / 10.7% / 0.290 | 0.266 / 66% / 1.000 | explanations only: no in-domain gain, **worse than chance out of domain** |
-| Neural + DSP (logistic fusion) | 1.000 / 0.0% / 0.000 | 0.992 / 2.6% / 0.058 | rejected (fusion hurts ITW) |
-| Metadata M0 (technical fields, HGB) | 0.969 / 11.9% / 0.249 | chance (AUC 0.59) | shortcut; constant on test |
-| Metadata X0 (+ bandwidth/duration cross-checks) | 0.992 / 5.3% / 0.133 | chance (AUC 0.57) | shortcut; explanations only |
-| Track A handoff baseline (frozen WavLM + MLP), speaker-disjoint CV | AUC 0.998 / EER 1.6% | not evaluated | in-domain reference |
-
-DSP details (`runs/dsp/suite_v1/report.md`): LFCC-GMM variants reach EER 17–22% on DiffSSD dev (the DiffSSD paper
-reports 22.0% for its LFCC-GMM); the full logistic model 6.0%; held-out ElevenLabs drops to AUC 0.59. A DSP model
-trained on DiffSSD's reals alone flags **99.8%** of real LibriSpeech clips as fake; adding external real speech brings
-that to 17.6% — direct evidence that the provided training reals are too narrow.
-
-## 6. How to run
+## Run it
 
 ```bash
-# predictions for a directory of audio files (CPU or GPU)
-python predict.py --input /path/to/test --output out/ --template /path/to/test/HGT_Hearsay_score_template.csv
-# Docker
-docker build -t sidequests-hearsay .
-docker run --rm --network none -v /path/to/test:/data/input:ro -v $PWD/out:/data/output sidequests-hearsay
+python predict.py --input /path/to/audio --output out/ --template /path/to/HGT_Hearsay_score_template.csv
+docker build -t sidequests-hearsay . && \
+  docker run --rm --network none -v /path/to/audio:/data/input:ro -v $PWD/out:/data/output sidequests-hearsay
+pytest tests --ignore=tests/dsp && pytest tests/dsp
 ```
 
-Training and evaluation ran on MPCDF Raven (A100); `mpcdf/*.sbatch` are the exact job scripts
-(`mpcdf/env.sh` sets up the workspace, `mpcdf/setup_envs.sh` the environments).
+Training, the concept analysis and the evaluation ran on MPCDF Raven (A100); every step is a job script in
+`mpcdf/`. See [docs/REPRODUCE.md](docs/REPRODUCE.md).
 
-## 7. Plans and handoffs
+## Repository
 
-`plans/MASTER_PLAN.md` (work packages, decisions), `plans/*_prompt.md` (per-track specifications with
-literature addenda), `HANDOFF_DIFFUSION.md`, `HANDOFF_DSP.md`.
+| Path | Contents |
+|---|---|
+| `predict.py`, `Dockerfile` | inference: TSV + per-file traces |
+| `hearsay/` | audio and canonical view, augmentation, data manifests and splits, metric, TSV writer, AntiDeepfake port, concept formation (`concepts.py`), diffusion (`diffusion/`: DDPM, TTCG, copy-synthesis), forensic triage |
+| `hearsay_dsp/` | the signal-processing detector (LFCC-GMM, spectral, LPC, phase, prosody, background, ENF) |
+| `scripts/` | pipeline stages: data, forensic audit, fine-tuning, copy-synthesis, embeddings, concepts, evaluation, submission |
+| `mpcdf/` | Raven job scripts and environment setup |
+| `tests/` | unit tests (metric parity with the organizers' code, TSV, splits, TTCG, concepts, views; DSP) |
+| `results/` | generated evaluation tables and CSVs, concept-analysis outputs, test-set explanations |
+| `submission/` | the final TSV, its summary, `fusion.json` |
+| `docs/` | DATA, METHOD, CONCEPTS, EVALUATION, REPRODUCE; `archive/`: plans, handoffs, what was removed |
+
+## Credits
+
+- Detectors: AntiDeepfake (Wang et al., NII Yamagishi Lab, arXiv 2506.21090).
+- Concept formation: cobweb-private (Teachable AI Lab, Georgia Tech; not redistributed here).
+- Diffusion prototypes: Wang, Gupta, Zhu & MacLellan (arXiv 2605.07078).
+- Diffusion as concept formation: Wang, Singaravadivelan & MacLellan (arXiv 2609.13047).
+- Data: DiffSSD, LJSpeech, LibriSpeech, In-the-Wild (Müller et al. 2022).

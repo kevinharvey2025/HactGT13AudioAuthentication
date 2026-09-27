@@ -1,0 +1,31 @@
+{
+ "n_queries": 3000,
+ "n_mixed": 66,
+ "logit_sd": 143.19949439130576,
+ "head_r2_in_concept_space": 0.9999734154529762,
+ "contrast_synthetic_vs_real_evidence": {
+  "mean": 0.7902819510105124,
+  "ci": [
+   0.670353409071319,
+   0.8945071796275585
+  ],
+  "share_positive": 0.9242424242424242
+ },
+ "synthetic_evidence_vs_random": {
+  "mean": 0.1958228526215282,
+  "ci": [
+   0.1449014563548408,
+   0.2407514682956272
+  ],
+  "share_positive": 0.9090909090909091
+ },
+ "real_evidence_vs_random": {
+  "mean": 0.17593648845659804,
+  "ci": [
+   0.1291040573610871,
+   0.21976059966742792
+  ],
+  "share_positive": 0.8939393939393939
+ },
+ "head_vs_detector_spearman": 0.9920964878652813
+}

@@ -1,0 +1,74 @@
+{
+ "n_files": {
+  "diffssd": 1500,
+  "librispeech": 1152,
+  "ljspeech": 13100,
+  "nsa_real": 242,
+  "test": 1671
+ },
+ "layouts": [
+  {
+   "set": "diffssd",
+   "layout": "fmt (16) data",
+   "n": 1200
+  },
+  {
+   "set": "diffssd",
+   "layout": NaN,
+   "n": 300
+  },
+  {
+   "set": "librispeech",
+   "layout": NaN,
+   "n": 1152
+  },
+  {
+   "set": "ljspeech",
+   "layout": "fmt (16) data",
+   "n": 13100
+  },
+  {
+   "set": "nsa_real",
+   "layout": "fmt (16) LIST(26) data",
+   "n": 242
+  },
+  {
+   "set": "test",
+   "layout": "fmt (16) LIST(26) data",
+   "n": 1671
+  }
+ ],
+ "ISFT": [
+  {
+   "set": "diffssd",
+   "ISFT": NaN,
+   "n": 1500
+  },
+  {
+   "set": "librispeech",
+   "ISFT": NaN,
+   "n": 1152
+  },
+  {
+   "set": "ljspeech",
+   "ISFT": NaN,
+   "n": 13100
+  },
+  {
+   "set": "nsa_real",
+   "ISFT": "Lavf58.29.100",
+   "n": 242
+  },
+  {
+   "set": "test",
+   "ISFT": "Lavf58.29.100",
+   "n": 1671
+  }
+ ],
+ "dup_groups_sha256": 0,
+ "cross_set_dup_groups_sha256": [],
+ "within_test_dup_groups_sha256": [],
+ "dup_groups_pcm16k_sha256": 0,
+ "cross_set_dup_groups_pcm16k_sha256": [],
+ "within_test_dup_groups_pcm16k_sha256": []
+}

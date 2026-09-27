@@ -1,0 +1,22 @@
+{
+ "runs": {
+  "itw": "predict_itw_v3",
+  "test": "predict_final_v3"
+ },
+ "itw_all_clips": {
+  "n": 4000,
+  "auc": 0.9994155,
+  "eer": 0.013000000000000005,
+  "min_dcf": 0.03328571428571431,
+  "act_dcf_at_0_2": 0.039642857142857146,
+  "flagged": 0.50625
+ },
+ "router_itw": {
+  "stop": 0.7575,
+  "windowed_rescoring": 0.2425
+ },
+ "router_test": {
+  "stop": 0.9671,
+  "windowed_rescoring": 0.0329
+ }
+}

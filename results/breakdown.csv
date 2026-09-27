@@ -1,0 +1,987 @@
+system,set,view,kind,group,n_real,n_fake,min_dcf,eer,fa_rate,miss_rate
+zero-shot/XLS-R-2B,val,clean,generator,diffgan_tts,1833,73,0.00000,0.00000,0.01528,0.00000
+zero-shot/XLS-R-2B,val,clean,generator,elevenlabs,1833,64,0.19181,0.07780,0.01528,0.14062
+zero-shot/XLS-R-2B,val,clean,generator,grad_tts,1833,73,0.03058,0.01367,0.01528,0.01370
+zero-shot/XLS-R-2B,val,clean,generator,openvoicev2,1833,66,0.00000,0.00000,0.01528,0.00000
+zero-shot/XLS-R-2B,val,clean,generator,playht,1833,61,0.00055,0.00027,0.01528,0.00000
+zero-shot/XLS-R-2B,val,clean,generator,pro_diff,1833,73,0.00000,0.00000,0.01528,0.00000
+zero-shot/XLS-R-2B,val,clean,generator,unit_speech,1833,62,0.00000,0.00000,0.01528,0.00000
+zero-shot/XLS-R-2B,val,clean,generator,wavegrad2,1833,73,0.00000,0.00000,0.01528,0.00000
+zero-shot/XLS-R-2B,val,clean,generator,xtts_v2,1833,64,0.00000,0.00000,0.01528,0.00000
+zero-shot/XLS-R-2B,val,clean,generator,your_tts,1833,57,0.00000,0.00000,0.01528,0.00000
+zero-shot/XLS-R-2B,val,clean,real source,real_extra,387,666,0.04124,0.01526,0.02326,0.01502
+zero-shot/XLS-R-2B,val,clean,real source,real_lj,1446,666,0.03127,0.01511,0.01314,0.01502
+zero-shot/XLS-R-2B,val,clean,duration,<2 s,48,1,0.00000,0.00000,0.00000,0.00000
+zero-shot/XLS-R-2B,val,clean,duration,2-3 s,131,4,0.00000,0.00000,0.01527,0.00000
+zero-shot/XLS-R-2B,val,clean,duration,3-4 s,1375,552,0.03522,0.01579,0.01527,0.01630
+zero-shot/XLS-R-2B,val,clean,duration,4-6 s,261,102,0.02830,0.01065,0.01916,0.00980
+zero-shot/XLS-R-2B,val,clean,duration,>6 s,18,7,0.00000,0.00000,0.00000,0.00000
+zero-shot/XLS-R-2B,val,aug,generator,diffgan_tts,1833,73,0.23417,0.09623,0.03164,0.16438
+zero-shot/XLS-R-2B,val,aug,generator,elevenlabs,1833,64,0.58221,0.23394,0.03164,0.53125
+zero-shot/XLS-R-2B,val,aug,generator,grad_tts,1833,73,0.34833,0.14051,0.03164,0.19178
+zero-shot/XLS-R-2B,val,aug,generator,openvoicev2,1833,66,0.28887,0.12062,0.03164,0.16667
+zero-shot/XLS-R-2B,val,aug,generator,playht,1833,61,0.21309,0.09446,0.03164,0.11475
+zero-shot/XLS-R-2B,val,aug,generator,pro_diff,1833,73,0.21068,0.08501,0.03164,0.15068
+zero-shot/XLS-R-2B,val,aug,generator,unit_speech,1833,62,0.28359,0.14568,0.03164,0.16129
+zero-shot/XLS-R-2B,val,aug,generator,wavegrad2,1833,73,0.22608,0.10880,0.03164,0.12329
+zero-shot/XLS-R-2B,val,aug,generator,xtts_v2,1833,64,0.41238,0.15587,0.03164,0.25000
+zero-shot/XLS-R-2B,val,aug,generator,your_tts,1833,57,0.08634,0.03473,0.03164,0.03509
+zero-shot/XLS-R-2B,val,aug,real source,real_extra,387,666,0.31435,0.12433,0.03101,0.18919
+zero-shot/XLS-R-2B,val,aug,real source,real_lj,1446,666,0.33470,0.12819,0.03181,0.18919
+zero-shot/XLS-R-2B,val,aug,channel,codec,557,190,0.21277,0.09405,0.05566,0.10000
+zero-shot/XLS-R-2B,val,aug,channel,telephony,190,71,0.21947,0.09930,0.02632,0.11268
+zero-shot/XLS-R-2B,val,aug,channel,bandlimit,198,74,0.24385,0.09528,0.01515,0.17568
+zero-shot/XLS-R-2B,val,aug,channel,resample,198,73,0.19646,0.08150,0.01010,0.13699
+zero-shot/XLS-R-2B,val,aug,channel,tilt,372,151,0.11173,0.04603,0.02419,0.05960
+zero-shot/XLS-R-2B,val,aug,channel,noise,352,138,0.28900,0.12267,0.01705,0.23913
+zero-shot/XLS-R-2B,val,aug,channel,hum,183,67,0.25214,0.11435,0.02732,0.13433
+zero-shot/XLS-R-2B,val,aug,channel,reverb,278,98,0.97743,0.44931,0.06475,0.88776
+zero-shot/XLS-R-2B,val,aug,channel,clipping,100,31,0.00000,0.00000,0.01000,0.00000
+zero-shot/XLS-R-2B,val,aug,channel,codec_aac,106,29,0.13709,0.06750,0.04717,0.06897
+zero-shot/XLS-R-2B,val,aug,channel,codec_g711,100,30,0.14000,0.06833,0.01000,0.10000
+zero-shot/XLS-R-2B,val,aug,channel,codec_g722,94,35,0.19592,0.08541,0.00000,0.11429
+zero-shot/XLS-R-2B,val,aug,channel,codec_g726,88,34,0.30395,0.11564,0.02273,0.23529
+zero-shot/XLS-R-2B,val,aug,channel,codec_mp3,82,34,0.00000,0.00000,0.01220,0.00000
+zero-shot/XLS-R-2B,val,aug,channel,codec_opus,87,28,0.28712,0.10530,0.25287,0.07143
+zero-shot/XLS-R-2B,val,aug,channel,noise_babble,79,31,0.32713,0.15659,0.03797,0.32258
+zero-shot/XLS-R-2B,val,aug,channel,noise_brown,97,28,0.13339,0.07180,0.02062,0.14286
+zero-shot/XLS-R-2B,val,aug,channel,noise_pink,82,36,0.24274,0.11043,0.01220,0.25000
+zero-shot/XLS-R-2B,val,aug,channel,noise_white,94,43,0.19407,0.07212,0.00000,0.23256
+zero-shot/XLS-R-2B,val,aug,duration,<2 s,48,1,0.00000,0.00000,0.06250,0.00000
+zero-shot/XLS-R-2B,val,aug,duration,2-3 s,131,4,0.43621,0.25095,0.02290,0.25000
+zero-shot/XLS-R-2B,val,aug,duration,3-4 s,1376,540,0.31861,0.12014,0.03270,0.18704
+zero-shot/XLS-R-2B,val,aug,duration,4-6 s,250,108,0.33759,0.14607,0.02400,0.19444
+zero-shot/XLS-R-2B,val,aug,duration,>6 s,28,13,0.27473,0.14835,0.03571,0.23077
+zero-shot/XLS-R-2B,holdout,clean,generator,diffgan_tts,1275,84,0.00000,0.00000,0.01255,0.00000
+zero-shot/XLS-R-2B,holdout,clean,generator,elevenlabs,1275,143,0.24884,0.10500,0.01255,0.17483
+zero-shot/XLS-R-2B,holdout,clean,generator,grad_tts,1275,84,0.00000,0.00000,0.01255,0.00000
+zero-shot/XLS-R-2B,holdout,clean,generator,openvoicev2,1275,154,0.00000,0.00000,0.01255,0.00000
+zero-shot/XLS-R-2B,holdout,clean,generator,playht,1275,145,0.00000,0.00000,0.01255,0.00000
+zero-shot/XLS-R-2B,holdout,clean,generator,pro_diff,1275,84,0.00000,0.00000,0.01255,0.00000
+zero-shot/XLS-R-2B,holdout,clean,generator,unit_speech,1275,152,0.00000,0.00000,0.01255,0.00000
+zero-shot/XLS-R-2B,holdout,clean,generator,wavegrad2,1275,84,0.00000,0.00000,0.01255,0.00000
+zero-shot/XLS-R-2B,holdout,clean,generator,xtts_v2,1275,152,0.00000,0.00000,0.01255,0.00000
+zero-shot/XLS-R-2B,holdout,clean,generator,your_tts,1275,145,0.00000,0.00000,0.01255,0.00000
+zero-shot/XLS-R-2B,holdout,clean,real source,real_extra,358,1227,0.03632,0.01612,0.00279,0.02037
+zero-shot/XLS-R-2B,holdout,clean,real source,real_libri,160,1227,0.05449,0.02472,0.03750,0.02037
+zero-shot/XLS-R-2B,holdout,clean,real source,real_lj,757,1227,0.04433,0.01969,0.01189,0.02037
+zero-shot/XLS-R-2B,holdout,clean,duration,2-3 s,92,12,0.00000,0.00000,0.01087,0.00000
+zero-shot/XLS-R-2B,holdout,clean,duration,3-4 s,982,973,0.05126,0.02148,0.01426,0.02261
+zero-shot/XLS-R-2B,holdout,clean,duration,4-6 s,151,219,0.03011,0.01347,0.00662,0.01370
+zero-shot/XLS-R-2B,holdout,clean,duration,>6 s,14,23,0.00000,0.00000,0.00000,0.00000
+zero-shot/XLS-R-2B,holdout,aug,generator,diffgan_tts,1275,84,0.34291,0.13097,0.02745,0.23810
+zero-shot/XLS-R-2B,holdout,aug,generator,elevenlabs,1275,143,0.59673,0.22365,0.02745,0.50350
+zero-shot/XLS-R-2B,holdout,aug,generator,grad_tts,1275,84,0.36178,0.14241,0.02745,0.26190
+zero-shot/XLS-R-2B,holdout,aug,generator,openvoicev2,1275,154,0.25274,0.11049,0.02745,0.14286
+zero-shot/XLS-R-2B,holdout,aug,generator,playht,1275,145,0.36026,0.13759,0.02745,0.22069
+zero-shot/XLS-R-2B,holdout,aug,generator,pro_diff,1275,84,0.20090,0.08324,0.02745,0.11905
+zero-shot/XLS-R-2B,holdout,aug,generator,unit_speech,1275,152,0.28360,0.11882,0.02745,0.19079
+zero-shot/XLS-R-2B,holdout,aug,generator,wavegrad2,1275,84,0.20483,0.08324,0.02745,0.11905
+zero-shot/XLS-R-2B,holdout,aug,generator,xtts_v2,1275,152,0.33940,0.13167,0.02745,0.20395
+zero-shot/XLS-R-2B,holdout,aug,generator,your_tts,1275,145,0.13307,0.05543,0.02745,0.06207
+zero-shot/XLS-R-2B,holdout,aug,real source,real_extra,358,1227,0.35901,0.13387,0.03352,0.20945
+zero-shot/XLS-R-2B,holdout,aug,real source,real_libri,160,1227,0.35671,0.14359,0.03125,0.20945
+zero-shot/XLS-R-2B,holdout,aug,real source,real_lj,757,1227,0.33857,0.12509,0.02378,0.20945
+zero-shot/XLS-R-2B,holdout,aug,channel,codec,381,360,0.25969,0.09987,0.05774,0.13333
+zero-shot/XLS-R-2B,holdout,aug,channel,telephony,132,118,0.25580,0.10009,0.04545,0.12712
+zero-shot/XLS-R-2B,holdout,aug,channel,bandlimit,134,138,0.15157,0.07355,0.01493,0.10145
+zero-shot/XLS-R-2B,holdout,aug,channel,resample,135,130,0.16150,0.06795,0.02963,0.08462
+zero-shot/XLS-R-2B,holdout,aug,channel,tilt,255,247,0.18948,0.07369,0.01569,0.11336
+zero-shot/XLS-R-2B,holdout,aug,channel,noise,240,238,0.30853,0.12971,0.00833,0.26471
+zero-shot/XLS-R-2B,holdout,aug,channel,hum,145,124,0.09671,0.04085,0.00000,0.08871
+zero-shot/XLS-R-2B,holdout,aug,channel,reverb,202,204,0.98490,0.40885,0.04455,0.88235
+zero-shot/XLS-R-2B,holdout,aug,channel,clipping,75,62,0.09628,0.05086,0.00000,0.06452
+zero-shot/XLS-R-2B,holdout,aug,channel,codec_aac,55,48,0.21558,0.08712,0.07273,0.14583
+zero-shot/XLS-R-2B,holdout,aug,channel,codec_g711,66,63,0.18460,0.07756,0.00000,0.11111
+zero-shot/XLS-R-2B,holdout,aug,channel,codec_g722,63,56,0.24490,0.10913,0.01587,0.14286
+zero-shot/XLS-R-2B,holdout,aug,channel,codec_g726,66,67,0.19325,0.09023,0.00000,0.17910
+zero-shot/XLS-R-2B,holdout,aug,channel,codec_mp3,63,59,0.13210,0.04923,0.01587,0.06780
+zero-shot/XLS-R-2B,holdout,aug,channel,codec_opus,68,67,0.41703,0.19260,0.23529,0.14925
+zero-shot/XLS-R-2B,holdout,aug,channel,noise_babble,57,60,0.18446,0.06842,0.00000,0.21667
+zero-shot/XLS-R-2B,holdout,aug,channel,noise_brown,62,65,0.25066,0.11030,0.00000,0.21538
+zero-shot/XLS-R-2B,holdout,aug,channel,noise_pink,67,60,0.21620,0.08644,0.01493,0.25000
+zero-shot/XLS-R-2B,holdout,aug,channel,noise_white,54,53,0.35629,0.18693,0.01852,0.39623
+zero-shot/XLS-R-2B,holdout,aug,duration,2-3 s,92,12,0.48292,0.25000,0.04348,0.33333
+zero-shot/XLS-R-2B,holdout,aug,duration,3-4 s,942,991,0.34649,0.13141,0.02972,0.20182
+zero-shot/XLS-R-2B,holdout,aug,duration,4-6 s,181,197,0.30042,0.12699,0.01657,0.24365
+zero-shot/XLS-R-2B,holdout,aug,duration,>6 s,24,27,0.14683,0.07870,0.00000,0.18519
+zero-shot/XLS-R-2B,itw,clean,generator,itw_fake,1250,1250,0.03771,0.01440,0.04160,0.01040
+zero-shot/XLS-R-2B,itw,clean,real source,itw,1250,1250,0.03771,0.01440,0.04160,0.01040
+zero-shot/XLS-R-2B,itw,clean,duration,<2 s,370,247,0.12112,0.04862,0.09459,0.03644
+zero-shot/XLS-R-2B,itw,clean,duration,2-3 s,304,227,0.02168,0.00934,0.01645,0.00881
+zero-shot/XLS-R-2B,itw,clean,duration,3-4 s,507,672,0.01102,0.00593,0.02170,0.00298
+zero-shot/XLS-R-2B,itw,clean,duration,4-6 s,62,101,0.00000,0.00000,0.01613,0.00000
+zero-shot/XLS-R-2B,itw,clean,duration,>6 s,7,3,0.00000,0.00000,0.00000,0.00000
+zero-shot/XLS-R-2B,itw,aug,generator,itw_fake,1250,1250,0.18869,0.07080,0.07600,0.06880
+zero-shot/XLS-R-2B,itw,aug,real source,itw,1250,1250,0.18869,0.07080,0.07600,0.06880
+zero-shot/XLS-R-2B,itw,aug,channel,codec,350,385,0.11636,0.04896,0.11143,0.03377
+zero-shot/XLS-R-2B,itw,aug,channel,telephony,138,139,0.07616,0.02888,0.07246,0.02158
+zero-shot/XLS-R-2B,itw,aug,channel,bandlimit,144,132,0.12744,0.05429,0.04167,0.05303
+zero-shot/XLS-R-2B,itw,aug,channel,resample,137,138,0.11538,0.05091,0.07299,0.02899
+zero-shot/XLS-R-2B,itw,aug,channel,tilt,232,253,0.10162,0.04329,0.05603,0.03162
+zero-shot/XLS-R-2B,itw,aug,channel,noise,249,244,0.12549,0.04869,0.05221,0.04918
+zero-shot/XLS-R-2B,itw,aug,channel,hum,117,132,0.08170,0.03603,0.05128,0.02273
+zero-shot/XLS-R-2B,itw,aug,channel,reverb,205,168,0.75674,0.28432,0.17561,0.41667
+zero-shot/XLS-R-2B,itw,aug,channel,clipping,65,56,0.09184,0.04986,0.04615,0.05357
+zero-shot/XLS-R-2B,itw,aug,channel,codec_aac,64,53,0.12829,0.05955,0.21875,0.05660
+zero-shot/XLS-R-2B,itw,aug,channel,codec_g711,56,76,0.13534,0.05310,0.08929,0.05263
+zero-shot/XLS-R-2B,itw,aug,channel,codec_g722,59,61,0.02810,0.01667,0.03390,0.01639
+zero-shot/XLS-R-2B,itw,aug,channel,codec_g726,48,80,0.10714,0.04583,0.08333,0.03750
+zero-shot/XLS-R-2B,itw,aug,channel,codec_mp3,60,57,0.04674,0.01711,0.08333,0.01754
+zero-shot/XLS-R-2B,itw,aug,channel,codec_opus,63,58,0.10673,0.04967,0.14286,0.01724
+zero-shot/XLS-R-2B,itw,aug,channel,noise_babble,52,61,0.13164,0.06163,0.09615,0.04918
+zero-shot/XLS-R-2B,itw,aug,channel,noise_brown,59,62,0.16145,0.06616,0.03390,0.09677
+zero-shot/XLS-R-2B,itw,aug,channel,noise_pink,74,55,0.08522,0.03845,0.06757,0.01818
+zero-shot/XLS-R-2B,itw,aug,channel,noise_white,64,66,0.03125,0.03078,0.01562,0.03030
+zero-shot/XLS-R-2B,itw,aug,duration,<2 s,370,247,0.26116,0.09723,0.13784,0.08502
+zero-shot/XLS-R-2B,itw,aug,duration,2-3 s,304,227,0.11499,0.04341,0.06250,0.04405
+zero-shot/XLS-R-2B,itw,aug,duration,3-4 s,496,655,0.14908,0.06078,0.04032,0.07023
+zero-shot/XLS-R-2B,itw,aug,duration,4-6 s,73,110,0.16389,0.06606,0.05479,0.06364
+zero-shot/XLS-R-2B,itw,aug,duration,>6 s,7,11,0.14286,0.16234,0.14286,0.18182
+fine-tuned/XLS-R-2B,val,clean,generator,diffgan_tts,1833,73,0.00000,0.00000,0.00164,0.00000
+fine-tuned/XLS-R-2B,val,clean,generator,elevenlabs,1833,64,0.00000,0.00000,0.00164,0.00000
+fine-tuned/XLS-R-2B,val,clean,generator,grad_tts,1833,73,0.00000,0.00000,0.00164,0.00000
+fine-tuned/XLS-R-2B,val,clean,generator,openvoicev2,1833,66,0.00000,0.00000,0.00164,0.00000
+fine-tuned/XLS-R-2B,val,clean,generator,playht,1833,61,0.00000,0.00000,0.00164,0.00000
+fine-tuned/XLS-R-2B,val,clean,generator,pro_diff,1833,73,0.00000,0.00000,0.00164,0.00000
+fine-tuned/XLS-R-2B,val,clean,generator,unit_speech,1833,62,0.00000,0.00000,0.00164,0.00000
+fine-tuned/XLS-R-2B,val,clean,generator,wavegrad2,1833,73,0.00000,0.00000,0.00164,0.00000
+fine-tuned/XLS-R-2B,val,clean,generator,xtts_v2,1833,64,0.00000,0.00000,0.00164,0.00000
+fine-tuned/XLS-R-2B,val,clean,generator,your_tts,1833,57,0.00000,0.00000,0.00164,0.00000
+fine-tuned/XLS-R-2B,val,clean,real source,real_extra,387,666,0.00000,0.00000,0.00775,0.00000
+fine-tuned/XLS-R-2B,val,clean,real source,real_lj,1446,666,0.00000,0.00000,0.00000,0.00000
+fine-tuned/XLS-R-2B,val,clean,duration,<2 s,48,1,0.00000,0.00000,0.00000,0.00000
+fine-tuned/XLS-R-2B,val,clean,duration,2-3 s,131,4,0.00000,0.00000,0.01527,0.00000
+fine-tuned/XLS-R-2B,val,clean,duration,3-4 s,1375,552,0.00000,0.00000,0.00073,0.00000
+fine-tuned/XLS-R-2B,val,clean,duration,4-6 s,261,102,0.00000,0.00000,0.00000,0.00000
+fine-tuned/XLS-R-2B,val,clean,duration,>6 s,18,7,0.00000,0.00000,0.00000,0.00000
+fine-tuned/XLS-R-2B,val,aug,generator,diffgan_tts,1833,73,0.00818,0.01094,0.02400,0.00000
+fine-tuned/XLS-R-2B,val,aug,generator,elevenlabs,1833,64,0.02782,0.02763,0.02400,0.03125
+fine-tuned/XLS-R-2B,val,aug,generator,grad_tts,1833,73,0.05351,0.02734,0.02400,0.02740
+fine-tuned/XLS-R-2B,val,aug,generator,openvoicev2,1833,66,0.01091,0.01303,0.02400,0.00000
+fine-tuned/XLS-R-2B,val,aug,generator,playht,1833,61,0.05346,0.02921,0.02400,0.03279
+fine-tuned/XLS-R-2B,val,aug,generator,pro_diff,1833,73,0.00164,0.00082,0.02400,0.00000
+fine-tuned/XLS-R-2B,val,aug,generator,unit_speech,1833,62,0.00436,0.00218,0.02400,0.00000
+fine-tuned/XLS-R-2B,val,aug,generator,wavegrad2,1833,73,0.00164,0.00082,0.02400,0.00000
+fine-tuned/XLS-R-2B,val,aug,generator,xtts_v2,1833,64,0.04146,0.01818,0.02400,0.01562
+fine-tuned/XLS-R-2B,val,aug,generator,your_tts,1833,57,0.00055,0.00027,0.02400,0.00000
+fine-tuned/XLS-R-2B,val,aug,real source,real_extra,387,666,0.04383,0.01805,0.03618,0.01051
+fine-tuned/XLS-R-2B,val,aug,real source,real_lj,1446,666,0.03519,0.01367,0.02075,0.01051
+fine-tuned/XLS-R-2B,val,aug,channel,codec,557,190,0.01979,0.01065,0.01257,0.00526
+fine-tuned/XLS-R-2B,val,aug,channel,telephony,190,71,0.02632,0.01494,0.03684,0.00000
+fine-tuned/XLS-R-2B,val,aug,channel,bandlimit,198,74,0.02822,0.01433,0.01515,0.01351
+fine-tuned/XLS-R-2B,val,aug,channel,resample,198,73,0.01010,0.01190,0.01515,0.00000
+fine-tuned/XLS-R-2B,val,aug,channel,tilt,372,151,0.00269,0.00134,0.00806,0.00000
+fine-tuned/XLS-R-2B,val,aug,channel,noise,352,138,0.02484,0.01435,0.01989,0.01449
+fine-tuned/XLS-R-2B,val,aug,channel,hum,183,67,0.01093,0.01293,0.01093,0.01493
+fine-tuned/XLS-R-2B,val,aug,channel,reverb,278,98,0.21075,0.08398,0.13669,0.06122
+fine-tuned/XLS-R-2B,val,aug,channel,clipping,100,31,0.00000,0.00000,0.01000,0.00000
+fine-tuned/XLS-R-2B,val,aug,channel,codec_aac,106,29,0.00943,0.00472,0.00943,0.00000
+fine-tuned/XLS-R-2B,val,aug,channel,codec_g711,100,30,0.00000,0.00000,0.01000,0.00000
+fine-tuned/XLS-R-2B,val,aug,channel,codec_g722,94,35,0.00000,0.00000,0.00000,0.00000
+fine-tuned/XLS-R-2B,val,aug,channel,codec_g726,88,34,0.04545,0.03175,0.02273,0.02941
+fine-tuned/XLS-R-2B,val,aug,channel,codec_mp3,82,34,0.00000,0.00000,0.02439,0.00000
+fine-tuned/XLS-R-2B,val,aug,channel,codec_opus,87,28,0.00000,0.00000,0.01149,0.00000
+fine-tuned/XLS-R-2B,val,aug,channel,noise_babble,79,31,0.00000,0.00000,0.03797,0.00000
+fine-tuned/XLS-R-2B,val,aug,channel,noise_brown,97,28,0.00000,0.00000,0.01031,0.00000
+fine-tuned/XLS-R-2B,val,aug,channel,noise_pink,82,36,0.02439,0.02608,0.02439,0.02778
+fine-tuned/XLS-R-2B,val,aug,channel,noise_white,94,43,0.03191,0.02227,0.01064,0.02326
+fine-tuned/XLS-R-2B,val,aug,duration,<2 s,48,1,0.00000,0.00000,0.04167,0.00000
+fine-tuned/XLS-R-2B,val,aug,duration,2-3 s,131,4,0.00000,0.00000,0.03817,0.00000
+fine-tuned/XLS-R-2B,val,aug,duration,3-4 s,1376,540,0.03259,0.01302,0.02471,0.00741
+fine-tuned/XLS-R-2B,val,aug,duration,4-6 s,250,108,0.02800,0.01926,0.01200,0.02778
+fine-tuned/XLS-R-2B,val,aug,duration,>6 s,28,13,0.00000,0.00000,0.00000,0.00000
+fine-tuned/XLS-R-2B,holdout,clean,generator,diffgan_tts,1275,84,0.00000,0.00000,0.00157,0.00000
+fine-tuned/XLS-R-2B,holdout,clean,generator,elevenlabs,1275,143,0.00000,0.00000,0.00157,0.00000
+fine-tuned/XLS-R-2B,holdout,clean,generator,grad_tts,1275,84,0.00314,0.00157,0.00157,0.01190
+fine-tuned/XLS-R-2B,holdout,clean,generator,openvoicev2,1275,154,0.00000,0.00000,0.00157,0.00000
+fine-tuned/XLS-R-2B,holdout,clean,generator,playht,1275,145,0.00000,0.00000,0.00157,0.00000
+fine-tuned/XLS-R-2B,holdout,clean,generator,pro_diff,1275,84,0.00000,0.00000,0.00157,0.00000
+fine-tuned/XLS-R-2B,holdout,clean,generator,unit_speech,1275,152,0.00000,0.00000,0.00157,0.00000
+fine-tuned/XLS-R-2B,holdout,clean,generator,wavegrad2,1275,84,0.00000,0.00000,0.00157,0.00000
+fine-tuned/XLS-R-2B,holdout,clean,generator,xtts_v2,1275,152,0.00000,0.00000,0.00157,0.00000
+fine-tuned/XLS-R-2B,holdout,clean,generator,your_tts,1275,145,0.00000,0.00000,0.00157,0.00000
+fine-tuned/XLS-R-2B,holdout,clean,real source,real_extra,358,1227,0.00140,0.00041,0.00559,0.00081
+fine-tuned/XLS-R-2B,holdout,clean,real source,real_libri,160,1227,0.00140,0.00041,0.00000,0.00081
+fine-tuned/XLS-R-2B,holdout,clean,real source,real_lj,757,1227,0.00132,0.00107,0.00000,0.00081
+fine-tuned/XLS-R-2B,holdout,clean,duration,2-3 s,92,12,0.00000,0.00000,0.00000,0.00000
+fine-tuned/XLS-R-2B,holdout,clean,duration,3-4 s,982,973,0.00176,0.00102,0.00000,0.00103
+fine-tuned/XLS-R-2B,holdout,clean,duration,4-6 s,151,219,0.00000,0.00000,0.00000,0.00000
+fine-tuned/XLS-R-2B,holdout,clean,duration,>6 s,14,23,0.00000,0.00000,0.00000,0.00000
+fine-tuned/XLS-R-2B,holdout,aug,generator,diffgan_tts,1275,84,0.03608,0.01419,0.03608,0.01190
+fine-tuned/XLS-R-2B,holdout,aug,generator,elevenlabs,1275,143,0.07865,0.04176,0.03608,0.06294
+fine-tuned/XLS-R-2B,holdout,aug,generator,grad_tts,1275,84,0.05647,0.02602,0.03608,0.02381
+fine-tuned/XLS-R-2B,holdout,aug,generator,openvoicev2,1275,154,0.03324,0.01316,0.03608,0.01299
+fine-tuned/XLS-R-2B,holdout,aug,generator,playht,1275,145,0.09749,0.04147,0.03608,0.04828
+fine-tuned/XLS-R-2B,holdout,aug,generator,pro_diff,1275,84,0.00863,0.01027,0.03608,0.00000
+fine-tuned/XLS-R-2B,holdout,aug,generator,unit_speech,1275,152,0.04627,0.01967,0.03608,0.01316
+fine-tuned/XLS-R-2B,holdout,aug,generator,wavegrad2,1275,84,0.05650,0.02367,0.03608,0.02381
+fine-tuned/XLS-R-2B,holdout,aug,generator,xtts_v2,1275,152,0.05834,0.03370,0.03608,0.03289
+fine-tuned/XLS-R-2B,holdout,aug,generator,your_tts,1275,145,0.04561,0.02054,0.03608,0.00690
+fine-tuned/XLS-R-2B,holdout,aug,real source,real_extra,358,1227,0.08661,0.03347,0.05866,0.02526
+fine-tuned/XLS-R-2B,holdout,aug,real source,real_libri,160,1227,0.07235,0.04347,0.05000,0.02526
+fine-tuned/XLS-R-2B,holdout,aug,real source,real_lj,757,1227,0.05251,0.02264,0.02246,0.02526
+fine-tuned/XLS-R-2B,holdout,aug,channel,codec,381,360,0.04578,0.02161,0.03675,0.00833
+fine-tuned/XLS-R-2B,holdout,aug,channel,telephony,132,118,0.05178,0.02408,0.02273,0.02542
+fine-tuned/XLS-R-2B,holdout,aug,channel,bandlimit,134,138,0.01242,0.00735,0.01493,0.00725
+fine-tuned/XLS-R-2B,holdout,aug,channel,resample,135,130,0.00741,0.00755,0.00741,0.03077
+fine-tuned/XLS-R-2B,holdout,aug,channel,tilt,255,247,0.01569,0.01196,0.01569,0.00810
+fine-tuned/XLS-R-2B,holdout,aug,channel,noise,240,238,0.05798,0.02511,0.02917,0.02521
+fine-tuned/XLS-R-2B,holdout,aug,channel,hum,145,124,0.02069,0.01496,0.01379,0.01613
+fine-tuned/XLS-R-2B,holdout,aug,channel,reverb,202,204,0.34146,0.14779,0.17822,0.13235
+fine-tuned/XLS-R-2B,holdout,aug,channel,clipping,75,62,0.01333,0.01473,0.01333,0.00000
+fine-tuned/XLS-R-2B,holdout,aug,channel,codec_aac,55,48,0.07208,0.03902,0.05455,0.02083
+fine-tuned/XLS-R-2B,holdout,aug,channel,codec_g711,66,63,0.00000,0.00000,0.00000,0.00000
+fine-tuned/XLS-R-2B,holdout,aug,channel,codec_g722,63,56,0.01587,0.01687,0.01587,0.01786
+fine-tuned/XLS-R-2B,holdout,aug,channel,codec_g726,66,67,0.00000,0.00000,0.00000,0.01493
+fine-tuned/XLS-R-2B,holdout,aug,channel,codec_mp3,63,59,0.04762,0.03282,0.07937,0.00000
+fine-tuned/XLS-R-2B,holdout,aug,channel,codec_opus,68,67,0.04029,0.01482,0.07353,0.00000
+fine-tuned/XLS-R-2B,holdout,aug,channel,noise_babble,57,60,0.01754,0.01711,0.01754,0.01667
+fine-tuned/XLS-R-2B,holdout,aug,channel,noise_brown,62,65,0.01613,0.01576,0.01613,0.03077
+fine-tuned/XLS-R-2B,holdout,aug,channel,noise_pink,67,60,0.01493,0.01580,0.01493,0.00000
+fine-tuned/XLS-R-2B,holdout,aug,channel,noise_white,54,53,0.11111,0.05608,0.07407,0.05660
+fine-tuned/XLS-R-2B,holdout,aug,duration,2-3 s,92,12,0.02174,0.01087,0.05435,0.00000
+fine-tuned/XLS-R-2B,holdout,aug,duration,3-4 s,942,991,0.06959,0.03053,0.03397,0.02825
+fine-tuned/XLS-R-2B,holdout,aug,duration,4-6 s,181,197,0.02528,0.01590,0.01657,0.01523
+fine-tuned/XLS-R-2B,holdout,aug,duration,>6 s,24,27,0.04167,0.03935,0.04167,0.00000
+fine-tuned/XLS-R-2B,itw,clean,generator,itw_fake,1250,1250,0.05989,0.02320,0.01600,0.03120
+fine-tuned/XLS-R-2B,itw,clean,real source,itw,1250,1250,0.05989,0.02320,0.01600,0.03120
+fine-tuned/XLS-R-2B,itw,clean,duration,<2 s,370,247,0.16400,0.06482,0.02432,0.10931
+fine-tuned/XLS-R-2B,itw,clean,duration,2-3 s,304,227,0.02400,0.01703,0.00658,0.02643
+fine-tuned/XLS-R-2B,itw,clean,duration,3-4 s,507,672,0.02343,0.01360,0.01578,0.00744
+fine-tuned/XLS-R-2B,itw,clean,duration,4-6 s,62,101,0.01613,0.01797,0.01613,0.00990
+fine-tuned/XLS-R-2B,itw,clean,duration,>6 s,7,3,0.00000,0.00000,0.00000,0.00000
+fine-tuned/XLS-R-2B,itw,aug,generator,itw_fake,1250,1250,0.15280,0.06000,0.05280,0.06320
+fine-tuned/XLS-R-2B,itw,aug,real source,itw,1250,1250,0.15280,0.06000,0.05280,0.06320
+fine-tuned/XLS-R-2B,itw,aug,channel,codec,350,385,0.10108,0.03948,0.04000,0.03896
+fine-tuned/XLS-R-2B,itw,aug,channel,telephony,138,139,0.16604,0.07220,0.02899,0.10791
+fine-tuned/XLS-R-2B,itw,aug,channel,bandlimit,144,132,0.11445,0.04703,0.04167,0.06061
+fine-tuned/XLS-R-2B,itw,aug,channel,resample,137,138,0.09054,0.04364,0.05109,0.03623
+fine-tuned/XLS-R-2B,itw,aug,channel,tilt,232,253,0.09053,0.03916,0.02155,0.05534
+fine-tuned/XLS-R-2B,itw,aug,channel,noise,249,244,0.16161,0.06086,0.08032,0.05738
+fine-tuned/XLS-R-2B,itw,aug,channel,hum,117,132,0.07726,0.03603,0.04274,0.03030
+fine-tuned/XLS-R-2B,itw,aug,channel,reverb,205,168,0.43021,0.17411,0.14146,0.17857
+fine-tuned/XLS-R-2B,itw,aug,channel,clipping,65,56,0.06138,0.03324,0.03077,0.05357
+fine-tuned/XLS-R-2B,itw,aug,channel,codec_aac,64,53,0.22313,0.09404,0.10938,0.07547
+fine-tuned/XLS-R-2B,itw,aug,channel,codec_g711,56,76,0.12594,0.05310,0.00000,0.09211
+fine-tuned/XLS-R-2B,itw,aug,channel,codec_g722,59,61,0.01695,0.01667,0.01695,0.00000
+fine-tuned/XLS-R-2B,itw,aug,channel,codec_g726,48,80,0.04226,0.02292,0.02083,0.02500
+fine-tuned/XLS-R-2B,itw,aug,channel,codec_mp3,60,57,0.08008,0.03421,0.08333,0.01754
+fine-tuned/XLS-R-2B,itw,aug,channel,codec_opus,63,58,0.02956,0.01656,0.00000,0.01724
+fine-tuned/XLS-R-2B,itw,aug,channel,noise_babble,52,61,0.19969,0.09726,0.13462,0.04918
+fine-tuned/XLS-R-2B,itw,aug,channel,noise_brown,59,62,0.08920,0.03308,0.01695,0.09677
+fine-tuned/XLS-R-2B,itw,aug,channel,noise_pink,74,55,0.18810,0.07015,0.09459,0.05455
+fine-tuned/XLS-R-2B,itw,aug,channel,noise_white,64,66,0.06757,0.03078,0.07812,0.03030
+fine-tuned/XLS-R-2B,itw,aug,duration,<2 s,370,247,0.23691,0.09723,0.04865,0.14170
+fine-tuned/XLS-R-2B,itw,aug,duration,2-3 s,304,227,0.15581,0.06593,0.05592,0.07048
+fine-tuned/XLS-R-2B,itw,aug,duration,3-4 s,496,655,0.11562,0.04254,0.05444,0.03664
+fine-tuned/XLS-R-2B,itw,aug,duration,4-6 s,73,110,0.05668,0.02733,0.02740,0.02727
+fine-tuned/XLS-R-2B,itw,aug,duration,>6 s,7,11,0.15584,0.11688,0.28571,0.09091
+D6-R/XLS-R-2B,val,clean,generator,diffgan_tts,1833,73,0.00000,0.00000,0.00055,0.00000
+D6-R/XLS-R-2B,val,clean,generator,elevenlabs,1833,64,0.00000,0.00000,0.00055,0.00000
+D6-R/XLS-R-2B,val,clean,generator,grad_tts,1833,73,0.00164,0.00082,0.00055,0.01370
+D6-R/XLS-R-2B,val,clean,generator,openvoicev2,1833,66,0.00000,0.00000,0.00055,0.00000
+D6-R/XLS-R-2B,val,clean,generator,playht,1833,61,0.00000,0.00000,0.00055,0.00000
+D6-R/XLS-R-2B,val,clean,generator,pro_diff,1833,73,0.00000,0.00000,0.00055,0.00000
+D6-R/XLS-R-2B,val,clean,generator,unit_speech,1833,62,0.00000,0.00000,0.00055,0.00000
+D6-R/XLS-R-2B,val,clean,generator,wavegrad2,1833,73,0.00000,0.00000,0.00055,0.00000
+D6-R/XLS-R-2B,val,clean,generator,xtts_v2,1833,64,0.00000,0.00000,0.00055,0.00000
+D6-R/XLS-R-2B,val,clean,generator,your_tts,1833,57,0.00000,0.00000,0.00055,0.00000
+D6-R/XLS-R-2B,val,clean,real source,real_extra,387,666,0.00257,0.00204,0.00258,0.00150
+D6-R/XLS-R-2B,val,clean,real source,real_lj,1446,666,0.00000,0.00000,0.00000,0.00150
+D6-R/XLS-R-2B,val,clean,duration,<2 s,48,1,0.00000,0.00000,0.00000,0.00000
+D6-R/XLS-R-2B,val,clean,duration,2-3 s,131,4,0.00000,0.00000,0.00763,0.00000
+D6-R/XLS-R-2B,val,clean,duration,3-4 s,1375,552,0.00000,0.00000,0.00000,0.00181
+D6-R/XLS-R-2B,val,clean,duration,4-6 s,261,102,0.00000,0.00000,0.00000,0.00000
+D6-R/XLS-R-2B,val,clean,duration,>6 s,18,7,0.00000,0.00000,0.00000,0.00000
+D6-R/XLS-R-2B,val,aug,generator,diffgan_tts,1833,73,0.01364,0.01367,0.02946,0.00000
+D6-R/XLS-R-2B,val,aug,generator,elevenlabs,1833,64,0.09394,0.04335,0.02946,0.07812
+D6-R/XLS-R-2B,val,aug,generator,grad_tts,1833,73,0.05785,0.02734,0.02946,0.02740
+D6-R/XLS-R-2B,val,aug,generator,openvoicev2,1833,66,0.00655,0.00327,0.02946,0.00000
+D6-R/XLS-R-2B,val,aug,generator,playht,1833,61,0.04174,0.01638,0.02946,0.01639
+D6-R/XLS-R-2B,val,aug,generator,pro_diff,1833,73,0.00818,0.01094,0.02946,0.00000
+D6-R/XLS-R-2B,val,aug,generator,unit_speech,1833,62,0.00927,0.01270,0.02946,0.00000
+D6-R/XLS-R-2B,val,aug,generator,wavegrad2,1833,73,0.00382,0.00191,0.02946,0.00000
+D6-R/XLS-R-2B,val,aug,generator,xtts_v2,1833,64,0.04042,0.01572,0.02946,0.01562
+D6-R/XLS-R-2B,val,aug,generator,your_tts,1833,57,0.00218,0.00109,0.02946,0.00000
+D6-R/XLS-R-2B,val,aug,real source,real_extra,387,666,0.03350,0.01322,0.02842,0.01351
+D6-R/XLS-R-2B,val,aug,real source,real_lj,1446,666,0.03769,0.01477,0.02974,0.01351
+D6-R/XLS-R-2B,val,aug,channel,codec,557,190,0.03057,0.01597,0.01436,0.01579
+D6-R/XLS-R-2B,val,aug,channel,telephony,190,71,0.03158,0.01494,0.06316,0.00000
+D6-R/XLS-R-2B,val,aug,channel,bandlimit,198,74,0.02317,0.01433,0.01515,0.01351
+D6-R/XLS-R-2B,val,aug,channel,resample,198,73,0.00505,0.00253,0.01515,0.00000
+D6-R/XLS-R-2B,val,aug,channel,tilt,372,151,0.00269,0.00134,0.00806,0.00000
+D6-R/XLS-R-2B,val,aug,channel,noise,352,138,0.03905,0.01435,0.03125,0.01449
+D6-R/XLS-R-2B,val,aug,channel,hum,183,67,0.03105,0.01566,0.01639,0.01493
+D6-R/XLS-R-2B,val,aug,channel,reverb,278,98,0.21188,0.08218,0.15827,0.08163
+D6-R/XLS-R-2B,val,aug,channel,clipping,100,31,0.00000,0.00000,0.01000,0.00000
+D6-R/XLS-R-2B,val,aug,channel,codec_aac,106,29,0.00943,0.00472,0.01887,0.00000
+D6-R/XLS-R-2B,val,aug,channel,codec_g711,100,30,0.00000,0.00000,0.00000,0.00000
+D6-R/XLS-R-2B,val,aug,channel,codec_g722,94,35,0.00000,0.00000,0.00000,0.00000
+D6-R/XLS-R-2B,val,aug,channel,codec_g726,88,34,0.06818,0.05214,0.02273,0.08824
+D6-R/XLS-R-2B,val,aug,channel,codec_mp3,82,34,0.00000,0.00000,0.02439,0.00000
+D6-R/XLS-R-2B,val,aug,channel,codec_opus,87,28,0.00000,0.00000,0.02299,0.00000
+D6-R/XLS-R-2B,val,aug,channel,noise_babble,79,31,0.02532,0.02879,0.06329,0.00000
+D6-R/XLS-R-2B,val,aug,channel,noise_brown,97,28,0.00000,0.00000,0.02062,0.00000
+D6-R/XLS-R-2B,val,aug,channel,noise_pink,82,36,0.02439,0.02608,0.02439,0.02778
+D6-R/XLS-R-2B,val,aug,channel,noise_white,94,43,0.02128,0.02227,0.02128,0.02326
+D6-R/XLS-R-2B,val,aug,duration,<2 s,48,1,0.00000,0.00000,0.04167,0.00000
+D6-R/XLS-R-2B,val,aug,duration,2-3 s,131,4,0.00000,0.00000,0.03817,0.00000
+D6-R/XLS-R-2B,val,aug,duration,3-4 s,1376,540,0.02968,0.01339,0.02834,0.00926
+D6-R/XLS-R-2B,val,aug,duration,4-6 s,250,108,0.05600,0.02989,0.03200,0.03704
+D6-R/XLS-R-2B,val,aug,duration,>6 s,28,13,0.00000,0.00000,0.00000,0.00000
+D6-R/XLS-R-2B,holdout,clean,generator,diffgan_tts,1275,84,0.00000,0.00000,0.00078,0.00000
+D6-R/XLS-R-2B,holdout,clean,generator,elevenlabs,1275,143,0.00000,0.00000,0.00078,0.00000
+D6-R/XLS-R-2B,holdout,clean,generator,grad_tts,1275,84,0.00157,0.00078,0.00078,0.01190
+D6-R/XLS-R-2B,holdout,clean,generator,openvoicev2,1275,154,0.00000,0.00000,0.00078,0.00000
+D6-R/XLS-R-2B,holdout,clean,generator,playht,1275,145,0.00000,0.00000,0.00078,0.00000
+D6-R/XLS-R-2B,holdout,clean,generator,pro_diff,1275,84,0.00000,0.00000,0.00078,0.00000
+D6-R/XLS-R-2B,holdout,clean,generator,unit_speech,1275,152,0.00000,0.00000,0.00078,0.00000
+D6-R/XLS-R-2B,holdout,clean,generator,wavegrad2,1275,84,0.00000,0.00000,0.00078,0.00000
+D6-R/XLS-R-2B,holdout,clean,generator,xtts_v2,1275,152,0.00000,0.00000,0.00078,0.00000
+D6-R/XLS-R-2B,holdout,clean,generator,your_tts,1275,145,0.00000,0.00000,0.00078,0.00000
+D6-R/XLS-R-2B,holdout,clean,real source,real_extra,358,1227,0.00140,0.00041,0.00000,0.00081
+D6-R/XLS-R-2B,holdout,clean,real source,real_libri,160,1227,0.00140,0.00041,0.00625,0.00081
+D6-R/XLS-R-2B,holdout,clean,real source,real_lj,757,1227,0.00000,0.00000,0.00000,0.00081
+D6-R/XLS-R-2B,holdout,clean,duration,2-3 s,92,12,0.00000,0.00000,0.00000,0.00000
+D6-R/XLS-R-2B,holdout,clean,duration,3-4 s,982,973,0.00102,0.00102,0.00102,0.00103
+D6-R/XLS-R-2B,holdout,clean,duration,4-6 s,151,219,0.00000,0.00000,0.00000,0.00000
+D6-R/XLS-R-2B,holdout,clean,duration,>6 s,14,23,0.00000,0.00000,0.00000,0.00000
+D6-R/XLS-R-2B,holdout,aug,generator,diffgan_tts,1275,84,0.02196,0.02249,0.03451,0.00000
+D6-R/XLS-R-2B,holdout,aug,generator,elevenlabs,1275,143,0.11103,0.05582,0.03451,0.11189
+D6-R/XLS-R-2B,holdout,aug,generator,grad_tts,1275,84,0.05569,0.03472,0.03451,0.02381
+D6-R/XLS-R-2B,holdout,aug,generator,openvoicev2,1275,154,0.03466,0.01954,0.03451,0.00649
+D6-R/XLS-R-2B,holdout,aug,generator,playht,1275,145,0.10667,0.05504,0.03451,0.08966
+D6-R/XLS-R-2B,holdout,aug,generator,pro_diff,1275,84,0.00235,0.00118,0.03451,0.00000
+D6-R/XLS-R-2B,holdout,aug,generator,unit_speech,1275,152,0.06550,0.02649,0.03451,0.02632
+D6-R/XLS-R-2B,holdout,aug,generator,wavegrad2,1275,84,0.04709,0.02367,0.03451,0.02381
+D6-R/XLS-R-2B,holdout,aug,generator,xtts_v2,1275,152,0.07137,0.03934,0.03451,0.03947
+D6-R/XLS-R-2B,holdout,aug,generator,your_tts,1275,145,0.05743,0.02133,0.03451,0.02069
+D6-R/XLS-R-2B,holdout,aug,real source,real_extra,358,1227,0.10475,0.04173,0.05307,0.03830
+D6-R/XLS-R-2B,holdout,aug,real source,real_libri,160,1227,0.10250,0.04266,0.05000,0.03830
+D6-R/XLS-R-2B,holdout,aug,real source,real_lj,757,1227,0.07316,0.03174,0.02246,0.03830
+D6-R/XLS-R-2B,holdout,aug,channel,codec,381,360,0.06104,0.02832,0.03412,0.02500
+D6-R/XLS-R-2B,holdout,aug,channel,telephony,132,118,0.07326,0.03210,0.04545,0.02542
+D6-R/XLS-R-2B,holdout,aug,channel,bandlimit,134,138,0.00746,0.00735,0.00000,0.02174
+D6-R/XLS-R-2B,holdout,aug,channel,resample,135,130,0.00741,0.00370,0.00741,0.03077
+D6-R/XLS-R-2B,holdout,aug,channel,tilt,255,247,0.02745,0.01594,0.01569,0.01619
+D6-R/XLS-R-2B,holdout,aug,channel,noise,240,238,0.06405,0.02511,0.02083,0.02521
+D6-R/XLS-R-2B,holdout,aug,channel,hum,145,124,0.02762,0.01496,0.01379,0.00806
+D6-R/XLS-R-2B,holdout,aug,channel,reverb,202,204,0.47695,0.18720,0.17327,0.20098
+D6-R/XLS-R-2B,holdout,aug,channel,clipping,75,62,0.00000,0.00000,0.01333,0.00000
+D6-R/XLS-R-2B,holdout,aug,channel,codec_aac,55,48,0.07208,0.03902,0.03636,0.04167
+D6-R/XLS-R-2B,holdout,aug,channel,codec_g711,66,63,0.01515,0.01551,0.01515,0.03175
+D6-R/XLS-R-2B,holdout,aug,channel,codec_g722,63,56,0.03061,0.01687,0.00000,0.01786
+D6-R/XLS-R-2B,holdout,aug,channel,codec_g726,66,67,0.00000,0.00000,0.00000,0.05970
+D6-R/XLS-R-2B,holdout,aug,channel,codec_mp3,63,59,0.01587,0.01641,0.06349,0.00000
+D6-R/XLS-R-2B,holdout,aug,channel,codec_opus,68,67,0.07353,0.05926,0.08824,0.00000
+D6-R/XLS-R-2B,holdout,aug,channel,noise_babble,57,60,0.02857,0.01711,0.00000,0.01667
+D6-R/XLS-R-2B,holdout,aug,channel,noise_brown,62,65,0.01613,0.01576,0.01613,0.01538
+D6-R/XLS-R-2B,holdout,aug,channel,noise_pink,67,60,0.01493,0.01580,0.01493,0.00000
+D6-R/XLS-R-2B,holdout,aug,channel,noise_white,54,53,0.11111,0.07477,0.05556,0.07547
+D6-R/XLS-R-2B,holdout,aug,duration,2-3 s,92,12,0.05435,0.06884,0.04348,0.08333
+D6-R/XLS-R-2B,holdout,aug,duration,3-4 s,942,991,0.09259,0.03828,0.03503,0.04137
+D6-R/XLS-R-2B,holdout,aug,duration,4-6 s,181,197,0.04268,0.01590,0.01657,0.02538
+D6-R/XLS-R-2B,holdout,aug,duration,>6 s,24,27,0.04167,0.03935,0.08333,0.00000
+D6-R/XLS-R-2B,itw,clean,generator,itw_fake,1250,1250,0.04046,0.01520,0.01680,0.01440
+D6-R/XLS-R-2B,itw,clean,real source,itw,1250,1250,0.04046,0.01520,0.01680,0.01440
+D6-R/XLS-R-2B,itw,clean,duration,<2 s,370,247,0.11148,0.04524,0.02703,0.05668
+D6-R/XLS-R-2B,itw,clean,duration,2-3 s,304,227,0.02729,0.01319,0.01316,0.00881
+D6-R/XLS-R-2B,itw,clean,duration,3-4 s,507,672,0.00963,0.00420,0.01183,0.00298
+D6-R/XLS-R-2B,itw,clean,duration,4-6 s,62,101,0.00000,0.00000,0.01613,0.00000
+D6-R/XLS-R-2B,itw,clean,duration,>6 s,7,3,0.00000,0.00000,0.00000,0.00000
+D6-R/XLS-R-2B,itw,aug,generator,itw_fake,1250,1250,0.10411,0.03920,0.04400,0.03600
+D6-R/XLS-R-2B,itw,aug,real source,itw,1250,1250,0.10411,0.03920,0.04400,0.03600
+D6-R/XLS-R-2B,itw,aug,channel,codec,350,385,0.07536,0.03403,0.04571,0.02597
+D6-R/XLS-R-2B,itw,aug,channel,telephony,138,139,0.10006,0.04332,0.06522,0.02878
+D6-R/XLS-R-2B,itw,aug,channel,bandlimit,144,132,0.04681,0.02178,0.02083,0.01515
+D6-R/XLS-R-2B,itw,aug,channel,resample,137,138,0.08542,0.03636,0.04380,0.02899
+D6-R/XLS-R-2B,itw,aug,channel,tilt,232,253,0.05421,0.02677,0.00862,0.03162
+D6-R/XLS-R-2B,itw,aug,channel,noise,249,244,0.10741,0.04057,0.07229,0.03279
+D6-R/XLS-R-2B,itw,aug,channel,hum,117,132,0.05983,0.03603,0.04274,0.02273
+D6-R/XLS-R-2B,itw,aug,channel,reverb,205,168,0.30513,0.13675,0.10732,0.14286
+D6-R/XLS-R-2B,itw,aug,channel,clipping,65,56,0.03061,0.01662,0.01538,0.01786
+D6-R/XLS-R-2B,itw,aug,channel,codec_aac,64,53,0.14391,0.05955,0.09375,0.03774
+D6-R/XLS-R-2B,itw,aug,channel,codec_g711,56,76,0.08553,0.03759,0.01786,0.07895
+D6-R/XLS-R-2B,itw,aug,channel,codec_g722,59,61,0.01695,0.01667,0.01695,0.01639
+D6-R/XLS-R-2B,itw,aug,channel,codec_g726,48,80,0.02083,0.01667,0.02083,0.00000
+D6-R/XLS-R-2B,itw,aug,channel,codec_mp3,60,57,0.04674,0.01711,0.08333,0.01754
+D6-R/XLS-R-2B,itw,aug,channel,codec_opus,63,58,0.02956,0.01656,0.03175,0.00000
+D6-R/XLS-R-2B,itw,aug,channel,noise_babble,52,61,0.15236,0.07945,0.11538,0.03279
+D6-R/XLS-R-2B,itw,aug,channel,noise_brown,59,62,0.02765,0.01654,0.00000,0.04839
+D6-R/XLS-R-2B,itw,aug,channel,noise_pink,74,55,0.08936,0.03845,0.09459,0.03636
+D6-R/XLS-R-2B,itw,aug,channel,noise_white,64,66,0.02597,0.01539,0.07812,0.01515
+D6-R/XLS-R-2B,itw,aug,duration,<2 s,370,247,0.18716,0.07292,0.04054,0.08907
+D6-R/XLS-R-2B,itw,aug,duration,2-3 s,304,227,0.09234,0.03571,0.03947,0.03084
+D6-R/XLS-R-2B,itw,aug,duration,3-4 s,496,655,0.07276,0.02785,0.04637,0.02443
+D6-R/XLS-R-2B,itw,aug,duration,4-6 s,73,110,0.04110,0.01594,0.04110,0.00000
+D6-R/XLS-R-2B,itw,aug,duration,>6 s,7,11,0.00000,0.00000,0.28571,0.00000
+ensemble/v2 FINAL,val,clean,generator,diffgan_tts,1833,73,0.00000,0.00000,0.00055,0.00000
+ensemble/v2 FINAL,val,clean,generator,elevenlabs,1833,64,0.00000,0.00000,0.00055,0.00000
+ensemble/v2 FINAL,val,clean,generator,grad_tts,1833,73,0.00000,0.00000,0.00055,0.00000
+ensemble/v2 FINAL,val,clean,generator,openvoicev2,1833,66,0.00000,0.00000,0.00055,0.00000
+ensemble/v2 FINAL,val,clean,generator,playht,1833,61,0.00000,0.00000,0.00055,0.00000
+ensemble/v2 FINAL,val,clean,generator,pro_diff,1833,73,0.00000,0.00000,0.00055,0.00000
+ensemble/v2 FINAL,val,clean,generator,unit_speech,1833,62,0.00000,0.00000,0.00055,0.00000
+ensemble/v2 FINAL,val,clean,generator,wavegrad2,1833,73,0.00000,0.00000,0.00055,0.00000
+ensemble/v2 FINAL,val,clean,generator,xtts_v2,1833,64,0.00000,0.00000,0.00055,0.00000
+ensemble/v2 FINAL,val,clean,generator,your_tts,1833,57,0.00000,0.00000,0.00055,0.00000
+ensemble/v2 FINAL,val,clean,real source,real_extra,387,666,0.00000,0.00000,0.00258,0.00000
+ensemble/v2 FINAL,val,clean,real source,real_lj,1446,666,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,val,clean,duration,<2 s,48,1,0.00000,0.00000,0.02083,0.00000
+ensemble/v2 FINAL,val,clean,duration,2-3 s,131,4,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,val,clean,duration,3-4 s,1375,552,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,val,clean,duration,4-6 s,261,102,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,val,clean,duration,>6 s,18,7,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,val,aug,generator,diffgan_tts,1833,73,0.00164,0.00082,0.01637,0.00000
+ensemble/v2 FINAL,val,aug,generator,elevenlabs,1833,64,0.05783,0.03117,0.01637,0.04688
+ensemble/v2 FINAL,val,aug,generator,grad_tts,1833,73,0.01800,0.01367,0.01637,0.01370
+ensemble/v2 FINAL,val,aug,generator,openvoicev2,1833,66,0.00055,0.00027,0.01637,0.00000
+ensemble/v2 FINAL,val,aug,generator,playht,1833,61,0.03546,0.01665,0.01637,0.03279
+ensemble/v2 FINAL,val,aug,generator,pro_diff,1833,73,0.00055,0.00027,0.01637,0.00000
+ensemble/v2 FINAL,val,aug,generator,unit_speech,1833,62,0.00109,0.00055,0.01637,0.00000
+ensemble/v2 FINAL,val,aug,generator,wavegrad2,1833,73,0.00000,0.00000,0.01637,0.00000
+ensemble/v2 FINAL,val,aug,generator,xtts_v2,1833,64,0.02842,0.01572,0.01637,0.01562
+ensemble/v2 FINAL,val,aug,generator,your_tts,1833,57,0.00000,0.00000,0.01637,0.00000
+ensemble/v2 FINAL,val,aug,real source,real_extra,387,666,0.03346,0.01322,0.03101,0.01051
+ensemble/v2 FINAL,val,aug,real source,real_lj,1446,666,0.02739,0.01188,0.01245,0.01051
+ensemble/v2 FINAL,val,aug,channel,codec,557,190,0.01620,0.00622,0.00718,0.01053
+ensemble/v2 FINAL,val,aug,channel,telephony,190,71,0.00000,0.00000,0.01053,0.00000
+ensemble/v2 FINAL,val,aug,channel,bandlimit,198,74,0.00505,0.00253,0.00505,0.01351
+ensemble/v2 FINAL,val,aug,channel,resample,198,73,0.00000,0.00000,0.01515,0.00000
+ensemble/v2 FINAL,val,aug,channel,tilt,372,151,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,val,aug,channel,noise,352,138,0.01242,0.00788,0.01705,0.00725
+ensemble/v2 FINAL,val,aug,channel,hum,183,67,0.01093,0.01293,0.01093,0.01493
+ensemble/v2 FINAL,val,aug,channel,reverb,278,98,0.19390,0.08218,0.09712,0.07143
+ensemble/v2 FINAL,val,aug,channel,clipping,100,31,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,val,aug,channel,codec_aac,106,29,0.00000,0.00000,0.00943,0.00000
+ensemble/v2 FINAL,val,aug,channel,codec_g711,100,30,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,val,aug,channel,codec_g722,94,35,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,val,aug,channel,codec_g726,88,34,0.03409,0.03175,0.02273,0.05882
+ensemble/v2 FINAL,val,aug,channel,codec_mp3,82,34,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,val,aug,channel,codec_opus,87,28,0.00000,0.00000,0.01149,0.00000
+ensemble/v2 FINAL,val,aug,channel,noise_babble,79,31,0.00000,0.00000,0.02532,0.00000
+ensemble/v2 FINAL,val,aug,channel,noise_brown,97,28,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,val,aug,channel,noise_pink,82,36,0.01220,0.00610,0.01220,0.02778
+ensemble/v2 FINAL,val,aug,channel,noise_white,94,43,0.00000,0.00000,0.03191,0.00000
+ensemble/v2 FINAL,val,aug,duration,<2 s,48,1,0.00000,0.00000,0.06250,0.00000
+ensemble/v2 FINAL,val,aug,duration,2-3 s,131,4,0.00000,0.00000,0.02290,0.00000
+ensemble/v2 FINAL,val,aug,duration,3-4 s,1376,540,0.02215,0.00935,0.01526,0.00741
+ensemble/v2 FINAL,val,aug,duration,4-6 s,250,108,0.01600,0.01726,0.01200,0.02778
+ensemble/v2 FINAL,val,aug,duration,>6 s,28,13,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,generator,diffgan_tts,1275,84,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,generator,elevenlabs,1275,143,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,generator,grad_tts,1275,84,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,generator,openvoicev2,1275,154,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,generator,playht,1275,145,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,generator,pro_diff,1275,84,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,generator,unit_speech,1275,152,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,generator,wavegrad2,1275,84,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,generator,xtts_v2,1275,152,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,generator,your_tts,1275,145,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,real source,real_extra,358,1227,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,real source,real_libri,160,1227,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,real source,real_lj,757,1227,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,duration,2-3 s,92,12,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,duration,3-4 s,982,973,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,duration,4-6 s,151,219,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,clean,duration,>6 s,14,23,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,aug,generator,diffgan_tts,1275,84,0.02118,0.01419,0.02510,0.00000
+ensemble/v2 FINAL,holdout,aug,generator,elevenlabs,1275,143,0.10375,0.05738,0.02510,0.13287
+ensemble/v2 FINAL,holdout,aug,generator,grad_tts,1275,84,0.06118,0.03472,0.02510,0.03571
+ensemble/v2 FINAL,holdout,aug,generator,openvoicev2,1275,154,0.02745,0.01837,0.02510,0.00649
+ensemble/v2 FINAL,holdout,aug,generator,playht,1275,145,0.07535,0.04187,0.02510,0.08276
+ensemble/v2 FINAL,holdout,aug,generator,pro_diff,1275,84,0.00078,0.00039,0.02510,0.00000
+ensemble/v2 FINAL,holdout,aug,generator,unit_speech,1275,152,0.04314,0.01967,0.02510,0.01974
+ensemble/v2 FINAL,holdout,aug,generator,wavegrad2,1275,84,0.04002,0.02171,0.02510,0.01190
+ensemble/v2 FINAL,holdout,aug,generator,xtts_v2,1275,152,0.04392,0.02571,0.02510,0.01974
+ensemble/v2 FINAL,holdout,aug,generator,your_tts,1275,145,0.04090,0.01897,0.02510,0.01379
+ensemble/v2 FINAL,holdout,aug,real source,real_extra,358,1227,0.09219,0.04132,0.04749,0.03586
+ensemble/v2 FINAL,holdout,aug,real source,real_libri,160,1227,0.07162,0.03070,0.02500,0.03586
+ensemble/v2 FINAL,holdout,aug,real source,real_lj,757,1227,0.05866,0.02371,0.01453,0.03586
+ensemble/v2 FINAL,holdout,aug,channel,codec,381,360,0.05219,0.02431,0.01837,0.03333
+ensemble/v2 FINAL,holdout,aug,channel,telephony,132,118,0.06569,0.03210,0.01515,0.03390
+ensemble/v2 FINAL,holdout,aug,channel,bandlimit,134,138,0.01989,0.00735,0.00746,0.02174
+ensemble/v2 FINAL,holdout,aug,channel,resample,135,130,0.01481,0.00755,0.00741,0.02308
+ensemble/v2 FINAL,holdout,aug,channel,tilt,255,247,0.01569,0.00797,0.01176,0.00810
+ensemble/v2 FINAL,holdout,aug,channel,noise,240,238,0.05833,0.02511,0.02083,0.02521
+ensemble/v2 FINAL,holdout,aug,channel,hum,145,124,0.02069,0.01496,0.02069,0.00806
+ensemble/v2 FINAL,holdout,aug,channel,reverb,202,204,0.38061,0.15271,0.12871,0.19608
+ensemble/v2 FINAL,holdout,aug,channel,clipping,75,62,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,holdout,aug,channel,codec_aac,55,48,0.05390,0.01951,0.03636,0.02083
+ensemble/v2 FINAL,holdout,aug,channel,codec_g711,66,63,0.01515,0.01551,0.01515,0.04762
+ensemble/v2 FINAL,holdout,aug,channel,codec_g722,63,56,0.03061,0.01687,0.00000,0.03571
+ensemble/v2 FINAL,holdout,aug,channel,codec_g726,66,67,0.00000,0.00000,0.00000,0.07463
+ensemble/v2 FINAL,holdout,aug,channel,codec_mp3,63,59,0.00000,0.00000,0.00000,0.01695
+ensemble/v2 FINAL,holdout,aug,channel,codec_opus,68,67,0.02941,0.02963,0.05882,0.00000
+ensemble/v2 FINAL,holdout,aug,channel,noise_babble,57,60,0.05714,0.03421,0.00000,0.03333
+ensemble/v2 FINAL,holdout,aug,channel,noise_brown,62,65,0.01613,0.01576,0.00000,0.03077
+ensemble/v2 FINAL,holdout,aug,channel,noise_pink,67,60,0.01493,0.01580,0.01493,0.00000
+ensemble/v2 FINAL,holdout,aug,channel,noise_white,54,53,0.07407,0.07477,0.07407,0.03774
+ensemble/v2 FINAL,holdout,aug,duration,2-3 s,92,12,0.07609,0.07971,0.04348,0.08333
+ensemble/v2 FINAL,holdout,aug,duration,3-4 s,942,991,0.07148,0.03053,0.02335,0.03835
+ensemble/v2 FINAL,holdout,aug,duration,4-6 s,181,197,0.03867,0.01590,0.00552,0.02538
+ensemble/v2 FINAL,holdout,aug,duration,>6 s,24,27,0.04167,0.03935,0.04167,0.00000
+ensemble/v2 FINAL,itw,clean,generator,itw_fake,1250,1250,0.02811,0.01200,0.02000,0.01040
+ensemble/v2 FINAL,itw,clean,real source,itw,1250,1250,0.02811,0.01200,0.02000,0.01040
+ensemble/v2 FINAL,itw,clean,duration,<2 s,370,247,0.11879,0.04862,0.04595,0.04858
+ensemble/v2 FINAL,itw,clean,duration,2-3 s,304,227,0.01742,0.00934,0.01645,0.00441
+ensemble/v2 FINAL,itw,clean,duration,3-4 s,507,672,0.00000,0.00000,0.00394,0.00000
+ensemble/v2 FINAL,itw,clean,duration,4-6 s,62,101,0.00000,0.00000,0.01613,0.00000
+ensemble/v2 FINAL,itw,clean,duration,>6 s,7,3,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,itw,aug,generator,itw_fake,1250,1250,0.08240,0.03600,0.04960,0.02080
+ensemble/v2 FINAL,itw,aug,real source,itw,1250,1250,0.08240,0.03600,0.04960,0.02080
+ensemble/v2 FINAL,itw,aug,channel,codec,350,385,0.05210,0.02584,0.03143,0.01299
+ensemble/v2 FINAL,itw,aug,channel,telephony,138,139,0.06306,0.05054,0.05797,0.00719
+ensemble/v2 FINAL,itw,aug,channel,bandlimit,144,132,0.05375,0.02904,0.03472,0.01515
+ensemble/v2 FINAL,itw,aug,channel,resample,137,138,0.05187,0.02182,0.04380,0.01449
+ensemble/v2 FINAL,itw,aug,channel,tilt,232,253,0.03079,0.01239,0.03879,0.00791
+ensemble/v2 FINAL,itw,aug,channel,noise,249,244,0.06223,0.02434,0.07229,0.02049
+ensemble/v2 FINAL,itw,aug,channel,hum,117,132,0.07282,0.03603,0.05128,0.01515
+ensemble/v2 FINAL,itw,aug,channel,reverb,205,168,0.24838,0.10723,0.12683,0.08929
+ensemble/v2 FINAL,itw,aug,channel,clipping,65,56,0.03061,0.01662,0.03077,0.01786
+ensemble/v2 FINAL,itw,aug,channel,codec_aac,64,53,0.06250,0.05955,0.06250,0.00000
+ensemble/v2 FINAL,itw,aug,channel,codec_g711,56,76,0.06297,0.02209,0.01786,0.02632
+ensemble/v2 FINAL,itw,aug,channel,codec_g722,59,61,0.00000,0.00000,0.06780,0.00000
+ensemble/v2 FINAL,itw,aug,channel,codec_g726,48,80,0.00000,0.00000,0.00000,0.00000
+ensemble/v2 FINAL,itw,aug,channel,codec_mp3,60,57,0.03333,0.01711,0.01667,0.03509
+ensemble/v2 FINAL,itw,aug,channel,codec_opus,63,58,0.01587,0.01656,0.01587,0.01724
+ensemble/v2 FINAL,itw,aug,channel,noise_babble,52,61,0.12277,0.05344,0.11538,0.04918
+ensemble/v2 FINAL,itw,aug,channel,noise_brown,59,62,0.02765,0.01654,0.00000,0.01613
+ensemble/v2 FINAL,itw,aug,channel,noise_pink,74,55,0.08522,0.03845,0.09459,0.01818
+ensemble/v2 FINAL,itw,aug,channel,noise_white,64,66,0.00000,0.00000,0.07812,0.00000
+ensemble/v2 FINAL,itw,aug,duration,<2 s,370,247,0.16670,0.07292,0.08919,0.05263
+ensemble/v2 FINAL,itw,aug,duration,2-3 s,304,227,0.07394,0.03022,0.05592,0.01762
+ensemble/v2 FINAL,itw,aug,duration,3-4 s,496,655,0.03586,0.01646,0.01815,0.01221
+ensemble/v2 FINAL,itw,aug,duration,4-6 s,73,110,0.02740,0.01594,0.02740,0.00909
+ensemble/v2 FINAL,itw,aug,duration,>6 s,7,11,0.00000,0.00000,0.14286,0.00000
+concepts/cobweb P(fake),val,clean,generator,diffgan_tts,310,7,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,clean,generator,elevenlabs,310,6,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,clean,generator,grad_tts,310,10,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,clean,generator,openvoicev2,310,11,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,clean,generator,playht,310,11,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,clean,generator,pro_diff,310,16,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,clean,generator,unit_speech,310,10,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,clean,generator,wavegrad2,310,9,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,clean,generator,xtts_v2,310,10,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,clean,generator,your_tts,310,16,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,clean,real source,real_extra,77,106,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,clean,real source,real_lj,233,106,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,clean,duration,<2 s,10,1,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,clean,duration,3-4 s,227,89,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,clean,duration,4-6 s,40,15,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,clean,duration,>6 s,4,1,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,aug,generator,diffgan_tts,306,9,0.01634,0.00817,0.02614,0.00000
+concepts/cobweb P(fake),val,aug,generator,elevenlabs,306,9,0.00980,0.00490,0.02614,0.00000
+concepts/cobweb P(fake),val,aug,generator,grad_tts,306,9,0.00654,0.00327,0.02614,0.00000
+concepts/cobweb P(fake),val,aug,generator,openvoicev2,306,10,0.01634,0.00817,0.02614,0.00000
+concepts/cobweb P(fake),val,aug,generator,playht,306,11,0.00327,0.00163,0.02614,0.00000
+concepts/cobweb P(fake),val,aug,generator,pro_diff,306,14,0.00980,0.00490,0.02614,0.00000
+concepts/cobweb P(fake),val,aug,generator,unit_speech,306,12,0.00980,0.00490,0.02614,0.00000
+concepts/cobweb P(fake),val,aug,generator,wavegrad2,306,10,0.00980,0.00490,0.02614,0.00000
+concepts/cobweb P(fake),val,aug,generator,xtts_v2,306,10,0.00980,0.00490,0.02614,0.00000
+concepts/cobweb P(fake),val,aug,generator,your_tts,306,13,0.00980,0.00490,0.02614,0.00000
+concepts/cobweb P(fake),val,aug,real source,real_extra,73,107,0.04110,0.02772,0.04110,0.00000
+concepts/cobweb P(fake),val,aug,real source,real_lj,233,107,0.00858,0.00896,0.02146,0.00000
+concepts/cobweb P(fake),val,aug,channel,codec,86,34,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,aug,channel,telephony,34,7,0.02941,0.01471,0.05882,0.00000
+concepts/cobweb P(fake),val,aug,channel,bandlimit,27,12,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,aug,channel,resample,28,9,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,aug,channel,tilt,72,26,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,aug,channel,noise,65,23,0.01538,0.00769,0.03077,0.00000
+concepts/cobweb P(fake),val,aug,channel,hum,25,11,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,aug,channel,reverb,48,15,0.08333,0.07500,0.12500,0.00000
+concepts/cobweb P(fake),val,aug,channel,clipping,24,6,0.00000,0.00000,0.04167,0.00000
+concepts/cobweb P(fake),val,aug,channel,codec_aac,14,6,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,aug,channel,codec_g711,18,7,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,aug,channel,codec_g722,9,7,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,aug,channel,codec_g726,16,6,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,aug,channel,codec_mp3,19,2,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,aug,channel,codec_opus,10,6,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,aug,channel,noise_babble,14,4,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,aug,channel,noise_brown,16,8,0.00000,0.00000,0.06250,0.00000
+concepts/cobweb P(fake),val,aug,channel,noise_pink,13,5,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,aug,channel,noise_white,22,6,0.04545,0.02273,0.04545,0.00000
+concepts/cobweb P(fake),val,aug,duration,3-4 s,235,80,0.02128,0.02314,0.03404,0.00000
+concepts/cobweb P(fake),val,aug,duration,4-6 s,39,25,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),val,aug,duration,>6 s,3,2,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,generator,diffgan_tts,156,11,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,generator,elevenlabs,156,18,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,generator,grad_tts,156,14,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,generator,openvoicev2,156,20,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,generator,playht,156,14,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,generator,pro_diff,156,10,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,generator,unit_speech,156,19,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,generator,wavegrad2,156,13,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,generator,xtts_v2,156,17,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,generator,your_tts,156,28,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,real source,real_extra,43,164,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,real source,real_libri,15,164,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,real source,real_lj,98,164,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,duration,2-3 s,13,5,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,duration,3-4 s,115,128,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,duration,4-6 s,20,30,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,clean,duration,>6 s,3,1,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,aug,generator,diffgan_tts,139,13,0.00000,0.00000,0.03597,0.00000
+concepts/cobweb P(fake),holdout,aug,generator,elevenlabs,139,15,0.01439,0.00719,0.03597,0.00000
+concepts/cobweb P(fake),holdout,aug,generator,grad_tts,139,13,0.26136,0.14167,0.03597,0.15385
+concepts/cobweb P(fake),holdout,aug,generator,openvoicev2,139,12,0.01439,0.00719,0.03597,0.00000
+concepts/cobweb P(fake),holdout,aug,generator,playht,139,12,0.28571,0.16607,0.03597,0.16667
+concepts/cobweb P(fake),holdout,aug,generator,pro_diff,139,8,0.00000,0.00000,0.03597,0.00000
+concepts/cobweb P(fake),holdout,aug,generator,unit_speech,139,19,0.00000,0.00000,0.03597,0.00000
+concepts/cobweb P(fake),holdout,aug,generator,wavegrad2,139,13,0.15345,0.07803,0.03597,0.07692
+concepts/cobweb P(fake),holdout,aug,generator,xtts_v2,139,16,0.05036,0.05643,0.03597,0.06250
+concepts/cobweb P(fake),holdout,aug,generator,your_tts,139,25,0.05036,0.04158,0.03597,0.04000
+concepts/cobweb P(fake),holdout,aug,real source,real_extra,43,146,0.15173,0.06571,0.09302,0.04795
+concepts/cobweb P(fake),holdout,aug,real source,real_libri,12,146,0.08219,0.06564,0.08333,0.04795
+concepts/cobweb P(fake),holdout,aug,real source,real_lj,84,146,0.08219,0.03498,0.00000,0.04795
+concepts/cobweb P(fake),holdout,aug,channel,codec,38,46,0.06358,0.02403,0.02632,0.02174
+concepts/cobweb P(fake),holdout,aug,channel,telephony,10,11,0.00000,0.00000,0.10000,0.00000
+concepts/cobweb P(fake),holdout,aug,channel,bandlimit,14,20,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,aug,channel,resample,22,15,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,aug,channel,tilt,28,25,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,aug,channel,noise,26,29,0.09757,0.03647,0.03846,0.06897
+concepts/cobweb P(fake),holdout,aug,channel,hum,16,13,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,aug,channel,reverb,25,18,0.66095,0.27889,0.20000,0.33333
+concepts/cobweb P(fake),holdout,aug,channel,clipping,7,7,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,aug,channel,codec_aac,5,2,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,aug,channel,codec_g711,5,4,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,aug,channel,codec_g722,12,13,0.13187,0.08013,0.00000,0.07692
+concepts/cobweb P(fake),holdout,aug,channel,codec_g726,2,8,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,aug,channel,codec_mp3,7,9,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,aug,channel,codec_opus,7,10,0.00000,0.00000,0.14286,0.00000
+concepts/cobweb P(fake),holdout,aug,channel,noise_babble,7,8,0.00000,0.00000,0.00000,0.12500
+concepts/cobweb P(fake),holdout,aug,channel,noise_brown,7,5,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,aug,channel,noise_pink,8,8,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,aug,channel,noise_white,4,8,0.21429,0.06250,0.25000,0.12500
+concepts/cobweb P(fake),holdout,aug,duration,2-3 s,12,2,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,aug,duration,3-4 s,103,118,0.13089,0.05879,0.03883,0.05932
+concepts/cobweb P(fake),holdout,aug,duration,4-6 s,14,24,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),holdout,aug,duration,>6 s,3,2,0.00000,0.00000,0.33333,0.00000
+concepts/cobweb P(fake),itw,clean,generator,itw_fake,319,322,0.06986,0.02808,0.01567,0.03727
+concepts/cobweb P(fake),itw,clean,real source,itw,319,322,0.06986,0.02808,0.01567,0.03727
+concepts/cobweb P(fake),itw,clean,duration,<2 s,87,69,0.24473,0.10245,0.01149,0.17391
+concepts/cobweb P(fake),itw,clean,duration,2-3 s,77,45,0.01299,0.01760,0.01299,0.00000
+concepts/cobweb P(fake),itw,clean,duration,3-4 s,141,177,0.00709,0.00637,0.01418,0.00000
+concepts/cobweb P(fake),itw,clean,duration,4-6 s,14,31,0.05530,0.01613,0.07143,0.00000
+concepts/cobweb P(fake),itw,aug,generator,itw_fake,332,323,0.14903,0.05953,0.03313,0.06811
+concepts/cobweb P(fake),itw,aug,real source,itw,332,323,0.14903,0.05953,0.03313,0.06811
+concepts/cobweb P(fake),itw,aug,channel,codec,87,94,0.08919,0.03320,0.03448,0.04255
+concepts/cobweb P(fake),itw,aug,channel,telephony,31,42,0.23634,0.12404,0.03226,0.11905
+concepts/cobweb P(fake),itw,aug,channel,bandlimit,35,37,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),itw,aug,channel,resample,38,37,0.17161,0.08001,0.05263,0.10811
+concepts/cobweb P(fake),itw,aug,channel,tilt,57,72,0.09524,0.05409,0.00000,0.05556
+concepts/cobweb P(fake),itw,aug,channel,noise,75,55,0.04000,0.03818,0.06667,0.00000
+concepts/cobweb P(fake),itw,aug,channel,hum,34,35,0.10780,0.05798,0.02941,0.05714
+concepts/cobweb P(fake),itw,aug,channel,reverb,53,43,0.39228,0.16630,0.07547,0.23256
+concepts/cobweb P(fake),itw,aug,channel,clipping,15,18,0.06667,0.06111,0.00000,0.05556
+concepts/cobweb P(fake),itw,aug,channel,codec_aac,15,16,0.24048,0.12917,0.13333,0.06250
+concepts/cobweb P(fake),itw,aug,channel,codec_g711,14,15,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),itw,aug,channel,codec_g722,13,20,0.07692,0.08846,0.07692,0.05000
+concepts/cobweb P(fake),itw,aug,channel,codec_g726,13,15,0.07692,0.07179,0.00000,0.06667
+concepts/cobweb P(fake),itw,aug,channel,codec_mp3,16,14,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),itw,aug,channel,codec_opus,16,14,0.12245,0.06696,0.00000,0.07143
+concepts/cobweb P(fake),itw,aug,channel,noise_babble,15,8,0.00000,0.00000,0.06667,0.00000
+concepts/cobweb P(fake),itw,aug,channel,noise_brown,11,16,0.00000,0.00000,0.00000,0.00000
+concepts/cobweb P(fake),itw,aug,channel,noise_pink,24,15,0.04167,0.05417,0.04167,0.00000
+concepts/cobweb P(fake),itw,aug,channel,noise_white,25,16,0.08000,0.07125,0.12000,0.00000
+concepts/cobweb P(fake),itw,aug,duration,<2 s,92,77,0.35622,0.15401,0.00000,0.20779
+concepts/cobweb P(fake),itw,aug,duration,2-3 s,83,46,0.04932,0.02292,0.02410,0.02174
+concepts/cobweb P(fake),itw,aug,duration,3-4 s,141,171,0.07385,0.04821,0.05674,0.02339
+concepts/cobweb P(fake),itw,aug,duration,4-6 s,14,26,0.06593,0.05495,0.00000,0.03846
+concepts/cobweb P(fake),itw,aug,duration,>6 s,2,3,0.50000,0.41667,0.50000,0.00000
+concepts/TTCG P(fake),val,clean,generator,diffgan_tts,310,7,0.00000,0.00000,0.02258,0.00000
+concepts/TTCG P(fake),val,clean,generator,elevenlabs,310,6,0.00000,0.00000,0.02258,0.00000
+concepts/TTCG P(fake),val,clean,generator,grad_tts,310,10,0.00000,0.00000,0.02258,0.00000
+concepts/TTCG P(fake),val,clean,generator,openvoicev2,310,11,0.00000,0.00000,0.02258,0.00000
+concepts/TTCG P(fake),val,clean,generator,playht,310,11,0.00000,0.00000,0.02258,0.00000
+concepts/TTCG P(fake),val,clean,generator,pro_diff,310,16,0.00000,0.00000,0.02258,0.00000
+concepts/TTCG P(fake),val,clean,generator,unit_speech,310,10,0.00000,0.00000,0.02258,0.00000
+concepts/TTCG P(fake),val,clean,generator,wavegrad2,310,9,0.00000,0.00000,0.02258,0.00000
+concepts/TTCG P(fake),val,clean,generator,xtts_v2,310,10,0.00000,0.00000,0.02258,0.00000
+concepts/TTCG P(fake),val,clean,generator,your_tts,310,16,0.00000,0.00000,0.02258,0.00000
+concepts/TTCG P(fake),val,clean,real source,real_extra,77,106,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),val,clean,real source,real_lj,233,106,0.00000,0.00000,0.03004,0.00000
+concepts/TTCG P(fake),val,clean,duration,<2 s,10,1,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),val,clean,duration,3-4 s,227,89,0.00000,0.00000,0.02643,0.00000
+concepts/TTCG P(fake),val,clean,duration,4-6 s,40,15,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),val,clean,duration,>6 s,4,1,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),val,aug,generator,diffgan_tts,306,9,0.01307,0.00654,0.04902,0.00000
+concepts/TTCG P(fake),val,aug,generator,elevenlabs,306,9,0.20028,0.10294,0.04902,0.11111
+concepts/TTCG P(fake),val,aug,generator,grad_tts,306,9,0.00980,0.00490,0.04902,0.00000
+concepts/TTCG P(fake),val,aug,generator,openvoicev2,306,10,0.00980,0.00490,0.04902,0.00000
+concepts/TTCG P(fake),val,aug,generator,playht,306,11,0.00980,0.00490,0.04902,0.00000
+concepts/TTCG P(fake),val,aug,generator,pro_diff,306,14,0.01307,0.00654,0.04902,0.00000
+concepts/TTCG P(fake),val,aug,generator,unit_speech,306,12,0.00980,0.00490,0.04902,0.00000
+concepts/TTCG P(fake),val,aug,generator,wavegrad2,306,10,0.00980,0.00490,0.04902,0.00000
+concepts/TTCG P(fake),val,aug,generator,xtts_v2,306,10,0.01307,0.00654,0.04902,0.00000
+concepts/TTCG P(fake),val,aug,generator,your_tts,306,13,0.00980,0.00490,0.04902,0.00000
+concepts/TTCG P(fake),val,aug,real source,real_extra,73,107,0.02972,0.01152,0.04110,0.00935
+concepts/TTCG P(fake),val,aug,real source,real_lj,233,107,0.02890,0.01111,0.05150,0.00935
+concepts/TTCG P(fake),val,aug,channel,codec,86,34,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),val,aug,channel,telephony,34,7,0.02941,0.01471,0.08824,0.00000
+concepts/TTCG P(fake),val,aug,channel,bandlimit,27,12,0.00000,0.00000,0.03704,0.00000
+concepts/TTCG P(fake),val,aug,channel,resample,28,9,0.00000,0.00000,0.03571,0.00000
+concepts/TTCG P(fake),val,aug,channel,tilt,72,26,0.00000,0.00000,0.02778,0.00000
+concepts/TTCG P(fake),val,aug,channel,noise,65,23,0.01538,0.00769,0.04615,0.00000
+concepts/TTCG P(fake),val,aug,channel,hum,25,11,0.00000,0.00000,0.04000,0.00000
+concepts/TTCG P(fake),val,aug,channel,reverb,48,15,0.15595,0.06458,0.16667,0.06667
+concepts/TTCG P(fake),val,aug,channel,clipping,24,6,0.04167,0.02083,0.08333,0.00000
+concepts/TTCG P(fake),val,aug,channel,codec_aac,14,6,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),val,aug,channel,codec_g711,18,7,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),val,aug,channel,codec_g722,9,7,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),val,aug,channel,codec_g726,16,6,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),val,aug,channel,codec_mp3,19,2,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),val,aug,channel,codec_opus,10,6,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),val,aug,channel,noise_babble,14,4,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),val,aug,channel,noise_brown,16,8,0.06250,0.09375,0.12500,0.00000
+concepts/TTCG P(fake),val,aug,channel,noise_pink,13,5,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),val,aug,channel,noise_white,22,6,0.00000,0.00000,0.04545,0.00000
+concepts/TTCG P(fake),val,aug,duration,3-4 s,235,80,0.01702,0.01476,0.05532,0.00000
+concepts/TTCG P(fake),val,aug,duration,4-6 s,39,25,0.06857,0.04564,0.02564,0.04000
+concepts/TTCG P(fake),val,aug,duration,>6 s,3,2,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),holdout,clean,generator,diffgan_tts,156,11,0.00000,0.00000,0.03205,0.00000
+concepts/TTCG P(fake),holdout,clean,generator,elevenlabs,156,18,0.00000,0.00000,0.03205,0.00000
+concepts/TTCG P(fake),holdout,clean,generator,grad_tts,156,14,0.00000,0.00000,0.03205,0.00000
+concepts/TTCG P(fake),holdout,clean,generator,openvoicev2,156,20,0.00000,0.00000,0.03205,0.00000
+concepts/TTCG P(fake),holdout,clean,generator,playht,156,14,0.00000,0.00000,0.03205,0.00000
+concepts/TTCG P(fake),holdout,clean,generator,pro_diff,156,10,0.00000,0.00000,0.03205,0.00000
+concepts/TTCG P(fake),holdout,clean,generator,unit_speech,156,19,0.00000,0.00000,0.03205,0.00000
+concepts/TTCG P(fake),holdout,clean,generator,wavegrad2,156,13,0.00000,0.00000,0.03205,0.00000
+concepts/TTCG P(fake),holdout,clean,generator,xtts_v2,156,17,0.00000,0.00000,0.03205,0.00000
+concepts/TTCG P(fake),holdout,clean,generator,your_tts,156,28,0.00000,0.00000,0.03205,0.00000
+concepts/TTCG P(fake),holdout,clean,real source,real_extra,43,164,0.00000,0.00000,0.02326,0.00000
+concepts/TTCG P(fake),holdout,clean,real source,real_libri,15,164,0.00000,0.00000,0.13333,0.00000
+concepts/TTCG P(fake),holdout,clean,real source,real_lj,98,164,0.00000,0.00000,0.02041,0.00000
+concepts/TTCG P(fake),holdout,clean,duration,2-3 s,13,5,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),holdout,clean,duration,3-4 s,115,128,0.00000,0.00000,0.03478,0.00000
+concepts/TTCG P(fake),holdout,clean,duration,4-6 s,20,30,0.00000,0.00000,0.05000,0.00000
+concepts/TTCG P(fake),holdout,clean,duration,>6 s,3,1,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),holdout,aug,generator,diffgan_tts,139,13,0.01439,0.00719,0.03597,0.00000
+concepts/TTCG P(fake),holdout,aug,generator,elevenlabs,139,15,0.02878,0.01439,0.03597,0.00000
+concepts/TTCG P(fake),holdout,aug,generator,grad_tts,139,13,0.18942,0.07803,0.03597,0.15385
+concepts/TTCG P(fake),holdout,aug,generator,openvoicev2,139,12,0.01439,0.00719,0.03597,0.00000
+concepts/TTCG P(fake),holdout,aug,generator,playht,139,12,0.30010,0.13369,0.03597,0.16667
+concepts/TTCG P(fake),holdout,aug,generator,pro_diff,139,8,0.01439,0.00719,0.03597,0.00000
+concepts/TTCG P(fake),holdout,aug,generator,unit_speech,139,19,0.02878,0.04070,0.03597,0.00000
+concepts/TTCG P(fake),holdout,aug,generator,wavegrad2,139,13,0.15345,0.07803,0.03597,0.07692
+concepts/TTCG P(fake),holdout,aug,generator,xtts_v2,139,16,0.03597,0.04924,0.03597,0.00000
+concepts/TTCG P(fake),holdout,aug,generator,your_tts,139,25,0.09735,0.04158,0.03597,0.04000
+concepts/TTCG P(fake),holdout,aug,real source,real_extra,43,146,0.15173,0.06913,0.09302,0.04110
+concepts/TTCG P(fake),holdout,aug,real source,real_libri,12,146,0.08219,0.06564,0.08333,0.04110
+concepts/TTCG P(fake),holdout,aug,real source,real_lj,84,146,0.07045,0.03498,0.00000,0.04110
+concepts/TTCG P(fake),holdout,aug,channel,codec,38,46,0.06358,0.02403,0.05263,0.02174
+concepts/TTCG P(fake),holdout,aug,channel,telephony,10,11,0.10000,0.09545,0.10000,0.00000
+concepts/TTCG P(fake),holdout,aug,channel,bandlimit,14,20,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),holdout,aug,channel,resample,22,15,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),holdout,aug,channel,tilt,28,25,0.00000,0.00000,0.03571,0.00000
+concepts/TTCG P(fake),holdout,aug,channel,noise,26,29,0.09757,0.03647,0.03846,0.06897
+concepts/TTCG P(fake),holdout,aug,channel,hum,16,13,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),holdout,aug,channel,reverb,25,18,0.63619,0.27889,0.16000,0.27778
+concepts/TTCG P(fake),holdout,aug,channel,clipping,7,7,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),holdout,aug,channel,codec_aac,5,2,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),holdout,aug,channel,codec_g711,5,4,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),holdout,aug,channel,codec_g722,12,13,0.13187,0.08013,0.08333,0.07692
+concepts/TTCG P(fake),holdout,aug,channel,codec_g726,2,8,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),holdout,aug,channel,codec_mp3,7,9,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),holdout,aug,channel,codec_opus,7,10,0.14286,0.12143,0.14286,0.00000
+concepts/TTCG P(fake),holdout,aug,channel,noise_babble,7,8,0.00000,0.00000,0.00000,0.12500
+concepts/TTCG P(fake),holdout,aug,channel,noise_brown,7,5,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),holdout,aug,channel,noise_pink,8,8,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),holdout,aug,channel,noise_white,4,8,0.21429,0.06250,0.25000,0.12500
+concepts/TTCG P(fake),holdout,aug,duration,2-3 s,12,2,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),holdout,aug,duration,3-4 s,103,118,0.12600,0.04970,0.03883,0.05085
+concepts/TTCG P(fake),holdout,aug,duration,4-6 s,14,24,0.00000,0.00000,0.07143,0.00000
+concepts/TTCG P(fake),holdout,aug,duration,>6 s,3,2,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),itw,clean,generator,itw_fake,319,322,0.04324,0.02184,0.05643,0.00932
+concepts/TTCG P(fake),itw,clean,real source,itw,319,322,0.04324,0.02184,0.05643,0.00932
+concepts/TTCG P(fake),itw,clean,duration,<2 s,87,69,0.09752,0.04473,0.08046,0.02899
+concepts/TTCG P(fake),itw,clean,duration,2-3 s,77,45,0.03896,0.02410,0.03896,0.02222
+concepts/TTCG P(fake),itw,clean,duration,3-4 s,141,177,0.01418,0.01557,0.04965,0.00000
+concepts/TTCG P(fake),itw,clean,duration,4-6 s,14,31,0.00000,0.00000,0.07143,0.00000
+concepts/TTCG P(fake),itw,aug,generator,itw_fake,332,323,0.11188,0.04581,0.09036,0.02477
+concepts/TTCG P(fake),itw,aug,real source,itw,332,323,0.11188,0.04581,0.09036,0.02477
+concepts/TTCG P(fake),itw,aug,channel,codec,87,94,0.05946,0.02213,0.05747,0.02128
+concepts/TTCG P(fake),itw,aug,channel,telephony,31,42,0.09677,0.06797,0.12903,0.00000
+concepts/TTCG P(fake),itw,aug,channel,bandlimit,35,37,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),itw,aug,channel,resample,38,37,0.15160,0.08001,0.10526,0.02703
+concepts/TTCG P(fake),itw,aug,channel,tilt,57,72,0.03509,0.03143,0.10526,0.00000
+concepts/TTCG P(fake),itw,aug,channel,noise,75,55,0.04000,0.03818,0.09333,0.00000
+concepts/TTCG P(fake),itw,aug,channel,hum,34,35,0.05882,0.02899,0.02941,0.02857
+concepts/TTCG P(fake),itw,aug,channel,reverb,53,43,0.44675,0.16630,0.18868,0.16279
+concepts/TTCG P(fake),itw,aug,channel,clipping,15,18,0.06667,0.06111,0.00000,0.05556
+concepts/TTCG P(fake),itw,aug,channel,codec_aac,15,16,0.06667,0.06458,0.20000,0.00000
+concepts/TTCG P(fake),itw,aug,channel,codec_g711,14,15,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),itw,aug,channel,codec_g722,13,20,0.07692,0.08846,0.07692,0.05000
+concepts/TTCG P(fake),itw,aug,channel,codec_g726,13,15,0.00000,0.00000,0.07692,0.00000
+concepts/TTCG P(fake),itw,aug,channel,codec_mp3,16,14,0.00000,0.00000,0.00000,0.00000
+concepts/TTCG P(fake),itw,aug,channel,codec_opus,16,14,0.12245,0.06696,0.00000,0.07143
+concepts/TTCG P(fake),itw,aug,channel,noise_babble,15,8,0.00000,0.00000,0.13333,0.00000
+concepts/TTCG P(fake),itw,aug,channel,noise_brown,11,16,0.00000,0.00000,0.09091,0.00000
+concepts/TTCG P(fake),itw,aug,channel,noise_pink,24,15,0.04167,0.05417,0.04167,0.00000
+concepts/TTCG P(fake),itw,aug,channel,noise_white,25,16,0.04000,0.02000,0.12000,0.00000
+concepts/TTCG P(fake),itw,aug,duration,<2 s,92,77,0.15427,0.06508,0.14130,0.02597
+concepts/TTCG P(fake),itw,aug,duration,2-3 s,83,46,0.06136,0.02292,0.06024,0.02174
+concepts/TTCG P(fake),itw,aug,duration,3-4 s,141,171,0.09977,0.04821,0.07801,0.02339
+concepts/TTCG P(fake),itw,aug,duration,4-6 s,14,26,0.06593,0.05495,0.00000,0.03846
+concepts/TTCG P(fake),itw,aug,duration,>6 s,2,3,0.50000,0.25000,0.50000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,generator,diffgan_tts,310,7,0.00000,0.00000,0.02258,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,generator,elevenlabs,310,6,0.00000,0.00000,0.02258,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,generator,grad_tts,310,10,0.00000,0.00000,0.02258,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,generator,openvoicev2,310,11,0.00000,0.00000,0.02258,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,generator,playht,310,11,0.00000,0.00000,0.02258,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,generator,pro_diff,310,16,0.00000,0.00000,0.02258,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,generator,unit_speech,310,10,0.00000,0.00000,0.02258,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,generator,wavegrad2,310,9,0.00000,0.00000,0.02258,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,generator,xtts_v2,310,10,0.00000,0.00000,0.02258,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,generator,your_tts,310,16,0.00000,0.00000,0.02258,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,real source,real_extra,77,106,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,real source,real_lj,233,106,0.00000,0.00000,0.03004,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,duration,<2 s,10,1,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,duration,3-4 s,227,89,0.00000,0.00000,0.02643,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,duration,4-6 s,40,15,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,clean,duration,>6 s,4,1,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,generator,diffgan_tts,306,9,0.20682,0.07680,0.04248,0.11111
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,generator,elevenlabs,306,9,0.20682,0.07680,0.04248,0.11111
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,generator,grad_tts,306,9,0.01634,0.00817,0.04248,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,generator,openvoicev2,306,10,0.01634,0.00817,0.04248,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,generator,playht,306,11,0.01634,0.00817,0.04248,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,generator,pro_diff,306,14,0.01961,0.00980,0.04248,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,generator,unit_speech,306,12,0.01634,0.00817,0.04248,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,generator,wavegrad2,306,10,0.01634,0.00817,0.04248,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,generator,xtts_v2,306,10,0.01634,0.00817,0.04248,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,generator,your_tts,306,13,0.01634,0.00817,0.04248,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,real source,real_extra,73,107,0.04574,0.01620,0.04110,0.01869
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,real source,real_lj,233,107,0.05350,0.02008,0.04292,0.01869
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,codec,86,34,0.05042,0.01471,0.00000,0.02941
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,telephony,34,7,0.02941,0.01471,0.08824,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,bandlimit,27,12,0.00000,0.00000,0.03704,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,resample,28,9,0.00000,0.00000,0.03571,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,tilt,72,26,0.00000,0.00000,0.02778,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,noise,65,23,0.01538,0.00769,0.04615,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,hum,25,11,0.00000,0.00000,0.04000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,reverb,48,15,0.31190,0.12917,0.12500,0.13333
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,clipping,24,6,0.04167,0.02083,0.08333,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,codec_aac,14,6,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,codec_g711,18,7,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,codec_g722,9,7,0.24490,0.07143,0.00000,0.14286
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,codec_g726,16,6,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,codec_mp3,19,2,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,codec_opus,10,6,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,noise_babble,14,4,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,noise_brown,16,8,0.06250,0.03125,0.12500,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,noise_pink,13,5,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,channel,noise_white,22,6,0.00000,0.00000,0.04545,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,duration,3-4 s,235,80,0.04696,0.02527,0.04681,0.01250
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,duration,4-6 s,39,25,0.06857,0.03282,0.02564,0.04000
+"concepts/TTCG P(fake), closed-form basic naming",val,aug,duration,>6 s,3,2,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,generator,diffgan_tts,156,11,0.00000,0.00000,0.03205,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,generator,elevenlabs,156,18,0.00000,0.00000,0.03205,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,generator,grad_tts,156,14,0.00000,0.00000,0.03205,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,generator,openvoicev2,156,20,0.00000,0.00000,0.03205,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,generator,playht,156,14,0.00000,0.00000,0.03205,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,generator,pro_diff,156,10,0.00000,0.00000,0.03205,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,generator,unit_speech,156,19,0.00000,0.00000,0.03205,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,generator,wavegrad2,156,13,0.00000,0.00000,0.03205,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,generator,xtts_v2,156,17,0.00000,0.00000,0.03205,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,generator,your_tts,156,28,0.00000,0.00000,0.03205,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,real source,real_extra,43,164,0.00000,0.00000,0.02326,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,real source,real_libri,15,164,0.00000,0.00000,0.13333,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,real source,real_lj,98,164,0.00000,0.00000,0.02041,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,duration,2-3 s,13,5,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,duration,3-4 s,115,128,0.00000,0.00000,0.03478,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,duration,4-6 s,20,30,0.00000,0.00000,0.05000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,clean,duration,>6 s,3,1,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,generator,diffgan_tts,139,13,0.02158,0.01079,0.04317,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,generator,elevenlabs,139,15,0.03597,0.05132,0.04317,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,generator,grad_tts,139,13,0.28532,0.09851,0.04317,0.15385
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,generator,openvoicev2,139,12,0.02158,0.01079,0.04317,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,generator,playht,139,12,0.30730,0.10492,0.04317,0.16667
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,generator,pro_diff,139,8,0.02158,0.01079,0.04317,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,generator,unit_speech,139,19,0.02878,0.04070,0.04317,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,generator,wavegrad2,139,13,0.15345,0.06004,0.04317,0.07692
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,generator,xtts_v2,139,16,0.04317,0.05283,0.04317,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,generator,your_tts,139,25,0.09735,0.04158,0.04317,0.04000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,real source,real_extra,43,146,0.16347,0.06913,0.09302,0.04110
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,real source,real_libri,12,146,0.08219,0.06564,0.08333,0.04110
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,real source,real_lj,84,146,0.08235,0.02650,0.01190,0.04110
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,codec,38,46,0.06358,0.02403,0.05263,0.02174
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,telephony,10,11,0.10000,0.05000,0.10000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,bandlimit,14,20,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,resample,22,15,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,tilt,28,25,0.00000,0.00000,0.03571,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,noise,26,29,0.11823,0.05371,0.03846,0.06897
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,hum,16,13,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,reverb,25,18,0.67619,0.23889,0.20000,0.27778
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,clipping,7,7,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,codec_aac,5,2,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,codec_g711,5,4,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,codec_g722,12,13,0.13187,0.08013,0.08333,0.07692
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,codec_g726,2,8,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,codec_mp3,7,9,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,codec_opus,7,10,0.14286,0.12143,0.14286,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,noise_babble,7,8,0.21429,0.06250,0.00000,0.12500
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,noise_brown,7,5,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,noise_pink,8,8,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,channel,noise_white,4,8,0.21429,0.06250,0.25000,0.12500
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,duration,2-3 s,12,2,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,duration,3-4 s,103,118,0.13571,0.04970,0.04854,0.05085
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,duration,4-6 s,14,24,0.00000,0.00000,0.07143,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",holdout,aug,duration,>6 s,3,2,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",itw,clean,generator,itw_fake,319,322,0.04010,0.01872,0.05016,0.01242
+"concepts/TTCG P(fake), closed-form basic naming",itw,clean,real source,itw,319,322,0.04010,0.01872,0.05016,0.01242
+"concepts/TTCG P(fake), closed-form basic naming",itw,clean,duration,<2 s,87,69,0.10902,0.04473,0.05747,0.04348
+"concepts/TTCG P(fake), closed-form basic naming",itw,clean,duration,2-3 s,77,45,0.05108,0.02410,0.03896,0.02222
+"concepts/TTCG P(fake), closed-form basic naming",itw,clean,duration,3-4 s,141,177,0.00709,0.00637,0.04965,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",itw,clean,duration,4-6 s,14,31,0.07143,0.03571,0.07143,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,generator,itw_fake,332,323,0.11576,0.04276,0.07831,0.02786
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,real source,itw,332,323,0.11576,0.04276,0.07831,0.02786
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,codec,87,94,0.08245,0.03320,0.05747,0.02128
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,telephony,31,42,0.09677,0.06797,0.09677,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,bandlimit,35,37,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,resample,38,37,0.17161,0.08001,0.10526,0.05405
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,tilt,57,72,0.03509,0.03143,0.10526,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,noise,75,55,0.04000,0.02909,0.06667,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,hum,34,35,0.07839,0.02899,0.02941,0.02857
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,reverb,53,43,0.37554,0.16630,0.18868,0.16279
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,clipping,15,18,0.09524,0.02778,0.00000,0.05556
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,codec_aac,15,16,0.17381,0.06458,0.20000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,codec_g711,14,15,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,codec_g722,13,20,0.16264,0.06346,0.07692,0.05000
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,codec_g726,13,15,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,codec_mp3,16,14,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,codec_opus,16,14,0.12245,0.06696,0.06250,0.07143
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,noise_babble,15,8,0.00000,0.00000,0.06667,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,noise_brown,11,16,0.00000,0.00000,0.00000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,noise_pink,24,15,0.04167,0.02083,0.08333,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,channel,noise_white,25,16,0.08000,0.04000,0.08000,0.00000
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,duration,<2 s,92,77,0.14288,0.06508,0.09783,0.03896
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,duration,2-3 s,83,46,0.06136,0.02292,0.04819,0.02174
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,duration,3-4 s,141,171,0.09977,0.04821,0.07801,0.02339
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,duration,4-6 s,14,26,0.06593,0.01923,0.00000,0.03846
+"concepts/TTCG P(fake), closed-form basic naming",itw,aug,duration,>6 s,2,3,0.50000,0.25000,1.00000,0.00000
+DSP/D0,val,clean,generator,diffgan_tts,130,31,0.00769,0.00385,1.00000,0.54839
+DSP/D0,val,clean,generator,elevenlabs,130,23,0.06154,0.04482,1.00000,0.13043
+DSP/D0,val,clean,generator,grad_tts,130,28,0.09199,0.03709,1.00000,0.00000
+DSP/D0,val,clean,generator,openvoicev2,130,21,0.01538,0.00769,1.00000,0.09524
+DSP/D0,val,clean,generator,playht,130,30,0.05385,0.03205,1.00000,0.20000
+DSP/D0,val,clean,generator,pro_diff,130,24,0.00769,0.00385,1.00000,0.62500
+DSP/D0,val,clean,generator,unit_speech,130,23,0.01538,0.00769,1.00000,0.30435
+DSP/D0,val,clean,generator,wavegrad2,130,26,0.00000,0.00000,1.00000,0.50000
+DSP/D0,val,clean,generator,xtts_v2,130,31,0.01538,0.00769,1.00000,0.19355
+DSP/D0,val,clean,generator,your_tts,130,26,0.00769,0.00385,1.00000,0.50000
+DSP/D0,val,clean,real source,real_lj,130,263,0.04146,0.01530,1.00000,0.31179
+DSP/D0,holdout,clean,generator,diffgan_tts,243,43,0.06173,0.04589,0.95885,0.67442
+DSP/D0,holdout,clean,generator,elevenlabs,243,62,0.72750,0.28919,0.95885,0.06452
+DSP/D0,holdout,clean,generator,grad_tts,243,40,0.14985,0.07865,0.95885,0.05000
+DSP/D0,holdout,clean,generator,openvoicev2,243,60,0.24162,0.09938,0.95885,0.11667
+DSP/D0,holdout,clean,generator,playht,243,61,0.34628,0.14784,0.95885,0.13115
+DSP/D0,holdout,clean,generator,pro_diff,243,46,0.08230,0.04437,0.95885,0.80435
+DSP/D0,holdout,clean,generator,unit_speech,243,53,0.35687,0.15160,0.95885,0.26415
+DSP/D0,holdout,clean,generator,wavegrad2,243,32,0.06173,0.06006,0.95885,0.34375
+DSP/D0,holdout,clean,generator,xtts_v2,243,61,0.17625,0.09856,0.95885,0.21311
+DSP/D0,holdout,clean,generator,your_tts,243,56,0.15999,0.09197,0.95885,0.26786
+DSP/D0,holdout,clean,real source,real_libri,160,514,0.33969,0.14289,0.93750,0.27237
+DSP/D0,holdout,clean,real source,real_lj,83,514,0.11156,0.04842,1.00000,0.27237
+DSP/D0,itw,clean,generator,itw_fake,1250,1250,1.00000,0.66240,0.94320,0.00320
+DSP/D0,itw,clean,real source,itw,1250,1250,1.00000,0.66240,0.94320,0.00320

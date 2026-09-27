@@ -1,0 +1,414 @@
+{
+ "model": "artifacts/dsp/model",
+ "rows": 2597,
+ "decode_failures": 0,
+ "splits": [
+  "holdout"
+ ],
+ "where": null,
+ "full": {
+  "overall": {
+   "n": 2597,
+   "n_real": 821,
+   "n_synthetic": 1776,
+   "n_nonfinite": 0,
+   "auc": 0.885279158573921,
+   "ap": 0.8726150199536928,
+   "eer": 0.1315468940316687,
+   "log_loss": 0.6585979355904023,
+   "brier": 0.11928485740631922,
+   "log_loss_balanced": 0.7612525450844968,
+   "brier_balanced": 0.11756327686130684,
+   "threshold": 0.5,
+   "confusion": {
+    "tp": 1494,
+    "tn": 722,
+    "fp": 99,
+    "fn": 282
+   },
+   "sensitivity": 0.8412162162162162,
+   "specificity": 0.879415347137637,
+   "genuine_fpr": 0.12058465286236297,
+   "precision": 0.9378531073446328,
+   "f1": 0.8869100623330365,
+   "accuracy": 0.8532922603003466,
+   "balanced_accuracy": 0.8603157816769267,
+   "auc_ci95": {
+    "lo": 0.7666882526928956,
+    "hi": 0.9659208763423544,
+    "n_boot": 500,
+    "n_groups_real": 20,
+    "n_groups_synthetic": 201
+   },
+   "eer_ci95": {
+    "lo": 0.08760062154615447,
+    "hi": 0.2338863232778222,
+    "n_boot": 500,
+    "n_groups_real": 20,
+    "n_groups_synthetic": 201
+   }
+  },
+  "n_excluded_nonfinite": 0,
+  "per_generator": {
+   "diffgan_tts": {
+    "auc": 0.9309591477679175,
+    "eer": 0.07917174177831912,
+    "sensitivity": 1.0,
+    "n_fake": 126
+   },
+   "elevenlabs": {
+    "auc": 0.7461907935559489,
+    "eer": 0.2924528301886793,
+    "sensitivity": 0.5094339622641509,
+    "n_fake": 212
+   },
+   "grad_tts": {
+    "auc": 0.9030605339984147,
+    "eer": 0.11327649208282582,
+    "sensitivity": 0.8968253968253969,
+    "n_fake": 126
+   },
+   "openvoicev2": {
+    "auc": 0.904534277112587,
+    "eer": 0.10962241169305725,
+    "sensitivity": 0.9150943396226415,
+    "n_fake": 212
+   },
+   "playht": {
+    "auc": 0.8664077402155679,
+    "eer": 0.18392204628501826,
+    "sensitivity": 0.7405660377358491,
+    "n_fake": 212
+   },
+   "pro_diff": {
+    "auc": 0.9354059122634032,
+    "eer": 0.07917174177831912,
+    "sensitivity": 0.9841269841269841,
+    "n_fake": 126
+   },
+   "unit_speech": {
+    "auc": 0.8795360007354123,
+    "eer": 0.16981132075471694,
+    "sensitivity": 0.7783018867924528,
+    "n_fake": 212
+   },
+   "wavegrad2": {
+    "auc": 0.9239796608858728,
+    "eer": 0.08647990255785627,
+    "sensitivity": 0.9920634920634921,
+    "n_fake": 126
+   },
+   "xtts_v2": {
+    "auc": 0.9123537793303151,
+    "eer": 0.11084043848964677,
+    "sensitivity": 0.9198113207547169,
+    "n_fake": 212
+   },
+   "your_tts": {
+    "auc": 0.9121411991818537,
+    "eer": 0.12058465286236297,
+    "sensitivity": 0.8820754716981132,
+    "n_fake": 212
+   }
+  },
+  "per_real_source": {
+   "diffssd_real_ljspeech_16k": {
+    "n": 49,
+    "genuine_fpr@0.5": 0.02040816326530612,
+    "median_p": 0.0005725186491390636
+   },
+   "librispeech_train_clean_360": {
+    "n": 567,
+    "genuine_fpr@0.5": 0.1693121693121693,
+    "median_p": 0.042755776571389806
+   },
+   "ljspeech11_original_22k": {
+    "n": 205,
+    "genuine_fpr@0.5": 0.00975609756097561,
+    "median_p": 0.0008461845867294161
+   }
+  },
+  "per_fake_family": {
+   "lj_voice_tts": {
+    "auc": 0.923351313728902,
+    "eer": 0.09378806333739342
+   },
+   "voice_clone": {
+    "auc": 0.8701939650219476,
+    "eer": 0.1559074299634592
+   }
+  }
+ },
+ "core": {
+  "overall": {
+   "n": 2597,
+   "n_real": 821,
+   "n_synthetic": 1776,
+   "n_nonfinite": 0,
+   "auc": 0.883623574853782,
+   "ap": 0.9475536639547782,
+   "eer": 0.19819819819819817,
+   "log_loss": 0.516346847584381,
+   "brier": 0.1483482512664374,
+   "log_loss_balanced": 0.47213848662605906,
+   "brier_balanced": 0.13952633935674374,
+   "threshold": 0.5,
+   "confusion": {
+    "tp": 1388,
+    "tn": 677,
+    "fp": 144,
+    "fn": 388
+   },
+   "sensitivity": 0.7815315315315315,
+   "specificity": 0.8246041412911084,
+   "genuine_fpr": 0.1753958587088916,
+   "precision": 0.9060052219321149,
+   "f1": 0.8391777509068925,
+   "accuracy": 0.7951482479784366,
+   "balanced_accuracy": 0.80306783641132,
+   "auc_ci95": {
+    "lo": 0.8364016652504409,
+    "hi": 0.9254540379151531,
+    "n_boot": 500,
+    "n_groups_real": 20,
+    "n_groups_synthetic": 201
+   },
+   "eer_ci95": {
+    "lo": 0.14210209389063067,
+    "hi": 0.2522353534755913,
+    "n_boot": 500,
+    "n_groups_real": 20,
+    "n_groups_synthetic": 201
+   }
+  },
+  "n_excluded_nonfinite": 0,
+  "per_generator": {
+   "diffgan_tts": {
+    "auc": 0.9996713261025076,
+    "eer": 0.007936507936507908,
+    "sensitivity": 1.0,
+    "n_fake": 126
+   },
+   "elevenlabs": {
+    "auc": 0.6466458299818445,
+    "eer": 0.3702801461632156,
+    "sensitivity": 0.42924528301886794,
+    "n_fake": 212
+   },
+   "grad_tts": {
+    "auc": 0.8394718017129711,
+    "eer": 0.23809523809523814,
+    "sensitivity": 0.5952380952380952,
+    "n_fake": 126
+   },
+   "openvoicev2": {
+    "auc": 0.8767322409394893,
+    "eer": 0.220462850182704,
+    "sensitivity": 0.7216981132075472,
+    "n_fake": 212
+   },
+   "playht": {
+    "auc": 0.835480201319146,
+    "eer": 0.26415094339622647,
+    "sensitivity": 0.7075471698113207,
+    "n_fake": 212
+   },
+   "pro_diff": {
+    "auc": 0.9982502948398198,
+    "eer": 0.01705237515225335,
+    "sensitivity": 1.0,
+    "n_fake": 126
+   },
+   "unit_speech": {
+    "auc": 0.8679647461678118,
+    "eer": 0.24056603773584906,
+    "sensitivity": 0.7264150943396226,
+    "n_fake": 212
+   },
+   "wavegrad2": {
+    "auc": 0.9880324033795409,
+    "eer": 0.0535931790499391,
+    "sensitivity": 1.0,
+    "n_fake": 126
+   },
+   "xtts_v2": {
+    "auc": 0.9618045181899662,
+    "eer": 0.1132075471698113,
+    "sensitivity": 0.9669811320754716,
+    "n_fake": 212
+   },
+   "your_tts": {
+    "auc": 0.9402017787787558,
+    "eer": 0.1556603773584906,
+    "sensitivity": 0.8584905660377359,
+    "n_fake": 212
+   }
+  },
+  "per_real_source": {
+   "diffssd_real_ljspeech_16k": {
+    "n": 49,
+    "genuine_fpr@0.5": 0.0,
+    "median_p": 0.009318950509265846
+   },
+   "librispeech_train_clean_360": {
+    "n": 567,
+    "genuine_fpr@0.5": 0.25220458553791886,
+    "median_p": 0.20767882283656786
+   },
+   "ljspeech11_original_22k": {
+    "n": 205,
+    "genuine_fpr@0.5": 0.004878048780487805,
+    "median_p": 0.011744573089834419
+   }
+  },
+  "per_fake_family": {
+   "lj_voice_tts": {
+    "auc": 0.9563564565087099,
+    "eer": 0.1364190012180268
+   },
+   "voice_clone": {
+    "auc": 0.854804885896169,
+    "eer": 0.22327044025157228
+   }
+  }
+ },
+ "routed": {
+  "overall": {
+   "n": 2597,
+   "n_real": 821,
+   "n_synthetic": 1776,
+   "n_nonfinite": 0,
+   "auc": 0.885279158573921,
+   "ap": 0.8726150199536928,
+   "eer": 0.1315468940316687,
+   "log_loss": 0.6585979355904023,
+   "brier": 0.11928485740631922,
+   "log_loss_balanced": 0.7612525450844968,
+   "brier_balanced": 0.11756327686130684,
+   "threshold": 0.5,
+   "confusion": {
+    "tp": 1494,
+    "tn": 722,
+    "fp": 99,
+    "fn": 282
+   },
+   "sensitivity": 0.8412162162162162,
+   "specificity": 0.879415347137637,
+   "genuine_fpr": 0.12058465286236297,
+   "precision": 0.9378531073446328,
+   "f1": 0.8869100623330365,
+   "accuracy": 0.8532922603003466,
+   "balanced_accuracy": 0.8603157816769267,
+   "auc_ci95": {
+    "lo": 0.7666882526928956,
+    "hi": 0.9659208763423544,
+    "n_boot": 500,
+    "n_groups_real": 20,
+    "n_groups_synthetic": 201
+   },
+   "eer_ci95": {
+    "lo": 0.08760062154615447,
+    "hi": 0.2338863232778222,
+    "n_boot": 500,
+    "n_groups_real": 20,
+    "n_groups_synthetic": 201
+   }
+  },
+  "n_excluded_nonfinite": 0,
+  "per_generator": {
+   "diffgan_tts": {
+    "auc": 0.9309591477679175,
+    "eer": 0.07917174177831912,
+    "sensitivity": 1.0,
+    "n_fake": 126
+   },
+   "elevenlabs": {
+    "auc": 0.7461907935559489,
+    "eer": 0.2924528301886793,
+    "sensitivity": 0.5094339622641509,
+    "n_fake": 212
+   },
+   "grad_tts": {
+    "auc": 0.9030605339984147,
+    "eer": 0.11327649208282582,
+    "sensitivity": 0.8968253968253969,
+    "n_fake": 126
+   },
+   "openvoicev2": {
+    "auc": 0.904534277112587,
+    "eer": 0.10962241169305725,
+    "sensitivity": 0.9150943396226415,
+    "n_fake": 212
+   },
+   "playht": {
+    "auc": 0.8664077402155679,
+    "eer": 0.18392204628501826,
+    "sensitivity": 0.7405660377358491,
+    "n_fake": 212
+   },
+   "pro_diff": {
+    "auc": 0.9354059122634032,
+    "eer": 0.07917174177831912,
+    "sensitivity": 0.9841269841269841,
+    "n_fake": 126
+   },
+   "unit_speech": {
+    "auc": 0.8795360007354123,
+    "eer": 0.16981132075471694,
+    "sensitivity": 0.7783018867924528,
+    "n_fake": 212
+   },
+   "wavegrad2": {
+    "auc": 0.9239796608858728,
+    "eer": 0.08647990255785627,
+    "sensitivity": 0.9920634920634921,
+    "n_fake": 126
+   },
+   "xtts_v2": {
+    "auc": 0.9123537793303151,
+    "eer": 0.11084043848964677,
+    "sensitivity": 0.9198113207547169,
+    "n_fake": 212
+   },
+   "your_tts": {
+    "auc": 0.9121411991818537,
+    "eer": 0.12058465286236297,
+    "sensitivity": 0.8820754716981132,
+    "n_fake": 212
+   }
+  },
+  "per_real_source": {
+   "diffssd_real_ljspeech_16k": {
+    "n": 49,
+    "genuine_fpr@0.5": 0.02040816326530612,
+    "median_p": 0.0005725186491390636
+   },
+   "librispeech_train_clean_360": {
+    "n": 567,
+    "genuine_fpr@0.5": 0.1693121693121693,
+    "median_p": 0.042755776571389806
+   },
+   "ljspeech11_original_22k": {
+    "n": 205,
+    "genuine_fpr@0.5": 0.00975609756097561,
+    "median_p": 0.0008461845867294161
+   }
+  },
+  "per_fake_family": {
+   "lj_voice_tts": {
+    "auc": 0.923351313728902,
+    "eer": 0.09378806333739342
+   },
+   "voice_clone": {
+    "auc": 0.8701939650219476,
+    "eer": 0.1559074299634592
+   }
+  }
+ },
+ "routed_frac_extended": 1.0,
+ "components_raw_auc": {
+  "gmm": 0.8575210411385806,
+  "lr_core": 0.8644904039240215,
+  "lr_full": 0.8820989838803481
+ }
+}
