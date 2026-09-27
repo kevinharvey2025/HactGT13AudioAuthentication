@@ -21,3 +21,29 @@ The v1 file most likely matches the interim DM by its time stamp (10:36 PM EDT);
 **Recommendation:** v3 as the final file. The Docker image that judges run produces v3, and v3 follows the same
 recipe as v2 without the batch-order dependence. Since the better score counts, the final cannot lower our result
 below the interim's 0.0317.
+
+## The three options (9/27, 5:10 AM EDT)
+
+All three come from the same pipeline and the shipped fusion recipe (`scripts/candidate.sh`: z statistics and Platt at
+the 30% prior on val + In-the-Wild). All three are scored through `predict.py`, the Docker path. They differ only in
+the ensemble members.
+
+| File | SHA-256 (first 16) | Tactic | Members |
+|---|---|---|---|
+| `a_verified.tsv` | `8640b624cfbf2c96` | exact reproducibility (= `v3_final_wholeclip.tsv`) | XLS-R-2B@3, XLS-R-1B@2, MMS-1B@3 |
+| `b_robustness.tsv` | `cddd231828def976` | RawBoost augmentation in the XLS-R-1B member | XLS-R-2B@3, R3 (RawBoost LnL→ISD→SSI)@3, MMS-1B@3 |
+| `c_breadth.tsv` | `77e7cea28138076e` | more members across seeds and recipes | A's three + XLS-R-1B seed 1@3 + WiSE-FT XLS-R-2B (α 0.3) |
+
+`comparison.csv` (from `scripts/compare_candidates.py`) holds the comparison below. In-the-Wild minDCF (2,500 clips)
+is in-sample for calibration, as in the shipped recipe.
+
+| Option | ITW clean | ITW perturbed | Test flagged (P > 0.2) | Test decisions equal to A | Spearman with A |
+|---|---|---|---|---|---|
+| A | 0.0281 | 0.0824 | 28.19% | – | – |
+| B | 0.0287 | 0.0822 | 28.19% | 99.88% | 0.990 |
+| C | 0.0297 | 0.0782 | 28.25% | 99.82% | 0.987 |
+
+**Reading.** The options differ by 2–3 test decisions out of 1,671, and none differs from A outside the noise.
+- B's RawBoost member did not pass the predeclared gates (`results/rawboost/decisions.md`).
+- C trades a little clean accuracy for a little robustness under perturbation.
+- A stays the recommendation: it is the file the Docker image reproduces and the system every document describes.

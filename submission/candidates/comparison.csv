@@ -1,0 +1,4 @@
+candidate,members,itw_n,itw_clean,itw_aug,test_flagged,agree_with_A,spearman_with_A
+A_verified,xlsr2b_d6rall@3 + xlsr1b_d6rall@2 + mms1b_d6rall@3,2500,0.0281,0.0824,0.2819,1.0000,1.0000
+robustness,xlsr2b_d6rall@3 + rb_R3_xlsr1b_s0@3 + mms1b_d6rall@3,2500,0.0287,0.0822,0.2819,0.9988,0.9900
+breadth,xlsr2b_d6rall@3 + xlsr1b_d6rall@2 + mms1b_d6rall@3 + xlsr1b_d6rall_s1@3 + xlsr2b_wise030@0,2500,0.0297,0.0782,0.2825,0.9982,0.9865

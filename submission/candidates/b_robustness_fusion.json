@@ -1,0 +1,36 @@
+{
+ "systems": [
+  {
+   "name": "xlsr2b_d6rall",
+   "backbone": "adf_xlsr_2b",
+   "epoch": 3,
+   "checkpoint": "runs/diffusion/ft/xlsr2b_d6rall/best.pt",
+   "z_mean": -1.9334971904754639,
+   "z_std": 9.068236351013184
+  },
+  {
+   "name": "rb_R3_xlsr1b_s0",
+   "backbone": "adf_xlsr_1b",
+   "epoch": 3,
+   "checkpoint": "runs/diffusion/ft/rb_R3_xlsr1b_s0/best.pt",
+   "z_mean": -1.5870697498321533,
+   "z_std": 8.040596961975098
+  },
+  {
+   "name": "mms1b_d6rall",
+   "backbone": "adf_mms_1b",
+   "epoch": 3,
+   "checkpoint": "runs/diffusion/ft/mms1b_d6rall/best.pt",
+   "z_mean": -1.5866365432739258,
+   "z_std": 8.449971199035645
+  }
+ ],
+ "platt": {
+  "coef": 6.903102371519225,
+  "intercept": -2.1490292363043006,
+  "prior": 0.3
+ },
+ "team": "SideQuests",
+ "label": "robustness",
+ "note": "fused = mean_k (logit_k - z_mean_k) / z_std_k ; p = sigmoid(coef * fused + intercept)"
+}
