@@ -17,14 +17,11 @@ COPY configs/ configs/
 COPY predict.py .
 COPY artifacts/diffusion/ artifacts/diffusion/
 ARG WEIGHTS_REPO=""
-# bake the pretrained AntiDeepfake encoders named in fusion.json (and, optionally, our fine-tuned weights)
+# the fine-tuned checkpoints hold every tensor, so no base model is downloaded; optionally fetch them from a
+# Hugging Face model repo instead of the build context
 RUN python - <<'PY'
-import json, os
-from huggingface_hub import hf_hub_download, snapshot_download
-from hearsay.antideepfake import VARIANTS
-spec = json.load(open("artifacts/diffusion/fusion.json"))
-for s in spec["systems"]:
-    hf_hub_download(VARIANTS[s["backbone"][len("adf_"):]][0], "model.safetensors")
+import os
+from huggingface_hub import snapshot_download
 if os.environ.get("WEIGHTS_REPO"):
     snapshot_download(os.environ["WEIGHTS_REPO"], local_dir="artifacts/diffusion")
 PY

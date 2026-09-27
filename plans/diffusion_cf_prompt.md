@@ -729,3 +729,59 @@ for Track A (detector), fusion and Track D. Numbers are from the cited sources o
 [D-Mo26] https://arxiv.org/abs/2607.26472 · [D-DF] https://arxiv.org/abs/2409.08731 · [D-Y26] https://arxiv.org/abs/2606.08038 ·
 [D-DoC] https://arxiv.org/abs/2410.06796 · [D-AF24] https://arxiv.org/abs/2405.04181 · [D-CF+] https://arxiv.org/abs/2501.08238 ·
 [D-GR25] https://arxiv.org/abs/2506.03425 · [D-APEX] https://arxiv.org/abs/2605.10153 · [MU21] https://arxiv.org/abs/2106.12914
+
+---
+
+## Addendum E — D5 grounded in the cognitive science of concepts (Sat Sep 26 2026, night; user-approved Track D)
+
+Implemented in `hearsay/concepts.py`, `scripts/run_concepts.py`, `scripts/run_basic_level.py`,
+`hearsay/diffusion/prototypes.py`. The embedding space is the fine-tuned detector's own last-layer time-mean,
+PCA-whitened (32 dims) on train rows, so concepts describe what the detector actually sees.
+
+### E.1 Theory we operationalize
+| Idea (source) | Definition we use | Where |
+|---|---|---|
+| **Prototype theory** (Posner & Keele 1968; Rosch 1973, 1975) | a category is summarized by its central tendency and graded typicality; members closer to the prototype are more typical | one diagonal Gaussian per source (generator / vocoder / real corpus) and per channel condition; typicality = 1 − χ²_d CDF of the Mahalanobis distance to the concept |
+| **Family resemblance** (Rosch & Mervis 1975) | typicality correlates with shared attributes (r = .84–.94) | typicality percentile reported per explanation |
+| **Exemplar theory / GCM** (Medin & Schaffer 1978; Nosofsky 1986) and the **varying-abstraction continuum** (Vanpaemel & Storms 2008) | categories as stored exemplars; prototype and exemplar models are the two ends of one continuum | the concept tree spans the continuum: shallow nodes ≈ prototypes, leaves ≈ exemplars |
+| **Category utility** (Gluck & Corter 1985; Corter & Gluck 1992) | CU(c) = P(c) Σ_k [P(f_k∣c)² − P(f_k)²]; the level maximizing CU matches the human **basic level** (Rosch et al. 1976) | continuous form below |
+| **COBWEB** (Fisher 1987) / **CLASSIT** (Gennari, Langley & Fisher 1989) | incremental hierarchical clustering; each instance is sorted top-down and at every node the operator (add to best child, new child, merge two best, split best) with the highest partition CU wins; for Gaussian attributes CU ∝ (1/K) Σ_k P(C_k) Σ_i (1/σ_ik − 1/σ_ip), σ floored at an **acuity** | `ConceptTree.ifit` (acuity 0.25 in whitened units) |
+| **Diffusion ↔ concept formation** (Wang, Singaravadivelan & MacLellan, arXiv 2609.13047) | diffusion marginals and Cobweb trees are the same hierarchical Gaussian-prototype model: noise level ↔ depth, mode Gaussian ↔ node; the basic level is where held-out **D(c) = E_{x∼c}[pmi(x; c)] = KL(p(x∣c) ‖ p(x))** peaks (depth 3 for Cobweb/4V, t ≈ 150 for diffusion on MNIST) | held-out I(X;C) per depth (tree) and I(label; level-t concept) per noise level (DDPM) |
+| **Prototype composition** (Wang, Gupta, Zhu & MacLellan, arXiv 2605.07078) | F(S) = Σ_r max_{j∈S} ℓ_{j,r}(x) is a facility-location function (monotone submodular); greedy K ≤ 3; per-dimension softmax weights (τ = 0.5) form a product of experts | `prototypes.greedy_select` / `explain`; the whitened root N(0, I) is the per-dimension baseline, which restores the (1 − 1/e) greedy guarantee for possibly negative log-likelihoods (Nemhauser, Wolsey & Fisher 1978) |
+
+### E.2 What we compute and report
+1. **Basic level, both definitions** (they can disagree): (a) the depth whose held-out I(X;C) = mean pmi is highest
+   (DMCF), (b) the path node maximizing P(c)·KL(c ∥ root) (the lab code's `get_basic`), plus category utility,
+   I(fake; C_d) and I(source; C_d) per depth; and the diffusion counterpart: an unconditional DDPM over the same space
+   and I(real/fake; level-t mode concept) over t ∈ {10 … 800}.
+2. **Prototype scores** gated like any detector (val / holdout / In-the-Wild, clean + augmented): the concept-tree
+   posterior and the prototype-mixture LLR log Σ_fake π_j N(x; m_j, S_j) − log Σ_real π_j N(x; m_j, S_j).
+3. **Explanations** per test clip: basic-level concept (training make-up by source, typicality), deepest concept,
+   the composed prototypes (e.g. "channel = telephony; closest generator = xtts_v2"), and a **novelty flag** when no
+   prototype explains the clip better than 99% of training clips (Cobweb's *create*, Anderson's new-cluster prior).
+4. **Checks** (so explanations are not voice/corpus clusters in disguise): NMI of basic-level concepts with speaker,
+   source, native sample rate and duration, versus with the real/fake label; ARI of the basic-level partition across
+   three insertion orders (COBWEB is order-sensitive; Fisher 1996).
+
+### E.3 Known confounds (DiffSSD) and how they show up
+The LJ-voice systems (Grad-TTS, ProDiff, WaveGrad 2, DiffGAN-TTS) all speak with the LJSpeech voice; the cloners use
+10 LibriSpeech speakers; native rates differ (16/22.05/24/44.1 kHz); fake and real clips read different texts. A
+"Grad-TTS prototype" can therefore be "LJ voice + text domain". Our mitigations: the canonical view (rate, band, level,
+duration equalized), speaker-matched real LJSpeech and LibriSpeech, and the leakage check above. First measurement
+(frozen WavLM space, smoke test): basic-level concepts carry more speaker (NMI 0.28) than real/fake (0.10)
+information, and the prototype-mixture LLR (val AUC 0.93) beats the tree posterior (0.76) — the fine-tuned space is
+where the module is meant to operate.
+
+### References (E)
+Posner & Keele 1968 https://doi.org/10.1037/h0025953 · Rosch 1973 https://doi.org/10.1016/0010-0285(73)90017-0 ·
+Rosch 1975 https://doi.org/10.1037/0096-3445.104.3.192 · Rosch & Mervis 1975 https://doi.org/10.1016/0010-0285(75)90024-9 ·
+Rosch et al. 1976 https://doi.org/10.1016/0010-0285(76)90013-X · Medin & Schaffer 1978 https://doi.org/10.1037/0033-295X.85.3.207 ·
+Nosofsky 1986 https://doi.org/10.1037/0096-3445.115.1.39 · Vanpaemel & Storms 2008 https://doi.org/10.3758/PBR.15.4.732 ·
+Gluck & Corter 1985 (Proc. CogSci 7, 283–287) · Corter & Gluck 1992 https://doi.org/10.1037/0033-2909.111.2.291 ·
+Fisher 1987 https://doi.org/10.1007/BF00114265 · Gennari, Langley & Fisher 1989 https://doi.org/10.1016/0004-3702(89)90046-5 ·
+Fisher 1996 https://doi.org/10.1613/jair.276 · Anderson 1991 https://doi.org/10.1037/0033-295X.98.3.409 ·
+Love, Medin & Gureckis 2004 https://doi.org/10.1037/0033-295X.111.2.309 · Kruschke 1992 https://doi.org/10.1037/0033-295X.99.1.22 ·
+Cobweb/4V https://arxiv.org/abs/2402.16933 · DMCF https://arxiv.org/abs/2609.13047 · TTCG https://arxiv.org/abs/2605.07078 ·
+Sclocchi et al. https://arxiv.org/abs/2402.16991 · Nemhauser, Wolsey & Fisher 1978 https://doi.org/10.1007/BF01588971 ·
+Snell et al. 2017 https://arxiv.org/abs/1703.05175 · ProtoPNet https://arxiv.org/abs/1806.10574 ·
+lab code https://github.com/Teachable-AI-Lab/cobweb · https://github.com/cmaclell/concept_formation

@@ -68,12 +68,15 @@ def _rename(k):
     raise KeyError(f"unmapped AntiDeepfake tensor: {k}")
 
 
-def load(name, device="cpu"):
-    """-> (encoder: transformers model, head: torch.nn.Linear [fake, real] logits)."""
+def load(name, device="cpu", pretrained=True):
+    """-> (encoder: transformers model, head: torch.nn.Linear [fake, real] logits).
+    pretrained=False builds the architecture only (for loading a full fine-tuned state dict offline)."""
     from transformers import HubertModel, Wav2Vec2Model
     repo, arch, hidden, layers, ffn = VARIANTS[name]
-    sd = load_file(hf_hub_download(repo, "model.safetensors"))
     enc = (HubertModel if arch == "hubert" else Wav2Vec2Model)(_config(arch, hidden, layers, ffn))
+    if not pretrained:
+        return enc.eval().to(device), torch.nn.Linear(hidden, 2).eval().to(device)
+    sd = load_file(hf_hub_download(repo, "model.safetensors"))
     target = enc.state_dict()
     # weight norm of the positional conv: plain (weight_g/_v) or parametrized (original0/1) depending on torch
     g_key = next(k for k in target if k.startswith("encoder.pos_conv_embed.conv.") and k.endswith(("weight_g", "original0")))

@@ -24,6 +24,8 @@ FT = config.RUNS / "ft"
 
 
 def load_run(name, epoch, sets):
+    name, _, at = name.partition("@")           # run@epoch overrides --epoch for that run
+    epoch = at or epoch
     d = FT / name
     ep = json.load(open(d / "best.json"))["epoch"] if epoch == "best" else int(epoch)
     ev = {s: pd.read_parquet(d / f"{s}_epoch{ep}.parquet") for s in sets if (d / f"{s}_epoch{ep}.parquet").exists()}
@@ -68,9 +70,13 @@ def main():
     for name in systems:
         ref = np.concatenate([stacked(name, s)[1] for s in calib if key_sets.get(s) is not None])
         mu, sd = float(ref.mean()), float(ref.std() + 1e-6)
-        cfg = json.load(open(FT / name / "config.json"))
-        spec.append(dict(name=name, backbone=cfg["backbone"], epoch=summary["runs"][name]["epoch"],
-                         checkpoint=f"runs/diffusion/ft/{name}/best.pt", z_mean=mu, z_std=sd))
+        run = name.split("@")[0]
+        cfg = json.load(open(FT / run / "config.json"))
+        best_ep = json.load(open(FT / run / "best.json"))["epoch"] if (FT / run / "best.json").exists() else None
+        if summary["runs"][name]["epoch"] != best_ep:
+            print(f"WARNING: {name}: epoch {summary['runs'][name]['epoch']} is not the saved best.pt (epoch {best_ep})")
+        spec.append(dict(name=run, backbone=cfg["backbone"], epoch=summary["runs"][name]["epoch"],
+                         checkpoint=f"runs/diffusion/ft/{run}/best.pt", z_mean=mu, z_std=sd))
         z[name] = {s: (stacked(name, s)[0], (stacked(name, s)[1] - mu) / sd) for s in key_sets if key_sets[s] is not None}
         zt[name] = (systems[name][1].set_index("filename").score - mu) / sd
         for s in report:

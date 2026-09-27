@@ -316,6 +316,9 @@ def main():
             json.dump(best, open(out / "best.json", "w"), indent=1)
         elif ep == 0 and best is None and not args.final:
             best = r  # zero-shot is the bar a fine-tuned checkpoint must beat on val
+            if args.wise_from:  # an interpolated model is a system of its own: keep its weights
+                torch.save({k: v.to(torch.bfloat16) for k, v in model.state_dict().items()}, out / "best.pt")
+                json.dump(best, open(out / "best.json", "w"), indent=1)
     print("best:", json.dumps({k: (round(v, 4) if isinstance(v, float) else v) for k, v in best.items()}))
 
 

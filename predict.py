@@ -10,7 +10,14 @@ For every audio file in --input (any container/codec ffmpeg reads):
      (edge-silence trim, 7 kHz low-pass, DC removal, peak-normalize, 1-LSB dither);
   3. each fine-tuned anti-spoofing detector listed in <artifacts>/fusion.json gives a synthetic logit
      (logit_fake - logit_real); logits are z-normalized with the stored statistics, averaged, and mapped to
-     P(synthetic) with the stored Platt calibration (fitted on validation + In-the-Wild clips, never on test).
+     P(synthetic) with the stored Platt calibration (fitted on validation + In-the-Wild clips, never on test);
+  4. the router (agentic orchestration) decides per file which further analyses run, from the triage facts and
+     the detector's confidence, and records every decision with its reason in the trace:
+       - uncertain score (0.05 < P < 0.8)            -> windowed re-scoring (splice/partial-fake check) + concept explanation
+       - lossy codec or high declared rate but narrow band -> compression/bandwidth cross-check (metadata vs signal)
+       - clip longer than 6 s                          -> windowed re-scoring (voice/score drift across the clip)
+       - confident score and clean container          -> stop (saves compute)
+     Only the fused detector score is written to the TSV; the routed analyses explain it.
 Output rows follow --template (the organizers' prefilled TSV) when given, else sorted filenames; files that fail
 to decode are listed in <output>/failures.tsv and the export is refused (no invented scores).
 """
@@ -32,9 +39,10 @@ AUDIO_EXT = {".wav", ".mp3", ".m4a", ".mp4", ".aac", ".ogg", ".opus", ".flac", "
 
 
 class Detector(torch.nn.Module):
-    def __init__(self, backbone):
+    def __init__(self, backbone, pretrained=False):
         super().__init__()
-        self.enc, self.head = antideepfake.load(backbone[len("adf_"):])
+        # architecture only: the fine-tuned checkpoint holds every tensor (no base-model download at inference)
+        self.enc, self.head = antideepfake.load(backbone[len("adf_"):], pretrained=pretrained)
 
     def forward(self, x):
         h = self.enc(antideepfake.standardize(x)).last_hidden_state.mean(1)
@@ -113,6 +121,33 @@ def main():
     prob = 1 / (1 + np.exp(-(spec["platt"]["coef"] * fused + spec["platt"]["intercept"])))
     prob = np.clip(prob, 1e-6, 1 - 1e-6)
     scores = dict(zip(ok, prob))
+
+    # ---- router: targeted analyses per file (explanations; the TSV score stays the fused detector score)
+    window_model = systems[0][1]
+    for t, x, p in zip([t for t in traces if t["filename"] in scores], xs, [scores[f] for f in ok]):
+        tri = t.get("triage", {})
+        reasons = {}
+        if 0.05 < p < 0.8:
+            reasons["windowed_rescoring"] = f"detector score {p:.2f} in the uncertain band"
+        if len(x) > 6 * config.SR:
+            reasons.setdefault("windowed_rescoring", f"clip is {len(x) / config.SR:.1f} s long: check score drift")
+        lossy = str(tri.get("codec", "")).lower() not in ("pcm_s16le", "pcm_s24le", "pcm_f32le", "flac", "")
+        narrow = tri.get("native_sr", 0) >= 32000 and tri.get("cutoff_hz", 1e9) < 0.6 * tri.get("native_sr", 0) / 2
+        if lossy or narrow:
+            reasons["compression_crosscheck"] = ("lossy codec " + str(tri.get("codec"))) if lossy else \
+                f"declared {tri.get('native_sr')} Hz but energy stops near {tri.get('cutoff_hz', 0):.0f} Hz"
+        t["router"] = reasons or {"stop": "confident score, clean container: no further analysis"}
+        if "windowed_rescoring" in reasons:  # 2 s windows, 1 s hop: max/min spread flags partial fakes
+            w, h = 2 * config.SR, config.SR
+            segs = [x[i: i + w] for i in range(0, max(1, len(x) - w + 1), h)] or [x]
+            lw = logits(window_model, segs, device, a.batch)
+            t["windows"] = dict(n=len(segs), max_logit=round(float(lw.max()), 3), min_logit=round(float(lw.min()), 3),
+                                spread=round(float(lw.max() - lw.min()), 3),
+                                finding=("score varies strongly across the clip (possible partial edit)"
+                                         if lw.max() - lw.min() > 6 else "consistent across the clip"))
+        if "compression_crosscheck" in reasons:
+            t["compression"] = dict(finding=reasons["compression_crosscheck"],
+                                    interpretation="channel history; not evidence of synthesis by itself")
 
     with open(out / "traces.jsonl", "w") as fh:
         for t in traces:
