@@ -189,6 +189,10 @@ def main():
     ap.add_argument("--seed", type=int, default=0)
     ap.add_argument("--max-eval", type=int, default=5000, help="subsample val/holdout clips (stratified by generator) for speed")
     ap.add_argument("--select", default="val,itw", help="eval sets whose mean (clean+aug)/2 minDCF picks the checkpoint")
+    ap.add_argument("--wise-from", default="", help="fine-tuned best.pt to interpolate with the pretrained weights (WiSE-FT)")
+    ap.add_argument("--wise-alpha", type=float, default=1.0, help="weight of the fine-tuned weights (0 = pretrained, 1 = fine-tuned)")
+    ap.add_argument("--extra-fakes", default="", choices=["", "d6r"],
+                    help="d6r: add copy-synthesis fakes (cache/manifest_d6r.parquet; train-split reals only)")
     args = ap.parse_args()
     torch.manual_seed(args.seed)
     torch.backends.cuda.matmul.allow_tf32 = True
@@ -202,6 +206,10 @@ def main():
     man = pd.read_parquet(config.CACHE / "manifest_pool.parquet")
     tri = pd.read_parquet(config.CACHE / "triage_pool.parquet")[["uid", "decode_ok", "decoded_duration"]]
     man = man.merge(tri, on="uid", how="left")
+    if args.extra_fakes == "d6r":
+        d6 = pd.read_parquet(config.CACHE / "manifest_d6r.parquet")
+        man = pd.concat([man, d6[[c for c in d6.columns if c in man.columns or c in ("decode_ok", "decoded_duration")]]],
+                        ignore_index=True)
     man = man[man.decode_ok.fillna(False)].reset_index(drop=True)
     lab = man[man.label >= 0].reset_index(drop=True)
     test = man[man.label < 0].reset_index(drop=True)
@@ -235,7 +243,14 @@ def main():
     eval_ds = {k: EvalSet([(u, v, False) for v in (0, 1) for u in d.uid], babble) for k, d in evals.items()}
     test_ds = EvalSet([(u, 0, True) for u in test.uid], babble)
 
-    model = Detector(args.backbone).to(dev_)
+    model = Detector(args.backbone)
+    if args.wise_from:  # WiSE-FT (Wortsman et al. 2022): theta = (1 - a) * pretrained + a * fine-tuned
+        ft = torch.load(args.wise_from, map_location="cpu")
+        zs = model.state_dict()
+        model.load_state_dict({k: ((1 - args.wise_alpha) * v.float() + args.wise_alpha * ft[k].float()) if v.is_floating_point()
+                               else ft[k] for k, v in zs.items()})
+        print(f"WiSE-FT: alpha {args.wise_alpha} between pretrained and {args.wise_from}", flush=True)
+    model = model.to(dev_)
     model.enc.feature_extractor._freeze_parameters()            # CNN front-end stays as pretrained
     if args.freeze_layers:
         frozen = [model.enc.feature_projection, model.enc.encoder.pos_conv_embed] + list(model.enc.encoder.layers[: args.freeze_layers])
@@ -247,12 +262,12 @@ def main():
     enc_params = [p for p in model.enc.parameters() if p.requires_grad]
     opt = torch.optim.AdamW([{"params": enc_params, "lr": args.lr}, {"params": model.head.parameters(), "lr": args.head_lr}],
                             weight_decay=0.01)
-    total = args.epochs * args.steps_per_epoch
+    total = max(1, args.epochs * args.steps_per_epoch)   # epochs 0 = zero-shot evaluation only
     warm = max(1, int(0.1 * total))
     sched = torch.optim.lr_scheduler.LambdaLR(
         opt, lambda s: min(1.0, (s + 1) / warm) * 0.5 * (1 + math.cos(math.pi * min(1.0, s / total))))
     # class weights from the family shares actually used (fake = class 0)
-    p_fake = sum(v for k, v in sampler.p.items() if k in ("lj_voice", "clone"))
+    p_fake = sum(v for k, v in sampler.p.items() if k in ("lj_voice", "clone", "resynth"))
     loss_fn = nn.CrossEntropyLoss(weight=torch.tensor([0.5 / p_fake, 0.5 / (1 - p_fake)], device=dev_))
 
     best, step = None, 0

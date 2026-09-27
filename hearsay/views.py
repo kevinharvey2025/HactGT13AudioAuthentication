@@ -26,8 +26,9 @@ class ViewMaker:
 
 
 def babble_pool(man, n=300, seed=0):
-    """Real speech only (LibriSpeech speakers + LJSpeech), so background talkers never carry spoof audio."""
-    real = man[(man.label == 0)].sample(n, random_state=seed)
+    """Real speech only (LibriSpeech speakers + LJSpeech), so background talkers never carry spoof audio.
+    In-the-Wild clips are evaluation data and never serve as babble."""
+    real = man[(man.label == 0) & (man.family != "itw")].sample(n, random_state=seed)
     return [audio.load_cached(u) for u in real.uid]
 
 

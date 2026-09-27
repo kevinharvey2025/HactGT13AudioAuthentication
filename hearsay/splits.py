@@ -76,6 +76,10 @@ def shared_split(lab, seed=SHARED_SEED, frac=0.2, val_frac=0.15, n_heldout_speak
             out.append("itw")
             key.append(f"ITW{r.uid}")
             continue
+        elif r.family == "resynth":  # D6-R copies exist only for train-split reals: always train
+            out.append("resynth")
+            key.append(f"RS{r.uid}")
+            continue
         else:  # real_extra: whole speakers
             held, k = _u01(seed, f"EX{r.speaker}") < frac, f"EX{r.speaker}"
         out.append("holdout" if held else "train")
@@ -83,6 +87,7 @@ def shared_split(lab, seed=SHARED_SEED, frac=0.2, val_frac=0.15, n_heldout_speak
     out = np.array(out, dtype=object)
     val = np.array([_u01(seed + 1, k) < val_frac for k in key]) & (out == "train")
     out[val] = "val"
+    out[out == "resynth"] = "train"
     return out
 
 

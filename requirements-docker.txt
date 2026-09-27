@@ -1,0 +1,11 @@
+# Inference-only dependencies for the Docker image (predict.py). torch is installed separately (CPU wheel).
+transformers==5.17.0
+huggingface_hub==1.33.0
+safetensors
+numpy==2.4.6
+scipy==1.17.1
+pandas==3.0.6
+pyarrow==25.0.1
+scikit-learn==1.9.1
+soundfile==0.14.0
+soxr==1.1.0

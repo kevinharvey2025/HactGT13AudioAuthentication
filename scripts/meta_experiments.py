@@ -124,8 +124,9 @@ def cmd_fit(a):
     lab = d[d.label >= 0].reset_index(drop=True)
     test = d[d.label < 0].reset_index(drop=True)
     lab["split"] = splits.shared_split(lab)
-    fitp = lab[lab.split != "holdout"].reset_index(drop=True)
+    fitp = lab[lab.split.isin(["train", "val"])].reset_index(drop=True)
     hold = lab[lab.split == "holdout"].reset_index(drop=True)
+    itw = lab[lab.split == "itw"].reset_index(drop=True)   # In-the-Wild: web audio in other formats, never fitted
     y, yh = fitp.label.to_numpy(), hold.label.to_numpy()
     groups = fitp.text_group.to_numpy()
     folds = list(StratifiedGroupKFold(5, shuffle=True, random_state=0).split(fitp, fitp.generator, groups))
@@ -140,7 +141,8 @@ def cmd_fit(a):
             full = model(kind, cat, num).fit(fitp[cat + num], y)
             ph, pt = full.predict_proba(hold[cat + num])[:, 1], full.predict_proba(test[cat + num])[:, 1]
             r = dict(system=name, features=",".join(EXPERIMENTS[exp]))
-            for part, yy, ss in [("oof", y, oof), ("holdout", yh, ph)]:
+            pi = full.predict_proba(itw[cat + num])[:, 1] if len(itw) else np.zeros(0)
+            for part, yy, ss in [("oof", y, oof), ("holdout", yh, ph)] + ([("itw", itw.label.to_numpy(), pi)] if len(itw) else []):
                 m = metrics.summary(yy, ss, prob=ss)
                 r.update({f"{part}_{k}": round(float(v), 4) for k, v in m.items() if k in ("auc", "eer", "min_dcf", "logloss", "brier")})
             r.update(test_unique_scores=int(np.unique(pt.round(6)).size), test_mean=round(float(pt.mean()), 4))
@@ -181,7 +183,7 @@ def cmd_interventions(a):
     d = features(man, tri)
     lab = d[d.label >= 0].reset_index(drop=True)
     lab["split"] = splits.shared_split(lab)
-    fitp = lab[lab.split != "holdout"].reset_index(drop=True)
+    fitp = lab[lab.split.isin(["train", "val"])].reset_index(drop=True)
     hold = lab[lab.split == "holdout"].groupby("label", group_keys=False).sample(a.n // 2, random_state=0).reset_index(drop=True)
     fitted = {}
     for exp in ("M0", "M1", "M2"):

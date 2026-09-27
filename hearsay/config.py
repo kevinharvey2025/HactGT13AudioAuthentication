@@ -15,7 +15,7 @@ TEST_DIR = DATA / "hearsay_test"                # NSA sample test set (wav + HGT
 EXTERNAL = DATA / "external"                    # bona fide references (LibriSpeech speakers, LJSpeech-1.1)
 
 SR = 16000                                      # every model sees 16 kHz mono, as the test files are
-TEAM = os.environ.get("HEARSAY_TEAM", "teamName")
+TEAM = os.environ.get("HEARSAY_TEAM", "SideQuests")
 
 # DiffSSD generator families. LJ-voice TTS models were trained on LJSpeech; the cloning
 # systems imitate 10 LibriSpeech train-clean-360 speakers.

@@ -104,7 +104,7 @@ class Resynthesizer:
             out = self.model.decode_batch(_sb_mel(t, self.sr)[None])[0, 0]
         elif k == "diffwave_lj":
             out = self.model.decode_batch(_sb_mel(t, self.sr)[None], hop_len=256, fast_sampling=True,
-                                          fast_sampling_noise_schedule=FAST_DIFFWAVE_SCHEDULE)[0, 0]
+                                          fast_sampling_noise_schedule=FAST_DIFFWAVE_SCHEDULE).reshape(-1)  # [1, T] or [1, 1, T]
         elif k == "vocos":
             out = self.model(t[None])[0]
         elif k.startswith("encodec"):
