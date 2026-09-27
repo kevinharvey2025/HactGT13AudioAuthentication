@@ -540,6 +540,10 @@ def main():
     dp = docker_path()
     json.dump(dp, open(out / "docker_path.json", "w"), indent=1)
     (out / "tables.md").write_text(tables(bm, bd, cal, fu, ta, q, pd.read_csv(out / "curves.csv"), dp))
+    from hearsay import provenance
+    provenance.write(out, inputs=[*FT.glob("*/*_epoch*.parquet"), *(config.RUNS / "concepts" / a.emb).glob("scores_*.parquet"),
+                                  config.REPO / "submission" / "fusion.json", config.REPO / "submission" / "SideQuests_predictions_final.tsv"],
+                     bootstrap_reps=a.boot)
     pd.set_option("display.width", 250)
     print(bm[bm.set.isin(["holdout", "itw"])].pivot_table(index="system", columns=["set", "view"], values="min_dcf", sort=False).round(3))
     print(fu.round(4).to_string(index=False))

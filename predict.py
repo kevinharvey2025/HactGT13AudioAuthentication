@@ -1,7 +1,7 @@
 """HEARSAY inference (team SideQuests): audio files -> <team>_predictions_final.tsv + per-file traces.
 
     python predict.py --input DIR --output DIR [--artifacts artifacts/diffusion] [--template FILE]
-                      [--device auto|cpu|cuda] [--label final]
+                      [--device auto|cpu|cuda] [--precision fp32|bf16] [--label final]
 
 For every audio file in --input (any container/codec ffmpeg reads):
   1. T0 triage: container, codec, rate, channels, encoder tag, file times (trace and explanation only; they are
@@ -44,24 +44,34 @@ AUDIO_EXT = {".wav", ".mp3", ".m4a", ".mp4", ".aac", ".ogg", ".opus", ".flac", "
 
 
 class Detector(torch.nn.Module):
-    def __init__(self, backbone, pretrained=False):
+    def __init__(self, backbone, device="cpu"):
         super().__init__()
         # architecture only: the fine-tuned checkpoint holds every tensor (no base-model download at inference)
-        self.enc, self.head = antideepfake.load(backbone[len("adf_"):], pretrained=pretrained)
+        self.enc, self.head = antideepfake.load(backbone[len("adf_"):], device=device, pretrained=False)
 
     def forward(self, x):
-        h = self.enc(antideepfake.standardize(x)).last_hidden_state.mean(1)
-        return self.head(h.float())
+        dtype = next(self.enc.parameters()).dtype
+        h = self.enc(antideepfake.standardize(x).to(dtype)).last_hidden_state.float().mean(1)
+        return self.head(h)
 
 
-def load_system(artifacts, s, device):
-    m = Detector(s["backbone"])
+def load_system(artifacts, s, device, precision="fp32"):
+    """One fine-tuned detector. The architecture is built on the meta device (no memory) and its parameters become
+    the checkpoint's own memory-mapped bf16 tensors; fp32 copies are made only when --precision fp32 asks for them.
+    Peak memory is therefore about one model at the chosen precision (XLS-R-2B: ~9 GB fp32, ~4.5 GB bf16)."""
     ckpt = artifacts / Path(s["checkpoint"]).name
     if not ckpt.exists():
         ckpt = artifacts / s["name"] / "best.pt"
-    sd = torch.load(ckpt, map_location="cpu", mmap=True)   # bf16 on disk; copied into the fp32 model tensor by tensor
-    m.load_state_dict(sd)
+    sd = torch.load(ckpt, map_location="cpu", mmap=True)
+    with torch.device("meta"):
+        m = Detector(s["backbone"], device="meta")
+    m.load_state_dict(sd, assign=True)
     del sd
+    left = [n for n, t in list(m.named_parameters()) + list(m.named_buffers()) if t.is_meta]
+    if left:
+        raise RuntimeError(f"{ckpt}: no weights for {left[:5]}")
+    m.enc.to(torch.float32 if precision == "fp32" else torch.bfloat16)
+    m.head.float()
     return m.eval().to(device)
 
 
@@ -82,6 +92,8 @@ def main():
     ap.add_argument("--artifacts", default=str(REPO / "artifacts" / "diffusion"))
     ap.add_argument("--template", default="", help="prefilled TSV (filename<TAB>cm-score) defining rows and order")
     ap.add_argument("--device", default="auto")
+    ap.add_argument("--precision", default="fp32", choices=["fp32", "bf16"],
+                    help="bf16 halves memory (~5 GB peak) for machines or containers with 8 GB; fp32 is the reference")
     ap.add_argument("--team", default=config.TEAM)
     ap.add_argument("--label", default="final")
     a = ap.parse_args()
@@ -112,7 +124,7 @@ def main():
     spec = json.load(open(artifacts / "fusion.json"))
     z = []
     for s in spec["systems"]:                       # one model in memory at a time
-        model = load_system(artifacts, s, device)
+        model = load_system(artifacts, s, device, a.precision)
         lg = logits(model, xs, device)
         del model
         z.append((lg - s["z_mean"]) / s["z_std"])
@@ -142,7 +154,7 @@ def main():
             w, h = 2 * config.SR, config.SR
             segs = [x[i: i + w] for i in range(0, max(1, len(x) - w + 1), h)] or [x]
             if window_model is None:
-                window_model = load_system(artifacts, spec["systems"][0], device)
+                window_model = load_system(artifacts, spec["systems"][0], device, a.precision)
             lw = logits(window_model, segs, device)
             t["windows"] = dict(n=len(segs), max_logit=round(float(lw.max()), 3), min_logit=round(float(lw.min()), 3),
                                 spread=round(float(lw.max() - lw.min()), 3),
@@ -157,6 +169,7 @@ def main():
             if t["filename"] in scores:
                 p = float(scores[t["filename"]])
                 t["cm_score"] = round(p, 6)
+                t["precision"] = a.precision
                 thr = metrics.bayes_threshold(calib_prior=spec["platt"].get("prior", 0.5))  # Pspoof 0.3, Cfa 4
                 t["decision_at_bayes_threshold"] = "synthetic" if p > thr else "bona fide"
             fh.write(json.dumps(t, default=str) + "\n")

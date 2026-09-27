@@ -1,18 +1,17 @@
-# Python
+# Python bytecode, test cache, local virtualenv
 __pycache__/
 *.pyc
-.venv/
 .pytest_cache/
+.venv/
 
-# Data and generated outputs (large / regenerable)
+# Too large or regenerable for git (docs/REPRODUCE.md): datasets, caches, run outputs, model weights
 data/
 cache/
 runs/
 artifacts/
 
-# logs and OS files
-logs/
+# macOS
 .DS_Store
 
-# local clone of the lab's private COBWEB (installed with pip install -e; never committed)
+# The lab's private COBWEB clone: installed with pip install -e, never committed
 cobweb-private/

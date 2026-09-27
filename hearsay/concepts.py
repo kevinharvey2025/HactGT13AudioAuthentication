@@ -11,6 +11,9 @@ reports which generators / real corpora and which channel conditions it summariz
 detector's time-mean last layer, standardized and PCA-whitened on train rows. It also maps a change in concept space
 back to the detector's embedding, so explanations can be tested against the detector's own linear head.
 """
+import json
+from types import SimpleNamespace
+
 import numpy as np
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
@@ -126,3 +129,34 @@ class Concepts:
         c = [dict(channel=self.channels[j], share=round(float(ch[j] / max(ch.sum(), 1e-12)), 3))
              for j in np.argsort(-ch)[:2] if ch[j] > 0]
         return s, c, float(src[self.fake].sum() / max(src.sum(), 1e-12))
+
+
+def load(emb, dims=32):
+    """The concept space exactly as scripts/run_concepts.py builds it, from cache/emb/<emb>/ (scripts/extract_ssl.py):
+    labelled rows with split / source / channel, test rows, a row -> embedding accessor, and the space fitted on train
+    rows. -> SimpleNamespace(meta, lab, test, feats, space, Z)."""
+    import pandas as pd
+    from . import config, splits
+    root = config.CACHE / "emb" / emb
+    meta = json.load(open(root / "meta.json"))
+    idx = pd.read_parquet(root / "index.parquet")
+    idx["row"] = np.arange(len(idx))
+    arr = np.load(root / "pooled.npy", mmap_mode="r")
+    man = pd.read_parquet(config.CACHE / f"{meta['manifest']}.parquet")
+    tri = pd.read_parquet(config.CACHE / "triage_pool.parquet")[["uid", "native_sr", "decoded_duration"]]
+    d = idx[idx.done].merge(man, on="uid", how="left").merge(tri, on="uid", how="left")
+    lab = d[d.label >= 0].copy()
+    lab["split"] = splits.shared_split(lab)
+    lab["source"] = [source_class(r) for r in lab.itertuples()]
+    lab["chan"] = [channel_class(c) for c in lab.channel]
+    test = d[d.label < 0].copy()
+
+    def feats(rows):
+        r = np.asarray(rows)
+        return np.asarray(arr[np.sort(r)][:, -1, 0], np.float32)[np.argsort(np.argsort(r))]
+
+    space = Space(dims).fit(feats(lab.row[lab.split == "train"]))
+    def Z(rows):
+        return space(feats(rows)) if len(rows) else np.zeros((0, dims), np.float32)
+
+    return SimpleNamespace(meta=meta, lab=lab, test=test, feats=feats, space=space, Z=Z)

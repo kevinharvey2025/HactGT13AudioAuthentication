@@ -8,14 +8,48 @@ python predict.py --input /path/to/audio --output out/ \
     --template /path/to/HGT_Hearsay_score_template.csv            # -> out/SideQuests_predictions_final.tsv, traces.jsonl
 ```
 
-`predict.py` needs `artifacts/diffusion/` (the three fine-tuned checkpoints and `fusion.json`) and about 15 GB of RAM.
-On 8 CPU threads the NSA test set takes about 2 hours ([results/runtime.md](../results/runtime.md)). With Docker,
-copy the artifacts in at build time, give the container at least 16 GB of memory, and run without network:
+`predict.py` needs the weights in `artifacts/diffusion/`: `fusion.json` plus `xlsr2b_d6rall/`, `xlsr1b_d6rall/` and
+`mms1b_d6rall/`, each holding a `best.pt`. They total about 7.7 GB, are produced by `mpcdf/final.sh`, and are not in
+git.
+
+Two precisions:
+- **`--precision fp32`** (default, the reference) peaks at about 14.5 GB. On 8 CPU threads the NSA test set takes
+  about 2 hours ([results/runtime.md](../results/runtime.md)).
+- **`--precision bf16`** is for machines or containers with 8 GB; its agreement with fp32 is measured in
+  `results/runtime.md`.
+
+Every file is scored whole and alone, so a score never depends on the other files in the folder.
+
+### Docker
 
 ```bash
-docker build -t sidequests-hearsay .
+docker build -t sidequests-hearsay .                               # bakes artifacts/diffusion/ in if present
 docker run --rm --network none --memory 16g -v /path/to/audio:/data/input:ro -v $PWD/out:/data/output sidequests-hearsay
+# without baked weights: mount them;  on an 8 GB Docker Desktop: add --precision bf16 at the end
+docker run --rm --network none -v /path/to/weights:/app/artifacts/diffusion:ro \
+    -v /path/to/audio:/data/input:ro -v $PWD/out:/data/output sidequests-hearsay --precision bf16
 ```
+
+- **Pinned inputs:** the base image is pinned by digest, torch is the CPU wheel, and the other packages come from
+  `requirements-docker.txt`.
+- **Minimal context:** `.dockerignore` limits the build context to the files the image needs.
+- **Offline:** the image runs with `--network none`.
+
+**Verified on MPCDF Raven.** Docker does not run there, but Apptainer runs a saved Docker image unchanged:
+
+```bash
+docker buildx build --platform linux/amd64 -t sidequests-hearsay:exp1-amd64 --load .
+docker save sidequests-hearsay:exp1-amd64 -o hearsay-amd64.tar                 # ~670 MB without weights
+rsync hearsay-amd64.tar raven:/ptmp/$USER/hearsay/docker/
+mpcdf.py submit raven mpcdf/run.sbatch -- neural "bash mpcdf/docker_verify.sh /ptmp/$USER/hearsay/docker/hearsay-amd64.tar"
+```
+
+`mpcdf/docker_verify.sh` does three things:
+1. It converts the image to a SIF and runs the image's own entrypoint on 20 test clips, with the weights
+   bind-mounted. `--pwd /app` honours the image's working directory and `--cleanenv` keeps the host environment out.
+2. It scores the whole NSA test set with the image.
+3. It compares the result with the reference CPU run and writes `verification.json` (PASS when the maximum absolute
+   difference is ≤ 1e-4).
 
 ## 2. Tests
 
@@ -23,6 +57,12 @@ docker run --rm --network none --memory 16g -v /path/to/audio:/data/input:ro -v 
 pytest tests --ignore=tests/dsp      # metric parity with the organizers' code (needs data/*HackGTMinDCF*), TSV, splits, TTCG, views
 pytest tests/dsp                     # DSP track (requirements-dsp.txt)
 ```
+
+`.github/workflows/tests.yml` runs both suites and a Docker build smoke test on every push. They need no data or
+weights; the data-dependent tests skip there and run on Raven.
+
+**Provenance.** Every generated results directory has a `provenance.json`: the code version, the SHA-256 of every
+input, package versions, and the command.
 
 The cobweb-private test runs only where the lab's COBWEB (revision 5012d51b or later) is installed. The view tests
 need `soundfile` and ffmpeg.

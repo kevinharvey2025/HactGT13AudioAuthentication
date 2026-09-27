@@ -1,0 +1,32 @@
+# Reproducibility checks that need no data or weights (docs/ROADMAP.md R9): unit tests in the inference and DSP
+# environments, and a build of the Docker image (without weights) that imports predict.py. Data-dependent tests
+# (metric parity against the organizers' package, the committed TSV's template order, cobweb-private) skip here and
+# run on Raven (mpcdf/evaluate.sbatch, mpcdf/concepts.sbatch).
+name: tests
+on: [push, pull_request]
+jobs:
+  core:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.11"}
+      - run: sudo apt-get update && sudo apt-get install -y --no-install-recommends ffmpeg
+      - run: |
+          pip install torch==2.14.0 --index-url https://download.pytorch.org/whl/cpu
+          pip install -r requirements-docker.txt pytest tabulate==0.10.0 pyroomacoustics==0.10.1   # the last two: RawBoost tests
+      - run: pytest tests --ignore=tests/dsp -q -rs
+  dsp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: {python-version: "3.13"}
+      - run: pip install -r requirements-dsp.txt pytest
+      - run: pytest tests/dsp -q -rs
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t sidequests-hearsay:ci .
+      - run: docker run --rm --entrypoint python sidequests-hearsay:ci -c "import predict; print('image ok')"

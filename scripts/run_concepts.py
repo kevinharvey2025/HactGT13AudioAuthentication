@@ -37,8 +37,9 @@ import torch
 from sklearn.metrics import adjusted_mutual_info_score, adjusted_rand_score, normalized_mutual_info_score
 
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from hearsay import config, metrics, splits  # noqa: E402
-from hearsay.concepts import Concepts, Space, channel_class, f32, node_key, source_class  # noqa: E402
+from hearsay import config, metrics  # noqa: E402
+from hearsay import concepts  # noqa: E402
+from hearsay.concepts import Concepts, f32, node_key  # noqa: E402
 from hearsay.diffusion import ttcg  # noqa: E402
 from hearsay.diffusion.ddpm import DDPMConfig, EpsMLP, Schedule, train_ddpm  # noqa: E402
 
@@ -146,29 +147,11 @@ def main():
                     help="tree + cached DDPM + TTCG on the clean evaluation queries (CPU is fine); updates faithfulness.json")
     a = ap.parse_args()
     dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    root = config.CACHE / "emb" / a.emb
     out = config.RUNS / "concepts" / a.emb
     out.mkdir(parents=True, exist_ok=True)
-    meta = json.load(open(root / "meta.json"))
-    idx = pd.read_parquet(root / "index.parquet")
-    idx["row"] = np.arange(len(idx))
-    arr = np.load(root / "pooled.npy", mmap_mode="r")
-    man = pd.read_parquet(config.CACHE / f"{meta['manifest']}.parquet")
-    tri = pd.read_parquet(config.CACHE / "triage_pool.parquet")[["uid", "native_sr", "decoded_duration"]]
-    d = idx[idx.done].merge(man, on="uid", how="left").merge(tri, on="uid", how="left")
-    lab = d[d.label >= 0].copy()
-    lab["split"] = splits.shared_split(lab)
-    lab["source"] = [source_class(r) for r in lab.itertuples()]
-    lab["chan"] = [channel_class(c) for c in lab.channel]
-    test = d[d.label < 0].copy()
-
-    def feats(rows):
-        r = rows.to_numpy()
-        return np.asarray(arr[np.sort(r)][:, -1, 0], np.float32)[np.argsort(np.argsort(r))]
-
+    D = concepts.load(a.emb, a.dims)
+    meta, lab, test, feats, space, Z = D.meta, D.lab, D.test, D.feats, D.space, D.Z
     tr = lab[lab.split == "train"]
-    space = Space(a.dims).fit(feats(tr.row))
-    Z = lambda rows: space(feats(rows))  # noqa: E731
     sources, channels = sorted(tr.source.unique()), sorted(tr.chan.unique())
     sid, cidx = {s: i for i, s in enumerate(sources)}, {c: i for i, c in enumerate(channels)}
 
@@ -318,6 +301,9 @@ def main():
                test_frac_cobweb_gt_0_5=float((p_cw_t > 0.5).mean()),
                test_frac_ttcg_gt_0_5=float(np.nanmean([c["p_fake"] > 0.5 for c in comps_t])))
     json.dump(res, open(out / "metrics.json", "w"), indent=1, default=str)
+    from hearsay import provenance
+    emb = config.CACHE / "emb" / a.emb
+    provenance.write(out, inputs=[emb / "pooled.npy", emb / "index.parquet", config.REPO / meta["checkpoint"]], dims=a.dims, fit_n=a.fit_n)
     print(json.dumps(res, indent=1, default=str))
 
 

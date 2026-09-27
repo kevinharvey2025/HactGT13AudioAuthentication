@@ -1,0 +1,10 @@
+# Build context = only what the image needs (the repository also holds ~17 GB of data zips and local clones).
+*
+!Dockerfile
+!requirements-docker.txt
+!predict.py
+!hearsay/
+!configs/
+!artifacts/diffusion/
+**/__pycache__
+**/*.pyc

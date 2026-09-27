@@ -2,7 +2,7 @@
 #
 # Code runs from immutable snapshots (/ptmp/$USER/jobs/HackGT-13-Hearsay/code/<version>/, made by
 # the mpcdf helper). Everything stateful lives in one workspace outside them and is linked into
-# each snapshot under the names the code already uses (data/, cache/, runs/, artifacts/, logs/):
+# each snapshot under the names the code already uses (data/, cache/, runs/, artifacts/):
 #   WS      /ptmp/$USER/hearsay         data, caches, run outputs, trained models
 #   SHARED  .../HackGT-13-Hearsay/shared  uv, managed Pythons, the two virtualenvs
 export WS=${WS:-/ptmp/$USER/hearsay}
@@ -20,7 +20,7 @@ export OMP_NUM_THREADS=${OMP_NUM_THREADS:-1}    # process pools do the paralleli
 export MPLBACKEND=Agg
 
 if [ -n "${CODE_DIR:-}" ]; then
-  for d in data cache runs artifacts logs; do
+  for d in data cache runs artifacts; do
     mkdir -p "$WS/$d"
     # never replace an existing link: concurrent jobs share the snapshot
     [ -L "$CODE_DIR/$d" ] || [ -e "$CODE_DIR/$d" ] || ln -s "$WS/$d" "$CODE_DIR/$d" 2>/dev/null || true
