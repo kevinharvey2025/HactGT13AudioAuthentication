@@ -87,6 +87,7 @@ else, including training and evaluation on MPCDF Raven, is in [docs/REPRODUCE.md
 | Document | Contents |
 |---|---|
 | [docs/APPROACH.md](docs/APPROACH.md) | the whole approach from first principles: the metric and Bayes decisions, data and shortcuts, the detector, COBWEB and prototype theory, diffusion prototypes (TTCG), the evaluation pipeline, results, references |
+| [docs/DEVPOST.md](docs/DEVPOST.md) | the Hearsay write-up for Devpost: approach, results, techniques, what did not work, reproducibility |
 | [docs/INTERPRETABILITY.md](docs/INTERPRETABILITY.md) | why this is not a black box: fidelity of the concept layer to the detector, the concept atlas, a label-free tree, exemplars, acoustic names, failure concepts, and cognitive-science tests against baselines |
 | [docs/EVALUATION.md](docs/EVALUATION.md) | protocol, the evaluation pipeline, the final test matrix, every result with intervals |
 | [docs/DATA.md](docs/DATA.md) | data sources, the forensic audit, shortcut checks, splits, augmentation |
