@@ -1,6 +1,6 @@
 #!/bin/bash -l
 # Run shell commands on one CPU node inside a venv:  mpcdf.py submit raven mpcdf/run.sbatch -- VENV "CMD" ["CMD" ...]
-# (VENV = neural | dsp; commands run in sequence from the code snapshot; stop at the first failure)
+# (VENV = neural | dsp | concepts; commands run in sequence from the code snapshot; stop at the first failure)
 #SBATCH --job-name=hearsay-run
 #SBATCH --time=04:00:00
 #SBATCH --ntasks=1
@@ -9,6 +9,7 @@
 #SBATCH --exclusive
 set -eo pipefail
 source "$CODE_DIR/mpcdf/env.sh"
+[ "$1" = concepts ] && module load gcc/13      # libstdc++ of the compiler that built cobweb-private
 use_venv "$1"; shift
 cd "$CODE_DIR"
 for cmd in "$@"; do

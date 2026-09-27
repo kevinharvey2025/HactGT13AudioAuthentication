@@ -13,8 +13,10 @@ For a query z_q (a whitened detector embedding) and an unconditional DDPM over t
      baseline = the whitened root N(0, 1) per dimension (monotone submodular, so greedy is within 1 - 1/e), K <= 3;
   3. composition: per-dimension weights w_j(r) ∝ exp(l_{j,r} / tau), tau = 0.5, and the product of experts
        Sigma^-1 = sum_j diag(w_j) S_j^-1,   mu = Sigma sum_j diag(w_j) S_j^-1 m_j.
-Returned per query: the selected prototypes (noise level, mean, variance, share of dimensions, gain) and the composed
-Gaussian; callers interpret each prototype by categorizing its mean in a concept tree (scripts/run_concepts.py).
+Returned per query: the selected prototypes (noise level, mean, variance, per-dimension weight and its mean "share",
+coverage gain) and the composed Gaussian; callers interpret each prototype by categorizing its mean in a concept tree
+(hearsay/concepts.py, scripts/run_concepts.py). tests/test_ttcg.py checks the procedure on a Gaussian mixture whose
+score, modes and posterior variances are known in closed form.
 """
 import math
 from dataclasses import dataclass, field
@@ -116,7 +118,7 @@ def select_and_compose(z, cand, cfg=TTCGConfig()):
     w /= w.sum(0, keepdims=True)
     prec = (w / cand["var"][chosen]).sum(0)
     mu = (w * cand["mean"][chosen] / cand["var"][chosen]).sum(0) / prec
-    sel = [dict(idx=j, t=int(cand["t"][j]), share=float(w[i].mean()), gain=g,
+    sel = [dict(idx=j, t=int(cand["t"][j]), share=float(w[i].mean()), gain=g, weight=w[i],
                 mean=cand["mean"][j], var=cand["var"][j]) for i, (j, g) in enumerate(zip(chosen, gains))]
     return dict(selected=sel, coverage_gain=float(sum(gains)), composed_mean=mu, composed_var=1.0 / prec,
                 composed_loglik=float((-0.5 * ((z - mu) ** 2 * prec - np.log(prec) + LOG2PI)).mean()))

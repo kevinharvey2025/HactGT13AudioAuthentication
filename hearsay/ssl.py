@@ -1,4 +1,4 @@
-"""Self-supervised speech encoders (Track A front-end, also the embedding space for D2/D5).
+"""Self-supervised speech encoders for embedding extraction (scripts/extract_ssl.py), incl. the AntiDeepfake detectors.
 
 For each clip-view we keep, per hidden layer, the time-mean and time-std of the frame features:
 an array [n_layers, 2, dim] in float16. Middle layers usually carry more artifact information

@@ -1,8 +1,12 @@
 #!/bin/bash -l
-# Build the two virtualenvs on a Raven login node (internet, no GPU needed):
-#   bash mpcdf/setup_envs.sh [neural|dsp|all]      (run from a code snapshot or a checkout)
-# venv-neural: Python 3.11 + requirements.txt (torch wheels from PyPI bundle the CUDA runtime).
-# venv-dsp:    Python 3.13 + requirements-dsp.txt (+ pytest, matplotlib for tests/figures).
+# Build the virtualenvs on a Raven login node (internet, no GPU needed):
+#   bash mpcdf/setup_envs.sh [neural|dsp|concepts|all]      (run from a code snapshot or a checkout)
+# venv-neural:   Python 3.11 + requirements.txt (torch wheels from PyPI bundle the CUDA runtime).
+# venv-dsp:      Python 3.13 + requirements-dsp.txt (+ pytest, matplotlib for tests/figures).
+# venv-concepts: uv-managed Python 3.11 (the C++ extension needs Python headers) + requirements.txt + cobweb-private,
+#                built with GCC 13 against Eigen. Needs $WS/ext/cobweb-private (a clone of the lab's private repo;
+#                revision in its GIT_REVISION file; GCC 13 needs '#include <stack>' in src/cobweb_discrete_tree.cpp)
+#                and $WS/ext/eigen (Eigen 3 headers).
 # Each venv is rebuilt only when its requirements file changes (stamp = sha256 of the file).
 set -eo pipefail
 HERE=$(cd "$(dirname "$0")/.." && pwd)
@@ -38,9 +42,15 @@ build() {  # build NAME PYTHON REQFILE [extra packages...]
 what=${1:-all}
 if [ "$what" = neural ] || [ "$what" = all ]; then
   build neural 3.11 "$HERE/requirements.txt" pytest
-  "$SHARED/venv-neural/bin/python" -c "import torch, transformers, sklearn, lightgbm; print('torch', torch.__version__, 'cuda', torch.version.cuda, 'transformers', transformers.__version__)"
+  "$SHARED/venv-neural/bin/python" -c "import torch, transformers, sklearn; print('torch', torch.__version__, 'cuda', torch.version.cuda, 'transformers', transformers.__version__)"
 fi
 if [ "$what" = dsp ] || [ "$what" = all ]; then
   build dsp 3.13 "$HERE/requirements-dsp.txt" pytest matplotlib
   "$SHARED/venv-dsp/bin/python" -c "import numpy, scipy, sklearn, av, parselmouth; print('dsp ok', numpy.__version__, sklearn.__version__, av.__version__)"
+fi
+if [ "$what" = concepts ] || [ "$what" = all ]; then
+  module load gcc/13 cmake/3.26
+  UV_PYTHON_PREFERENCE=only-managed build concepts 3.11 "$HERE/requirements.txt" pytest
+  (cd "$WS/ext/cobweb-private" && VIRTUAL_ENV="$SHARED/venv-concepts" CMAKE_PREFIX_PATH="$WS/ext/eigen" CC=gcc CXX=g++ uv pip install -e .)
+  "$SHARED/venv-concepts/bin/python" -c "from cobweb.cobweb_continuous import CobwebContinuousNode as N; assert hasattr(N, 'get_basic'); print('cobweb-private ok')"
 fi

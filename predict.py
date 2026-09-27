@@ -1,7 +1,7 @@
 """HEARSAY inference (team SideQuests): audio files -> <team>_predictions_final.tsv + per-file traces.
 
     python predict.py --input DIR --output DIR [--artifacts artifacts/diffusion] [--template FILE]
-                      [--device auto|cpu|cuda] [--batch 8] [--label final]
+                      [--device auto|cpu|cuda] [--label final]
 
 For every audio file in --input (any container/codec ffmpeg reads):
   1. T0 triage: container, codec, rate, channels, encoder tag, file times (trace and explanation only; they are
@@ -10,14 +10,19 @@ For every audio file in --input (any container/codec ffmpeg reads):
      (edge-silence trim, 7 kHz low-pass, DC removal, peak-normalize, 1-LSB dither);
   3. each fine-tuned anti-spoofing detector listed in <artifacts>/fusion.json gives a synthetic logit
      (logit_fake - logit_real); logits are z-normalized with the stored statistics, averaged, and mapped to
-     P(synthetic) with the stored Platt calibration (fitted on validation + In-the-Wild clips, never on test);
+     P(synthetic) with the stored Platt calibration (fitted on validation + In-the-Wild clips, never on test).
+     Every clip is scored whole and on its own, in fp32 on every device: a file's score never depends on the other
+     files in the folder, and CPU and GPU agree. Models are loaded one at a time from memory-mapped checkpoints,
+     so peak memory is about that of the largest model (~10 GB);
   4. the router (agentic orchestration) decides per file which further analyses run, from the triage facts and
      the detector's confidence, and records every decision with its reason in the trace:
-       - uncertain score (0.05 < P < 0.8)            -> windowed re-scoring (splice/partial-fake check) + concept explanation
+       - uncertain score (0.05 < P < 0.8)            -> windowed re-scoring (splice/partial-fake check)
        - lossy codec or high declared rate but narrow band -> compression/bandwidth cross-check (metadata vs signal)
        - clip longer than 6 s                          -> windowed re-scoring (voice/score drift across the clip)
        - confident score and clean container          -> stop (saves compute)
-     Only the fused detector score is written to the TSV; the routed analyses explain it.
+     Only the fused detector score is written to the TSV; the routed analyses explain it. Concept-level explanations
+     (cobweb-private concepts + diffusion prototypes) come from scripts/run_concepts.py, which needs the lab's private
+     COBWEB build and is therefore not part of this image; see docs/CONCEPTS.md.
 Output rows follow --template (the organizers' prefilled TSV) when given, else sorted filenames; files that fail
 to decode are listed in <output>/failures.tsv and the export is refused (no invented scores).
 """
@@ -49,30 +54,24 @@ class Detector(torch.nn.Module):
         return self.head(h.float())
 
 
-def load_systems(artifacts, device):
-    spec = json.load(open(artifacts / "fusion.json"))
-    systems = []
-    for s in spec["systems"]:
-        m = Detector(s["backbone"])
-        ckpt = artifacts / Path(s["checkpoint"]).name if (artifacts / Path(s["checkpoint"]).name).exists() \
-            else artifacts / s["name"] / "best.pt"
-        sd = torch.load(ckpt, map_location="cpu")
-        m.load_state_dict({k: v.float() for k, v in sd.items()})
-        systems.append((s, m.eval().to(device)))
-    return spec, systems
+def load_system(artifacts, s, device):
+    m = Detector(s["backbone"])
+    ckpt = artifacts / Path(s["checkpoint"]).name
+    if not ckpt.exists():
+        ckpt = artifacts / s["name"] / "best.pt"
+    sd = torch.load(ckpt, map_location="cpu", mmap=True)   # bf16 on disk; copied into the fp32 model tensor by tensor
+    m.load_state_dict(sd)
+    del sd
+    return m.eval().to(device)
 
 
 @torch.inference_mode()
-def logits(model, xs, device, batch):
-    order = np.argsort([len(x) for x in xs])
+def logits(model, xs, device):
+    """Synthetic logit of each clip, scored whole (whole 20 ms encoder frames) and alone, in fp32."""
     out = np.zeros(len(xs), np.float32)
-    for k in range(0, len(order), batch):
-        idx = order[k: k + batch]
-        n = min(len(xs[j]) for j in idx) // 320 * 320
-        x = torch.from_numpy(np.stack([xs[j][:n] for j in idx])).to(device)
-        with torch.autocast(device.type, dtype=torch.bfloat16, enabled=device.type == "cuda"):
-            lg = model(x).float()
-        out[idx] = antideepfake.synthetic_logit(lg).cpu().numpy()
+    for i, x in enumerate(xs):
+        n = max(320, len(x) // 320 * 320)
+        out[i] = antideepfake.synthetic_logit(model(torch.from_numpy(np.ascontiguousarray(x[:n]))[None].to(device)).float()).item()
     return out
 
 
@@ -83,7 +82,6 @@ def main():
     ap.add_argument("--artifacts", default=str(REPO / "artifacts" / "diffusion"))
     ap.add_argument("--template", default="", help="prefilled TSV (filename<TAB>cm-score) defining rows and order")
     ap.add_argument("--device", default="auto")
-    ap.add_argument("--batch", type=int, default=16)
     ap.add_argument("--team", default=config.TEAM)
     ap.add_argument("--label", default="final")
     a = ap.parse_args()
@@ -110,10 +108,13 @@ def main():
             failures.append(dict(filename=f, error=repr(e)[:300]))
         traces.append(tr)
 
-    spec, systems = load_systems(Path(a.artifacts), device)
+    artifacts = Path(a.artifacts)
+    spec = json.load(open(artifacts / "fusion.json"))
     z = []
-    for s, model in systems:
-        lg = logits(model, xs, device, a.batch)
+    for s in spec["systems"]:                       # one model in memory at a time
+        model = load_system(artifacts, s, device)
+        lg = logits(model, xs, device)
+        del model
         z.append((lg - s["z_mean"]) / s["z_std"])
         for t, v in zip([t for t in traces if t["filename"] in set(ok)], lg):
             t.setdefault("detectors", {})[s["name"]] = round(float(v), 4)
@@ -123,7 +124,7 @@ def main():
     scores = dict(zip(ok, prob))
 
     # ---- router: targeted analyses per file (explanations; the TSV score stays the fused detector score)
-    window_model = systems[0][1]
+    window_model = None
     for t, x, p in zip([t for t in traces if t["filename"] in scores], xs, [scores[f] for f in ok]):
         tri = t.get("triage", {})
         reasons = {}
@@ -140,7 +141,9 @@ def main():
         if "windowed_rescoring" in reasons:  # 2 s windows, 1 s hop: max/min spread flags partial fakes
             w, h = 2 * config.SR, config.SR
             segs = [x[i: i + w] for i in range(0, max(1, len(x) - w + 1), h)] or [x]
-            lw = logits(window_model, segs, device, a.batch)
+            if window_model is None:
+                window_model = load_system(artifacts, spec["systems"][0], device)
+            lw = logits(window_model, segs, device)
             t["windows"] = dict(n=len(segs), max_logit=round(float(lw.max()), 3), min_logit=round(float(lw.min()), 3),
                                 spread=round(float(lw.max() - lw.min()), 3),
                                 finding=("score varies strongly across the clip (possible partial edit)"

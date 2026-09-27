@@ -1,6 +1,7 @@
 #!/bin/bash -l
 # Data preparation on one CPU node (no training):
-#   neural: fine-tuning pool + Track A manifest -> cache/wav16k, triage tables, test durations
+#   neural: fine-tuning pool + the shortcut-check sample (cache/manifest.parquet) -> cache/wav16k, triage tables,
+#           test durations
 #   DSP:    leakage-checked manifests + feature extraction for the pool and the test set (cache/dsp)
 #   mpcdf.py submit raven mpcdf/prep.sbatch [-- pool|tracka|neural|dsp ...]   (default: neural dsp; neural = pool tracka)
 #SBATCH --job-name=hearsay-prep
@@ -23,7 +24,7 @@ for part in "${parts[@]}"; do
       python scripts/prepare_data.py --pool --workers "$N"     # incremental: only clips not triaged yet
     fi
     if [ "$part" != pool ]; then
-      echo "=== neural Track A manifest $(date +%T)"
+      echo "=== shortcut-check manifest $(date +%T)"
       python scripts/prepare_data.py --workers "$N"
     fi
     deactivate

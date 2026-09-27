@@ -1,4 +1,5 @@
-"""Cache pooled SSL embeddings for every clip-view (Track A front-end; D2/D5 embedding space).
+"""Cache pooled embeddings of an SSL encoder (optionally a fine-tuned detector) for every clip-view: the
+concept-formation space (scripts/run_concepts.py).
 
     python scripts/extract_ssl.py --model wavlm_base_plus --views 3
     python scripts/extract_ssl.py --model adf_xlsr_1b --checkpoint runs/diffusion/ft/xlsr1b_ft/best.pt \

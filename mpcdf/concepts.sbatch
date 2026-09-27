@@ -17,7 +17,9 @@ use_venv concepts
 cd "$CODE_DIR"
 export CUDA_VISIBLE_DEVICES=0
 EMB=xlsr2b_d6rall_last
-python scripts/concept_subset.py
+export PYTHONDONTWRITEBYTECODE=1
+python -m pytest tests/test_concepts.py tests/test_ttcg.py -q -rs -p no:cacheprovider 2>&1 | tail -4
+[ -f cache/manifest_concepts.parquet ] || python scripts/concept_subset.py
 python scripts/extract_ssl.py --model adf_xlsr_2b --checkpoint runs/diffusion/ft/xlsr2b_d6rall/best.pt \
     --manifest manifest_concepts --layers last --views 2 --workers 60 --batch 16 --name $EMB
 python scripts/run_concepts.py --emb $EMB "$@"

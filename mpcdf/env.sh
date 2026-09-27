@@ -27,5 +27,5 @@ if [ -n "${CODE_DIR:-}" ]; then
   done
 fi
 
-# venv-neural: requirements.txt (torch/CUDA, WavLM, heads);  venv-dsp: requirements-dsp.txt
+# venv-neural: requirements.txt;  venv-dsp: requirements-dsp.txt;  venv-concepts: requirements.txt + cobweb-private
 use_venv() { source "$SHARED/venv-$1/bin/activate"; }

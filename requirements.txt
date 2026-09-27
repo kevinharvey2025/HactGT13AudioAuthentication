@@ -1,5 +1,7 @@
-# Diffusion / neural track. Versions are the ones the pipeline was developed with (macOS arm64, MPS).
-# System dependency: ffmpeg + ffprobe on PATH (environment.yml installs ffmpeg 6 from conda-forge).
+# Neural track, concept formation, evaluation (Python 3.11). Pinned to the versions the results were produced with
+# (MPCDF Raven: Linux x86_64, torch CUDA 13 wheels; also runs on macOS arm64 / MPS).
+# System dependency: ffmpeg + ffprobe on PATH (environment.yml installs it from conda-forge).
+# cobweb-private (the lab's COBWEB) is installed separately: pip install -e <clone> (mpcdf/setup_envs.sh concepts).
 torch==2.14.0
 torchaudio==2.11.0
 transformers==5.17.0
@@ -9,18 +11,11 @@ scipy==1.17.1
 pandas==3.0.6
 pyarrow==25.0.1
 scikit-learn==1.9.1
-lightgbm==4.7.0
-shap==0.51.0
 librosa==0.11.0
 soundfile==0.14.0
 soxr==1.1.0
-matplotlib==3.11.2
 tqdm==4.70.1
-mutagen==1.48.1
 tabulate==0.10.0
-# Track D (diffusion) only
+# copy-synthesis vocoders (scripts/run_d6r.py)
 speechbrain==1.1.1
 vocos==0.1.0
-diffusers==0.40.0
-accelerate==1.15.0
-# optional, not on PyPI: NVIDIA BigVGAN (D1 bigvgan_22k) and sp-uhh/sgmse (D4) -- clone onto PYTHONPATH

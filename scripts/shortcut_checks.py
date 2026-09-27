@@ -4,7 +4,7 @@ For each feature group a small gradient-boosting model is scored with grouped 5-
 the raw decoded clips and once on the canonical view every model sees (trim, test-like crop,
 7 kHz low-pass, peak-norm, dither). A high AUC on the canonical view means a shortcut survived.
 
-    python scripts/shortcut_checks.py      -> reports/diffusion/shortcuts.md, runs/diffusion/shortcuts.json
+    python scripts/shortcut_checks.py      -> results/shortcut_checks.md, runs/diffusion/shortcuts.json
 """
 import json
 import sys
@@ -115,10 +115,10 @@ def main():
     can_desc = man.set_index("uid")[["generator"]].join(can[SIGNAL_COLS]).groupby("generator")[
         ["decoded_duration", "peak", "rms_dbfs", "lead_sil", "trail_sil", "zero_run_s", "hf_7k_drop_db", "cutoff_hz"]].median().round(3)
 
-    out = Path("reports/diffusion"); out.mkdir(parents=True, exist_ok=True)
+    out = config.REPO / "results"; out.mkdir(parents=True, exist_ok=True)
     config.RUNS.mkdir(parents=True, exist_ok=True)
     res_df.to_json(config.RUNS / "shortcuts.json", orient="records", indent=1)
-    with open(out / "shortcuts.md", "w") as fh:
+    with open(out / "shortcut_checks.md", "w") as fh:
         fh.write("# Shortcut and leakage checks (plan section 13)\n\n")
         fh.write("Grouped 5-fold CV AUC of a small gradient-boosting model on non-content features. "
                  "0.5 = no information. *raw* = decoded clip as delivered; *canonical* = the view every "

@@ -1,7 +1,0 @@
-# Build context filter for Dockerfile.dsp (BuildKit per-Dockerfile ignore file).
-*
-!requirements-dsp.txt
-!hearsay_dsp/**
-!configs/dsp.yaml
-!artifacts/dsp/model/**
-**/__pycache__
