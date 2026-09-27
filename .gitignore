@@ -13,3 +13,6 @@ artifacts/
 # logs and OS files
 logs/
 .DS_Store
+
+# local clone of the lab's private COBWEB (installed with pip install -e; never committed)
+cobweb-private/
