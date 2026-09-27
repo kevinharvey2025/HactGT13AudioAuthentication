@@ -30,12 +30,52 @@ Recent detectors built on self-supervised speech models generalize better than e
 [Tak et al. 2022; Ge et al. 2025]. They remain opaque, and they readily learn dataset artifacts instead of synthesis
 artifacts [Müller et al. 2021].
 
-Our work makes three contributions:
-1. A training design that removes format shortcuts and adds controlled synthetic data. It yields strong
-   out-of-domain generalization.
-2. A calibrated ensemble whose threshold follows from the challenge's cost function.
-3. An explanation layer grounded in cognitive models of categorization. We evaluate it for fidelity, faithfulness and
-   usefulness, just as we evaluate the detector for accuracy.
+### 1.1 Contributions
+
+We build on open-source detectors and published methods. Our contribution lies in how we combine, adapt and test
+them. Each claim below rests on a measurement.
+
+1. **A shortcut-free training design.**
+   - We audited the provided data and found that file times alone separate the classes perfectly. We then built one
+     canonical input view that removes format, bandwidth, level and duration cues for both classes.
+   - We generated 11,900 copy-synthesis fakes that differ from their real sources only in synthesis.
+   - This design reversed the out-of-domain decay of plain fine-tuning: XLS-R-1B In-the-Wild minDCF moved from
+     0.050 → 0.129 without it and 0.050 → 0.039 with it.
+2. **A decision-theoretic score.**
+   - We traced the metric's false-alarm convention to the organizers' evaluation code and matched that code to
+     10⁻¹².
+   - We derived the Bayes threshold from the challenge costs and calibrated the ensemble to it.
+   - On held-out data, the actual cost at that threshold exceeds the minimum by only 0.004.
+3. **Concept formation as an explanation layer for a speech detector.**
+   - We pair the COBWEB model of human categorization with diffusion prototypes (TTCG), which we implemented from
+     the published method, over the detector's own representation.
+   - Each prototype takes the name of a learned concept, so every decision traces to concepts and to real training
+     clips (Section 8.1).
+4. **Explanations tested as rigorously as the detector.**
+   - We measured fidelity (κ = 0.985), faithfulness by deletion (92%), stability across insertion orders, structure
+     without labels (98.9% purity) and failure localization.
+   - We also measured three cognitive capabilities against conventional baselines (Section 9).
+5. **Explanations that found a real defect.** A disagreement between an explanation and its score exposed a
+   batch-order bug in our first scorer. Fixing it changed 3 of 1,671 test decisions.
+6. **Evidence beyond the leaderboard.**
+   - A fully held-out set of 27,779 In-the-Wild recordings confirms the official result.
+   - Two predeclared ablations (Section 7) test whether easy gains remain.
+   - A new stress view, built from channels no model trains on, exposes simulated rooms as the main remaining
+     weakness.
+7. **Exact reproducibility.**
+   - The Docker image reproduces every prediction to within 3.2 × 10⁻⁶.
+   - Re-training from the repository reproduces stored validation results to four decimals.
+
+**Table 0.** What we reused and what we built.
+
+| Reused (open source or published) | Built by us |
+|---|---|
+| AntiDeepfake checkpoints (XLS-R-2B, XLS-R-1B, MMS-1B) [Ge et al. 2025] | Data audit, canonical view, family-balanced sampling, channel augmentation, and fine-tuning of all three models |
+| Neural vocoders (HiFi-GAN, DiffWave, Vocos) | The copy-synthesis data set (11,900 clips) and its split rules |
+| cobweb-private, the COBWEB library of the Teachable AI Lab | The concept space over the detector's representation, basic-level selection on held-out data, and the concept atlas |
+| The TTCG and DMCF methods (papers) | A DDPM and TTCG implementation for this space, and prototype naming by concepts |
+| The ASVspoof 5 metric definition | A parity-tested scorer, calibration, Bayes decisions, the evaluation protocol, and the stress views |
+| – | The router, per-file traces, Docker verification, provenance, and all experiments and ablations |
 
 ## 2. Task and evaluation metric
 
@@ -194,6 +234,14 @@ loss.
 
 ## 7. Ablations
 
+The three systems differ only in their detector ensemble:
+- **System A (submitted):** XLS-R-2B, XLS-R-1B and MMS-1B, each fine-tuned with copy-synthesis fakes and channel
+  augmentation. The Docker image reproduces it exactly.
+- **Ablation B (robustness):** System A with its XLS-R-1B member replaced by one also trained with RawBoost. It tests
+  whether raw-waveform augmentation adds robustness.
+- **Ablation C (breadth):** System A plus a second-seed XLS-R-1B and a WiSE-FT XLS-R-2B, five members in all. It tests
+  whether more members reduce variance.
+
 Both ablations keep System A's pipeline, training data, fusion recipe and inference path. Each changes only the
 ensemble members, which isolates one design question.
 
@@ -232,6 +280,30 @@ channel augmentation already covers what RawBoost adds. Both ablations share Sys
 room acoustics, every variant scores minDCF 0.51–0.59.
 
 ## 8. Interpretability analysis
+
+### 8.1 Example explanations
+
+The explanation layer produces the following for two NSA test clips (`results/concepts/` holds one per test clip):
+
+**HGT7824018.wav, synthetic (P = 0.996).**
+- **Concept:** a basic-level concept of 19 training clips, all synthetic: UnitSpeech 42% and XTTS v2 37%, heard
+  through a codec.
+- **Prototypes:** three, with shares:
+  - 39%: YourTTS and XTTS v2 clones under a codec (98% synthetic);
+  - 33%: DiffGAN-TTS and WaveGrad 2 under a codec (100% synthetic);
+  - 28%: UnitSpeech and XTTS v2 under a codec (100% synthetic).
+- **Exemplars:** `unit_speech/speaker_1487/sentence_475` and `xtts_v2/speaker_3654/sentence_59`.
+- **The bug it exposed:** our first scorer assigned this clip P = 0.009. The explanation contradicted that score,
+  and the contradiction exposed the batch-order defect described in Section 1.1 (contribution 5).
+
+**HGT1013455.wav, real (P = 0.0002).**
+- **Concept:** a concept of 598 training clips, 0.2% synthetic. It is made of LibriSpeech speakers; 34% of its clips
+  are real recordings of the very speakers that DiffSSD clones.
+- **Exemplars:** `real_libri/7995/7995-276908-0031` and `real_libri/100/100-121669-0008`.
+- **Reading:** the clip groups with real speech even beside real recordings of the cloned voices. A familiar voice
+  alone does not make a clip look synthetic to the detector.
+
+### 8.2 Quantitative evaluation
 
 We evaluate the explanation layer against the detector it explains.
 
