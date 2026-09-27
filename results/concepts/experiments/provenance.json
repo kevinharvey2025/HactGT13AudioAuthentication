@@ -1,0 +1,25 @@
+{
+ "code_version": "61a3fc8-dirty-645ab655",
+ "command": "scripts/concept_experiments.py --emb xlsr2b_d6rall_last --seeds 3 --workers 40",
+ "created": "2026-09-27T08:59:16+0200",
+ "python": "3.11.16",
+ "packages": {
+  "numpy": "2.4.6",
+  "pandas": "3.0.6",
+  "scikit-learn": "1.9.1",
+  "scipy": "1.17.1",
+  "torch": "2.14.0",
+  "transformers": "5.17.0",
+  "cobweb": "0.0.1"
+ },
+ "inputs": {
+  "cache/emb/xlsr2b_d6rall_last/index.parquet": "0a3ab89efad171d5a85afee5c4c9af82be8d3e175ee7398299a73c8a3deac405",
+  "cache/emb/xlsr2b_d6rall_last/pooled.npy": "10a48db6386442821e7fa9636171859802a4a486a2636752c1173eaea65999bb",
+  "runs/diffusion/concepts/xlsr2b_d6rall_last/scores_holdout.parquet": "a6ac0ff17de06e3e1fd4489f374afe71fa6f030b1f19626e9771105969cd8075",
+  "runs/diffusion/concepts/xlsr2b_d6rall_last/scores_itw.parquet": "356c3c8e0301b5bab0299574b9f18674619955b0dc01de37086b2db5b1dcc3ae",
+  "runs/diffusion/concepts/xlsr2b_d6rall_last/scores_val.parquet": "3d4d1d9ef95c39d59259be1487583808c3a1843a1036d66048199d34ef1d7396",
+  "submission/fusion.json": "c8b5d0e86d0e2c9756fb5a3bdb563b0c81e864b0ebe4b530542955354a26dbc5"
+ },
+ "seeds": 3,
+ "fit_n": 12000
+}

@@ -1,0 +1,1944 @@
+{
+ "purity_by_depth": {
+  "0": {
+   "n_concepts": 1,
+   "covered": 11999,
+   "real_fake_purity": 0.5455,
+   "source_purity": 0.3564
+  },
+  "1": {
+   "n_concepts": 5,
+   "covered": 11999,
+   "real_fake_purity": 0.9889,
+   "source_purity": 0.5751
+  },
+  "2": {
+   "n_concepts": 16,
+   "covered": 11999,
+   "real_fake_purity": 0.9889,
+   "source_purity": 0.7021
+  },
+  "3": {
+   "n_concepts": 47,
+   "covered": 11999,
+   "real_fake_purity": 0.989,
+   "source_purity": 0.7666
+  },
+  "4": {
+   "n_concepts": 137,
+   "covered": 11996,
+   "real_fake_purity": 0.9897,
+   "source_purity": 0.809
+  },
+  "5": {
+   "n_concepts": 428,
+   "covered": 11995,
+   "real_fake_purity": 0.9912,
+   "source_purity": 0.8334
+  },
+  "6": {
+   "n_concepts": 1227,
+   "covered": 11933,
+   "real_fake_purity": 0.9942,
+   "source_purity": 0.8654
+  },
+  "7": {
+   "n_concepts": 2627,
+   "covered": 11466,
+   "real_fake_purity": 0.9976,
+   "source_purity": 0.9083
+  },
+  "8": {
+   "n_concepts": 4015,
+   "covered": 10012,
+   "real_fake_purity": 0.9992,
+   "source_purity": 0.9394
+  },
+  "9": {
+   "n_concepts": 3872,
+   "covered": 6947,
+   "real_fake_purity": 0.9997,
+   "source_purity": 0.9587
+  },
+  "10": {
+   "n_concepts": 1911,
+   "covered": 3003,
+   "real_fake_purity": 1.0,
+   "source_purity": 0.9704
+  },
+  "11": {
+   "n_concepts": 389,
+   "covered": 623,
+   "real_fake_purity": 1.0,
+   "source_purity": 0.9647
+  },
+  "12": {
+   "n_concepts": 36,
+   "covered": 68,
+   "real_fake_purity": 1.0,
+   "source_purity": 0.9265
+  },
+  "13": {
+   "n_concepts": 2,
+   "covered": 4,
+   "real_fake_purity": 1.0,
+   "source_purity": 1.0
+  }
+ },
+ "leaf_ami_source": 0.0564,
+ "leaf_ami_real_fake": 0.0335,
+ "atlas": [
+  {
+   "id": "0",
+   "depth": 0,
+   "size": 11999,
+   "share": 1.0,
+   "p_fake": 0.455,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.356
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.16
+    },
+    {
+     "source": "diffgan_tts",
+     "share": 0.051
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 0.0,
+   "exemplars": []
+  },
+  {
+   "id": "0.1",
+   "depth": 1,
+   "size": 3755,
+   "share": 0.3129,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.99
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.01
+    },
+    {
+     "source": "grad_tts",
+     "share": 0.0
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 6.65,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.1",
+   "depth": 2,
+   "size": 1901,
+   "share": 0.1584,
+   "p_fake": 0.001,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.985
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.014
+    },
+    {
+     "source": "grad_tts",
+     "share": 0.001
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 7.87,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.1.1",
+   "depth": 3,
+   "size": 1032,
+   "share": 0.086,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.987
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.013
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 10.09,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.1.1.1",
+   "depth": 4,
+   "size": 534,
+   "share": 0.0445,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.985
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.015
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 12.23,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.1.1.2",
+   "depth": 4,
+   "size": 264,
+   "share": 0.022,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.996
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.004
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 12.31,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.1.1.3",
+   "depth": 4,
+   "size": 234,
+   "share": 0.0195,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.982
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.018
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 12.01,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.1.2",
+   "depth": 3,
+   "size": 753,
+   "share": 0.0628,
+   "p_fake": 0.001,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.986
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.013
+    },
+    {
+     "source": "grad_tts",
+     "share": 0.001
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 9.84,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.1.2.1",
+   "depth": 4,
+   "size": 454,
+   "share": 0.0378,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.983
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.017
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 12.3,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.1.2.2",
+   "depth": 4,
+   "size": 268,
+   "share": 0.0223,
+   "p_fake": 0.004,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.989
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.007
+    },
+    {
+     "source": "grad_tts",
+     "share": 0.004
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 11.01,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.2",
+   "depth": 2,
+   "size": 1854,
+   "share": 0.1545,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.994
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.006
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 8.43,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.2.1",
+   "depth": 3,
+   "size": 661,
+   "share": 0.0551,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.997
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.003
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 12.61,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.2.1.1",
+   "depth": 4,
+   "size": 278,
+   "share": 0.0232,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.997
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.003
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 14.9,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.2.1.2",
+   "depth": 4,
+   "size": 231,
+   "share": 0.0193,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.996
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.004
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 14.45,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.2.1.3",
+   "depth": 4,
+   "size": 152,
+   "share": 0.0127,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 1.0
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 13.89,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.2.2",
+   "depth": 3,
+   "size": 624,
+   "share": 0.052,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.995
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.005
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 12.11,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.2.2.1",
+   "depth": 4,
+   "size": 193,
+   "share": 0.0161,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.995
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.005
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 14.45,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.2.2.2",
+   "depth": 4,
+   "size": 156,
+   "share": 0.013,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.994
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.006
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 14.93,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.2.2.3",
+   "depth": 4,
+   "size": 140,
+   "share": 0.0117,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.993
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.007
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 14.29,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.2.2.4",
+   "depth": 4,
+   "size": 135,
+   "share": 0.0113,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 1.0
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 14.43,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.2.3",
+   "depth": 3,
+   "size": 290,
+   "share": 0.0242,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 1.0
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 9.95,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.2.3.1",
+   "depth": 4,
+   "size": 175,
+   "share": 0.0146,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 1.0
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 12.33,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.2.4",
+   "depth": 3,
+   "size": 279,
+   "share": 0.0233,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.976
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.024
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 9.88,
+   "exemplars": []
+  },
+  {
+   "id": "0.1.2.4.1",
+   "depth": 4,
+   "size": 184,
+   "share": 0.0153,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.981
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.019
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 12.6,
+   "exemplars": []
+  },
+  {
+   "id": "0.2",
+   "depth": 1,
+   "size": 3308,
+   "share": 0.2757,
+   "p_fake": 0.997,
+   "sources": [
+    {
+     "source": "diffgan_tts",
+     "share": 0.166
+    },
+    {
+     "source": "pro_diff",
+     "share": 0.164
+    },
+    {
+     "source": "wavegrad2",
+     "share": 0.163
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 3.57,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.1",
+   "depth": 2,
+   "size": 1067,
+   "share": 0.0889,
+   "p_fake": 0.997,
+   "sources": [
+    {
+     "source": "elevenlabs",
+     "share": 0.384
+    },
+    {
+     "source": "playht",
+     "share": 0.358
+    },
+    {
+     "source": "unit_speech",
+     "share": 0.188
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 7.01,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.1.1",
+   "depth": 3,
+   "size": 625,
+   "share": 0.0521,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "elevenlabs",
+     "share": 0.365
+    },
+    {
+     "source": "playht",
+     "share": 0.311
+    },
+    {
+     "source": "unit_speech",
+     "share": 0.238
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 9.08,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.1.1.1",
+   "depth": 4,
+   "size": 319,
+   "share": 0.0266,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "elevenlabs",
+     "share": 0.699
+    },
+    {
+     "source": "playht",
+     "share": 0.233
+    },
+    {
+     "source": "xtts_v2",
+     "share": 0.044
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 12.03,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.1.1.2",
+   "depth": 4,
+   "size": 306,
+   "share": 0.0255,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "unit_speech",
+     "share": 0.434
+    },
+    {
+     "source": "playht",
+     "share": 0.38
+    },
+    {
+     "source": "xtts_v2",
+     "share": 0.081
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 9.65,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.1.2",
+   "depth": 3,
+   "size": 338,
+   "share": 0.0282,
+   "p_fake": 0.998,
+   "sources": [
+    {
+     "source": "playht",
+     "share": 0.482
+    },
+    {
+     "source": "elevenlabs",
+     "share": 0.323
+    },
+    {
+     "source": "unit_speech",
+     "share": 0.154
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 11.48,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.1.2.1",
+   "depth": 4,
+   "size": 200,
+   "share": 0.0167,
+   "p_fake": 0.996,
+   "sources": [
+    {
+     "source": "playht",
+     "share": 0.629
+    },
+    {
+     "source": "unit_speech",
+     "share": 0.213
+    },
+    {
+     "source": "elevenlabs",
+     "share": 0.109
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 12.81,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.2",
+   "depth": 2,
+   "size": 1000,
+   "share": 0.0833,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "diffgan_tts",
+     "share": 0.518
+    },
+    {
+     "source": "grad_tts",
+     "share": 0.455
+    },
+    {
+     "source": "wavegrad2",
+     "share": 0.019
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 8.85,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.2.1",
+   "depth": 3,
+   "size": 603,
+   "share": 0.0503,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "diffgan_tts",
+     "share": 0.825
+    },
+    {
+     "source": "grad_tts",
+     "share": 0.138
+    },
+    {
+     "source": "wavegrad2",
+     "share": 0.024
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 11.57,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.2.1.1",
+   "depth": 4,
+   "size": 278,
+   "share": 0.0232,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "diffgan_tts",
+     "share": 0.879
+    },
+    {
+     "source": "grad_tts",
+     "share": 0.091
+    },
+    {
+     "source": "pro_diff",
+     "share": 0.01
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 13.29,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.2.1.2",
+   "depth": 4,
+   "size": 227,
+   "share": 0.0189,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "diffgan_tts",
+     "share": 0.963
+    },
+    {
+     "source": "grad_tts",
+     "share": 0.021
+    },
+    {
+     "source": "wavegrad2",
+     "share": 0.017
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 14.81,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.2.2",
+   "depth": 3,
+   "size": 397,
+   "share": 0.0331,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "grad_tts",
+     "share": 0.928
+    },
+    {
+     "source": "diffgan_tts",
+     "share": 0.06
+    },
+    {
+     "source": "wavegrad2",
+     "share": 0.012
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 12.32,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.2.2.1",
+   "depth": 4,
+   "size": 308,
+   "share": 0.0257,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "grad_tts",
+     "share": 0.944
+    },
+    {
+     "source": "diffgan_tts",
+     "share": 0.04
+    },
+    {
+     "source": "wavegrad2",
+     "share": 0.016
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 14.74,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.3",
+   "depth": 2,
+   "size": 674,
+   "share": 0.0562,
+   "p_fake": 0.988,
+   "sources": [
+    {
+     "source": "wavegrad2",
+     "share": 0.78
+    },
+    {
+     "source": "grad_tts",
+     "share": 0.119
+    },
+    {
+     "source": "diffgan_tts",
+     "share": 0.039
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 6.89,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.3.1",
+   "depth": 3,
+   "size": 316,
+   "share": 0.0263,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "wavegrad2",
+     "share": 0.941
+    },
+    {
+     "source": "grad_tts",
+     "share": 0.033
+    },
+    {
+     "source": "diffgan_tts",
+     "share": 0.013
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 12.37,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.3.1.1",
+   "depth": 4,
+   "size": 121,
+   "share": 0.0101,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "wavegrad2",
+     "share": 0.864
+    },
+    {
+     "source": "grad_tts",
+     "share": 0.076
+    },
+    {
+     "source": "diffgan_tts",
+     "share": 0.034
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 13.09,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.3.2",
+   "depth": 3,
+   "size": 241,
+   "share": 0.0201,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "wavegrad2",
+     "share": 0.817
+    },
+    {
+     "source": "pro_diff",
+     "share": 0.07
+    },
+    {
+     "source": "diffgan_tts",
+     "share": 0.047
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 12.15,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.4",
+   "depth": 2,
+   "size": 567,
+   "share": 0.0473,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "pro_diff",
+     "share": 0.978
+    },
+    {
+     "source": "playht",
+     "share": 0.009
+    },
+    {
+     "source": "diffgan_tts",
+     "share": 0.004
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 12.62,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.4.1",
+   "depth": 3,
+   "size": 220,
+   "share": 0.0183,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "pro_diff",
+     "share": 0.991
+    },
+    {
+     "source": "playht",
+     "share": 0.004
+    },
+    {
+     "source": "wavegrad2",
+     "share": 0.004
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 18.87,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.4.1.1",
+   "depth": 4,
+   "size": 128,
+   "share": 0.0107,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "pro_diff",
+     "share": 1.0
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 21.73,
+   "exemplars": []
+  },
+  {
+   "id": "0.2.4.2",
+   "depth": 3,
+   "size": 210,
+   "share": 0.0175,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "pro_diff",
+     "share": 0.986
+    },
+    {
+     "source": "xtts_v2",
+     "share": 0.009
+    },
+    {
+     "source": "diffgan_tts",
+     "share": 0.005
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 17.6,
+   "exemplars": []
+  },
+  {
+   "id": "0.3",
+   "depth": 1,
+   "size": 2359,
+   "share": 0.1966,
+   "p_fake": 0.002,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.781
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.149
+    },
+    {
+     "source": "real:ljspeech",
+     "share": 0.067
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 4.7,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.1",
+   "depth": 2,
+   "size": 1106,
+   "share": 0.0922,
+   "p_fake": 0.004,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.739
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.255
+    },
+    {
+     "source": "elevenlabs",
+     "share": 0.003
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 7.27,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.1.1",
+   "depth": 3,
+   "size": 680,
+   "share": 0.0567,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.711
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.289
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 9.24,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.1.1.1",
+   "depth": 4,
+   "size": 323,
+   "share": 0.0269,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.691
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.309
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 11.0,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.1.1.2",
+   "depth": 4,
+   "size": 228,
+   "share": 0.019,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.723
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.277
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 11.07,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.1.1.3",
+   "depth": 4,
+   "size": 129,
+   "share": 0.0108,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.745
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.255
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 11.6,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.1.2",
+   "depth": 3,
+   "size": 224,
+   "share": 0.0187,
+   "p_fake": 0.011,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.842
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.148
+    },
+    {
+     "source": "elevenlabs",
+     "share": 0.005
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 9.75,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.1.3",
+   "depth": 3,
+   "size": 202,
+   "share": 0.0168,
+   "p_fake": 0.011,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.741
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.233
+    },
+    {
+     "source": "real:ljspeech",
+     "share": 0.016
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 8.61,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.2",
+   "depth": 2,
+   "size": 979,
+   "share": 0.0816,
+   "p_fake": 0.001,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.908
+    },
+    {
+     "source": "real:ljspeech",
+     "share": 0.05
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.041
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 5.36,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.2.1",
+   "depth": 3,
+   "size": 711,
+   "share": 0.0593,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.951
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.032
+    },
+    {
+     "source": "real:ljspeech",
+     "share": 0.017
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 8.4,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.2.1.1",
+   "depth": 4,
+   "size": 324,
+   "share": 0.027,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.938
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.034
+    },
+    {
+     "source": "real:ljspeech",
+     "share": 0.028
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 9.47,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.2.1.2",
+   "depth": 4,
+   "size": 252,
+   "share": 0.021,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.957
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.036
+    },
+    {
+     "source": "real:ljspeech",
+     "share": 0.007
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 11.26,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.2.1.3",
+   "depth": 4,
+   "size": 135,
+   "share": 0.0113,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.975
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.017
+    },
+    {
+     "source": "real:ljspeech",
+     "share": 0.008
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 9.81,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.2.2",
+   "depth": 3,
+   "size": 268,
+   "share": 0.0223,
+   "p_fake": 0.006,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.726
+    },
+    {
+     "source": "real:ljspeech",
+     "share": 0.19
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.078
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 5.38,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.2.2.1",
+   "depth": 4,
+   "size": 143,
+   "share": 0.0119,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.808
+    },
+    {
+     "source": "real:ljspeech",
+     "share": 0.141
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.051
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 6.44,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.3",
+   "depth": 2,
+   "size": 274,
+   "share": 0.0228,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.46
+    },
+    {
+     "source": "real:ljspeech",
+     "share": 0.446
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.094
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 15.82,
+   "exemplars": []
+  },
+  {
+   "id": "0.3.3.1",
+   "depth": 3,
+   "size": 194,
+   "share": 0.0162,
+   "p_fake": 0.0,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.528
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.376
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.096
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 19.89,
+   "exemplars": []
+  },
+  {
+   "id": "0.4",
+   "depth": 1,
+   "size": 2174,
+   "share": 0.1812,
+   "p_fake": 0.965,
+   "sources": [
+    {
+     "source": "openvoicev2",
+     "share": 0.25
+    },
+    {
+     "source": "your_tts",
+     "share": 0.239
+    },
+    {
+     "source": "xtts_v2",
+     "share": 0.207
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 4.49,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.1",
+   "depth": 2,
+   "size": 1580,
+   "share": 0.1317,
+   "p_fake": 0.999,
+   "sources": [
+    {
+     "source": "openvoicev2",
+     "share": 0.299
+    },
+    {
+     "source": "your_tts",
+     "share": 0.295
+    },
+    {
+     "source": "xtts_v2",
+     "share": 0.243
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 6.18,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.1.1",
+   "depth": 3,
+   "size": 600,
+   "share": 0.05,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "xtts_v2",
+     "share": 0.417
+    },
+    {
+     "source": "your_tts",
+     "share": 0.396
+    },
+    {
+     "source": "openvoicev2",
+     "share": 0.153
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 10.41,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.1.1.1",
+   "depth": 4,
+   "size": 257,
+   "share": 0.0214,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "your_tts",
+     "share": 0.807
+    },
+    {
+     "source": "xtts_v2",
+     "share": 0.127
+    },
+    {
+     "source": "openvoicev2",
+     "share": 0.058
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 13.1,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.1.1.2",
+   "depth": 4,
+   "size": 194,
+   "share": 0.0162,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "xtts_v2",
+     "share": 0.534
+    },
+    {
+     "source": "openvoicev2",
+     "share": 0.325
+    },
+    {
+     "source": "your_tts",
+     "share": 0.136
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 14.43,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.1.1.3",
+   "depth": 4,
+   "size": 149,
+   "share": 0.0124,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "xtts_v2",
+     "share": 0.755
+    },
+    {
+     "source": "unit_speech",
+     "share": 0.113
+    },
+    {
+     "source": "openvoicev2",
+     "share": 0.079
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 11.5,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.1.2",
+   "depth": 3,
+   "size": 522,
+   "share": 0.0435,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "unit_speech",
+     "share": 0.336
+    },
+    {
+     "source": "your_tts",
+     "share": 0.3
+    },
+    {
+     "source": "xtts_v2",
+     "share": 0.201
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 8.24,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.1.2.1",
+   "depth": 4,
+   "size": 241,
+   "share": 0.0201,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "unit_speech",
+     "share": 0.338
+    },
+    {
+     "source": "your_tts",
+     "share": 0.302
+    },
+    {
+     "source": "xtts_v2",
+     "share": 0.203
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 10.67,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.1.2.2",
+   "depth": 4,
+   "size": 169,
+   "share": 0.0141,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "your_tts",
+     "share": 0.437
+    },
+    {
+     "source": "xtts_v2",
+     "share": 0.241
+    },
+    {
+     "source": "unit_speech",
+     "share": 0.19
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 10.48,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.1.3",
+   "depth": 3,
+   "size": 458,
+   "share": 0.0382,
+   "p_fake": 0.998,
+   "sources": [
+    {
+     "source": "openvoicev2",
+     "share": 0.763
+    },
+    {
+     "source": "your_tts",
+     "share": 0.14
+    },
+    {
+     "source": "unit_speech",
+     "share": 0.056
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 11.01,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.1.3.1",
+   "depth": 4,
+   "size": 221,
+   "share": 0.0184,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "openvoicev2",
+     "share": 0.824
+    },
+    {
+     "source": "your_tts",
+     "share": 0.1
+    },
+    {
+     "source": "xtts_v2",
+     "share": 0.052
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 14.13,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.1.3.2",
+   "depth": 4,
+   "size": 150,
+   "share": 0.0125,
+   "p_fake": 0.993,
+   "sources": [
+    {
+     "source": "openvoicev2",
+     "share": 0.745
+    },
+    {
+     "source": "your_tts",
+     "share": 0.248
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.007
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 15.32,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.2",
+   "depth": 2,
+   "size": 318,
+   "share": 0.0265,
+   "p_fake": 0.949,
+   "sources": [
+    {
+     "source": "wavegrad2",
+     "share": 0.139
+    },
+    {
+     "source": "openvoicev2",
+     "share": 0.136
+    },
+    {
+     "source": "unit_speech",
+     "share": 0.116
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 14.56,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.2.1",
+   "depth": 3,
+   "size": 205,
+   "share": 0.0171,
+   "p_fake": 0.979,
+   "sources": [
+    {
+     "source": "openvoicev2",
+     "share": 0.159
+    },
+    {
+     "source": "wavegrad2",
+     "share": 0.153
+    },
+    {
+     "source": "diffgan_tts",
+     "share": 0.132
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 15.53,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.3",
+   "depth": 2,
+   "size": 153,
+   "share": 0.0128,
+   "p_fake": 0.992,
+   "sources": [
+    {
+     "source": "your_tts",
+     "share": 0.175
+    },
+    {
+     "source": "unit_speech",
+     "share": 0.167
+    },
+    {
+     "source": "xtts_v2",
+     "share": 0.151
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 18.65,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.3.1",
+   "depth": 3,
+   "size": 129,
+   "share": 0.0108,
+   "p_fake": 1.0,
+   "sources": [
+    {
+     "source": "your_tts",
+     "share": 0.198
+    },
+    {
+     "source": "unit_speech",
+     "share": 0.189
+    },
+    {
+     "source": "openvoicev2",
+     "share": 0.162
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 20.19,
+   "exemplars": []
+  },
+  {
+   "id": "0.4.4",
+   "depth": 2,
+   "size": 123,
+   "share": 0.0103,
+   "p_fake": 0.588,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.275
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.122
+    },
+    {
+     "source": "elevenlabs",
+     "share": 0.099
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 37.16,
+   "exemplars": []
+  },
+  {
+   "id": "0.5",
+   "depth": 1,
+   "size": 403,
+   "share": 0.0336,
+   "p_fake": 0.115,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.579
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.26
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.046
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 19.09,
+   "exemplars": []
+  },
+  {
+   "id": "0.5.1",
+   "depth": 2,
+   "size": 170,
+   "share": 0.0142,
+   "p_fake": 0.041,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.639
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.284
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.036
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 18.42,
+   "exemplars": []
+  },
+  {
+   "id": "0.5.2",
+   "depth": 2,
+   "size": 161,
+   "share": 0.0134,
+   "p_fake": 0.099,
+   "sources": [
+    {
+     "source": "real:ljspeech",
+     "share": 0.579
+    },
+    {
+     "source": "real:librispeech_other_speakers",
+     "share": 0.276
+    },
+    {
+     "source": "real:librispeech_cloned_speakers",
+     "share": 0.046
+    }
+   ],
+   "channels": [],
+   "expected_pmi": 23.84,
+   "exemplars": []
+  }
+ ]
+}

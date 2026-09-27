@@ -1,0 +1,112 @@
+{
+ "n_clips": 5283,
+ "n_features": 93,
+ "top_dims": [
+  {
+   "dim": "dim00",
+   "detector_sensitivity": 143.456,
+   "top1": "bg.frame_level_std_db",
+   "rho1": 0.417,
+   "rho1_lo": 0.392,
+   "rho1_hi": 0.437
+  },
+  {
+   "dim": "dim01",
+   "detector_sensitivity": -10.223,
+   "top1": "spec.fb_flux_med",
+   "rho1": 0.254,
+   "rho1_lo": 0.229,
+   "rho1_hi": 0.282
+  },
+  {
+   "dim": "dim02",
+   "detector_sensitivity": 5.396,
+   "top1": "bg.floor_std_db",
+   "rho1": -0.232,
+   "rho1_lo": -0.257,
+   "rho1_hi": -0.205
+  },
+  {
+   "dim": "dim04",
+   "detector_sensitivity": -0.935,
+   "top1": "spec.fb_centroid_hz_p10",
+   "rho1": 0.554,
+   "rho1_lo": 0.535,
+   "rho1_hi": 0.573
+  },
+  {
+   "dim": "dim08",
+   "detector_sensitivity": 0.433,
+   "top1": "bg.snr_db",
+   "rho1": 0.308,
+   "rho1_lo": 0.286,
+   "rho1_hi": 0.332
+  },
+  {
+   "dim": "dim03",
+   "detector_sensitivity": -0.429,
+   "top1": "spec.band_50_250_db_med",
+   "rho1": 0.402,
+   "rho1_lo": 0.38,
+   "rho1_hi": 0.43
+  },
+  {
+   "dim": "dim07",
+   "detector_sensitivity": -0.381,
+   "top1": "spec.fb_hiflatness_db_p90",
+   "rho1": -0.294,
+   "rho1_lo": -0.32,
+   "rho1_hi": -0.27
+  },
+  {
+   "dim": "dim05",
+   "detector_sensitivity": -0.275,
+   "top1": "bg.snr_db",
+   "rho1": -0.354,
+   "rho1_lo": -0.378,
+   "rho1_hi": -0.333
+  }
+ ],
+ "detector_correlates": [
+  {
+   "feature": "bg.frame_level_std_db",
+   "rho_with_detector_logit": 0.413
+  },
+  {
+   "feature": "spec.fb_hiflatness_db_p90",
+   "rho_with_detector_logit": 0.375
+  },
+  {
+   "feature": "bg.noise_flatness_db",
+   "rho_with_detector_logit": 0.277
+  },
+  {
+   "feature": "bg.snr_db",
+   "rho_with_detector_logit": 0.276
+  },
+  {
+   "feature": "spec.fb_flux_iqr",
+   "rho_with_detector_logit": -0.244
+  },
+  {
+   "feature": "bg.noise_centroid_hz",
+   "rho_with_detector_logit": 0.238
+  },
+  {
+   "feature": "pros.f0_st_std",
+   "rho_with_detector_logit": -0.23
+  },
+  {
+   "feature": "bg.noise_hf_ratio_db",
+   "rho_with_detector_logit": 0.22
+  },
+  {
+   "feature": "spec.fb_centroid_hz_p90",
+   "rho_with_detector_logit": 0.22
+  },
+  {
+   "feature": "lpc.res_flatness_db_med",
+   "rho_with_detector_logit": 0.214
+  }
+ ]
+}

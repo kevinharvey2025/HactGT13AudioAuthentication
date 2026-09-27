@@ -1,0 +1,5 @@
+concept,depth,size,p_fake,sources,channels,n,errors,false_alarms,misses,error_rate,share_of_all_errors
+-6165477932651918315,2,1177,0.986,"xtts_v2 31%, your_tts 31%","clean 50%, codec 15%",57,8,5,3,0.14,0.11
+-2625032241299572676,4,40,0.125,"real:ljspeech 57%, real:librispeech_other_speakers 28%","reverb 60%, codec 12%",11,5,3,2,0.455,0.068
+2909017754568886115,3,37,0.081,"real:ljspeech 76%, real:librispeech_other_speakers 14%","reverb 51%, codec 19%",8,4,4,0,0.5,0.055
+6050218072822792067,4,43,0.977,"elevenlabs 70%, playht 23%","noise 37%, clean 19%",8,3,3,0,0.375,0.041

@@ -1,0 +1,88 @@
+# Concept atlas, unsupervised tree (no labels during concept formation; names from members afterwards)
+
+The top levels of the COBWEB concept tree over the final detector's representation: concepts holding at least 1% of the
+12,000 training clips, down to depth 4. Each line: concept id, size, synthetic share, top sources, top channels, D(c),
+and the most typical member clips (closest to the concept mean).
+
+- **0** · 11,999 clips (100.0%) · 46% synthetic · real:ljspeech 36%, real:librispeech_other_speakers 16%, diffgan_tts 5% ·  · D(c) 0.0 · e.g. 
+  - **0.1** · 3,755 clips (31.3%) · 0% synthetic · real:ljspeech 99%, real:librispeech_other_speakers 1%, grad_tts 0% ·  · D(c) 6.65 · e.g. 
+    - **0.1.1** · 1,901 clips (15.8%) · 0% synthetic · real:ljspeech 98%, real:librispeech_other_speakers 1%, grad_tts 0% ·  · D(c) 7.87 · e.g. 
+      - **0.1.1.1** · 1,032 clips (8.6%) · 0% synthetic · real:ljspeech 99%, real:librispeech_other_speakers 1% ·  · D(c) 10.09 · e.g. 
+        - **0.1.1.1.1** · 534 clips (4.5%) · 0% synthetic · real:ljspeech 98%, real:librispeech_other_speakers 2% ·  · D(c) 12.23 · e.g. 
+        - **0.1.1.1.2** · 264 clips (2.2%) · 0% synthetic · real:ljspeech 100%, real:librispeech_other_speakers 0% ·  · D(c) 12.31 · e.g. 
+        - **0.1.1.1.3** · 234 clips (1.9%) · 0% synthetic · real:ljspeech 98%, real:librispeech_other_speakers 2% ·  · D(c) 12.01 · e.g. 
+      - **0.1.1.2** · 753 clips (6.3%) · 0% synthetic · real:ljspeech 99%, real:librispeech_other_speakers 1%, grad_tts 0% ·  · D(c) 9.84 · e.g. 
+        - **0.1.1.2.1** · 454 clips (3.8%) · 0% synthetic · real:ljspeech 98%, real:librispeech_other_speakers 2% ·  · D(c) 12.3 · e.g. 
+        - **0.1.1.2.2** · 268 clips (2.2%) · 0% synthetic · real:ljspeech 99%, real:librispeech_other_speakers 1%, grad_tts 0% ·  · D(c) 11.01 · e.g. 
+    - **0.1.2** · 1,854 clips (15.4%) · 0% synthetic · real:ljspeech 99%, real:librispeech_other_speakers 1% ·  · D(c) 8.43 · e.g. 
+      - **0.1.2.1** · 661 clips (5.5%) · 0% synthetic · real:ljspeech 100%, real:librispeech_other_speakers 0% ·  · D(c) 12.61 · e.g. 
+        - **0.1.2.1.1** · 278 clips (2.3%) · 0% synthetic · real:ljspeech 100%, real:librispeech_other_speakers 0% ·  · D(c) 14.9 · e.g. 
+        - **0.1.2.1.2** · 231 clips (1.9%) · 0% synthetic · real:ljspeech 100%, real:librispeech_other_speakers 0% ·  · D(c) 14.45 · e.g. 
+        - **0.1.2.1.3** · 152 clips (1.3%) · 0% synthetic · real:ljspeech 100% ·  · D(c) 13.89 · e.g. 
+      - **0.1.2.2** · 624 clips (5.2%) · 0% synthetic · real:ljspeech 100%, real:librispeech_other_speakers 0% ·  · D(c) 12.11 · e.g. 
+        - **0.1.2.2.1** · 193 clips (1.6%) · 0% synthetic · real:ljspeech 100%, real:librispeech_other_speakers 0% ·  · D(c) 14.45 · e.g. 
+        - **0.1.2.2.2** · 156 clips (1.3%) · 0% synthetic · real:ljspeech 99%, real:librispeech_other_speakers 1% ·  · D(c) 14.93 · e.g. 
+        - **0.1.2.2.3** · 140 clips (1.2%) · 0% synthetic · real:ljspeech 99%, real:librispeech_other_speakers 1% ·  · D(c) 14.29 · e.g. 
+        - **0.1.2.2.4** · 135 clips (1.1%) · 0% synthetic · real:ljspeech 100% ·  · D(c) 14.43 · e.g. 
+      - **0.1.2.3** · 290 clips (2.4%) · 0% synthetic · real:ljspeech 100% ·  · D(c) 9.95 · e.g. 
+        - **0.1.2.3.1** · 175 clips (1.5%) · 0% synthetic · real:ljspeech 100% ·  · D(c) 12.33 · e.g. 
+      - **0.1.2.4** · 279 clips (2.3%) · 0% synthetic · real:ljspeech 98%, real:librispeech_other_speakers 2% ·  · D(c) 9.88 · e.g. 
+        - **0.1.2.4.1** · 184 clips (1.5%) · 0% synthetic · real:ljspeech 98%, real:librispeech_other_speakers 2% ·  · D(c) 12.6 · e.g. 
+  - **0.2** · 3,308 clips (27.6%) · 100% synthetic · diffgan_tts 17%, pro_diff 16%, wavegrad2 16% ·  · D(c) 3.57 · e.g. 
+    - **0.2.1** · 1,067 clips (8.9%) · 100% synthetic · elevenlabs 38%, playht 36%, unit_speech 19% ·  · D(c) 7.01 · e.g. 
+      - **0.2.1.1** · 625 clips (5.2%) · 100% synthetic · elevenlabs 36%, playht 31%, unit_speech 24% ·  · D(c) 9.08 · e.g. 
+        - **0.2.1.1.1** · 319 clips (2.7%) · 100% synthetic · elevenlabs 70%, playht 23%, xtts_v2 4% ·  · D(c) 12.03 · e.g. 
+        - **0.2.1.1.2** · 306 clips (2.5%) · 100% synthetic · unit_speech 43%, playht 38%, xtts_v2 8% ·  · D(c) 9.65 · e.g. 
+      - **0.2.1.2** · 338 clips (2.8%) · 100% synthetic · playht 48%, elevenlabs 32%, unit_speech 15% ·  · D(c) 11.48 · e.g. 
+        - **0.2.1.2.1** · 200 clips (1.7%) · 100% synthetic · playht 63%, unit_speech 21%, elevenlabs 11% ·  · D(c) 12.81 · e.g. 
+    - **0.2.2** · 1,000 clips (8.3%) · 100% synthetic · diffgan_tts 52%, grad_tts 46%, wavegrad2 2% ·  · D(c) 8.85 · e.g. 
+      - **0.2.2.1** · 603 clips (5.0%) · 100% synthetic · diffgan_tts 82%, grad_tts 14%, wavegrad2 2% ·  · D(c) 11.57 · e.g. 
+        - **0.2.2.1.1** · 278 clips (2.3%) · 100% synthetic · diffgan_tts 88%, grad_tts 9%, pro_diff 1% ·  · D(c) 13.29 · e.g. 
+        - **0.2.2.1.2** · 227 clips (1.9%) · 100% synthetic · diffgan_tts 96%, grad_tts 2%, wavegrad2 2% ·  · D(c) 14.81 · e.g. 
+      - **0.2.2.2** · 397 clips (3.3%) · 100% synthetic · grad_tts 93%, diffgan_tts 6%, wavegrad2 1% ·  · D(c) 12.32 · e.g. 
+        - **0.2.2.2.1** · 308 clips (2.6%) · 100% synthetic · grad_tts 94%, diffgan_tts 4%, wavegrad2 2% ·  · D(c) 14.74 · e.g. 
+    - **0.2.3** · 674 clips (5.6%) · 99% synthetic · wavegrad2 78%, grad_tts 12%, diffgan_tts 4% ·  · D(c) 6.89 · e.g. 
+      - **0.2.3.1** · 316 clips (2.6%) · 100% synthetic · wavegrad2 94%, grad_tts 3%, diffgan_tts 1% ·  · D(c) 12.37 · e.g. 
+        - **0.2.3.1.1** · 121 clips (1.0%) · 100% synthetic · wavegrad2 86%, grad_tts 8%, diffgan_tts 3% ·  · D(c) 13.09 · e.g. 
+      - **0.2.3.2** · 241 clips (2.0%) · 100% synthetic · wavegrad2 82%, pro_diff 7%, diffgan_tts 5% ·  · D(c) 12.15 · e.g. 
+    - **0.2.4** · 567 clips (4.7%) · 100% synthetic · pro_diff 98%, playht 1%, diffgan_tts 0% ·  · D(c) 12.62 · e.g. 
+      - **0.2.4.1** · 220 clips (1.8%) · 100% synthetic · pro_diff 99%, playht 0%, wavegrad2 0% ·  · D(c) 18.87 · e.g. 
+        - **0.2.4.1.1** · 128 clips (1.1%) · 100% synthetic · pro_diff 100% ·  · D(c) 21.73 · e.g. 
+      - **0.2.4.2** · 210 clips (1.8%) · 100% synthetic · pro_diff 99%, xtts_v2 1%, diffgan_tts 0% ·  · D(c) 17.6 · e.g. 
+  - **0.3** · 2,359 clips (19.7%) · 0% synthetic · real:librispeech_other_speakers 78%, real:librispeech_cloned_speakers 15%, real:ljspeech 7% ·  · D(c) 4.7 · e.g. 
+    - **0.3.1** · 1,106 clips (9.2%) · 0% synthetic · real:librispeech_other_speakers 74%, real:librispeech_cloned_speakers 26%, elevenlabs 0% ·  · D(c) 7.27 · e.g. 
+      - **0.3.1.1** · 680 clips (5.7%) · 0% synthetic · real:librispeech_other_speakers 71%, real:librispeech_cloned_speakers 29% ·  · D(c) 9.24 · e.g. 
+        - **0.3.1.1.1** · 323 clips (2.7%) · 0% synthetic · real:librispeech_other_speakers 69%, real:librispeech_cloned_speakers 31% ·  · D(c) 11.0 · e.g. 
+        - **0.3.1.1.2** · 228 clips (1.9%) · 0% synthetic · real:librispeech_other_speakers 72%, real:librispeech_cloned_speakers 28% ·  · D(c) 11.07 · e.g. 
+        - **0.3.1.1.3** · 129 clips (1.1%) · 0% synthetic · real:librispeech_other_speakers 74%, real:librispeech_cloned_speakers 26% ·  · D(c) 11.6 · e.g. 
+      - **0.3.1.2** · 224 clips (1.9%) · 1% synthetic · real:librispeech_other_speakers 84%, real:librispeech_cloned_speakers 15%, elevenlabs 0% ·  · D(c) 9.75 · e.g. 
+      - **0.3.1.3** · 202 clips (1.7%) · 1% synthetic · real:librispeech_other_speakers 74%, real:librispeech_cloned_speakers 23%, real:ljspeech 2% ·  · D(c) 8.61 · e.g. 
+    - **0.3.2** · 979 clips (8.2%) · 0% synthetic · real:librispeech_other_speakers 91%, real:ljspeech 5%, real:librispeech_cloned_speakers 4% ·  · D(c) 5.36 · e.g. 
+      - **0.3.2.1** · 711 clips (5.9%) · 0% synthetic · real:librispeech_other_speakers 95%, real:librispeech_cloned_speakers 3%, real:ljspeech 2% ·  · D(c) 8.4 · e.g. 
+        - **0.3.2.1.1** · 324 clips (2.7%) · 0% synthetic · real:librispeech_other_speakers 94%, real:librispeech_cloned_speakers 3%, real:ljspeech 3% ·  · D(c) 9.47 · e.g. 
+        - **0.3.2.1.2** · 252 clips (2.1%) · 0% synthetic · real:librispeech_other_speakers 96%, real:librispeech_cloned_speakers 4%, real:ljspeech 1% ·  · D(c) 11.26 · e.g. 
+        - **0.3.2.1.3** · 135 clips (1.1%) · 0% synthetic · real:librispeech_other_speakers 98%, real:librispeech_cloned_speakers 2%, real:ljspeech 1% ·  · D(c) 9.81 · e.g. 
+      - **0.3.2.2** · 268 clips (2.2%) · 1% synthetic · real:librispeech_other_speakers 73%, real:ljspeech 19%, real:librispeech_cloned_speakers 8% ·  · D(c) 5.38 · e.g. 
+        - **0.3.2.2.1** · 143 clips (1.2%) · 0% synthetic · real:librispeech_other_speakers 81%, real:ljspeech 14%, real:librispeech_cloned_speakers 5% ·  · D(c) 6.44 · e.g. 
+    - **0.3.3** · 274 clips (2.3%) · 0% synthetic · real:librispeech_other_speakers 46%, real:ljspeech 45%, real:librispeech_cloned_speakers 9% ·  · D(c) 15.82 · e.g. 
+      - **0.3.3.1** · 194 clips (1.6%) · 0% synthetic · real:ljspeech 53%, real:librispeech_other_speakers 38%, real:librispeech_cloned_speakers 10% ·  · D(c) 19.89 · e.g. 
+  - **0.4** · 2,174 clips (18.1%) · 96% synthetic · openvoicev2 25%, your_tts 24%, xtts_v2 21% ·  · D(c) 4.49 · e.g. 
+    - **0.4.1** · 1,580 clips (13.2%) · 100% synthetic · openvoicev2 30%, your_tts 30%, xtts_v2 24% ·  · D(c) 6.18 · e.g. 
+      - **0.4.1.1** · 600 clips (5.0%) · 100% synthetic · xtts_v2 42%, your_tts 40%, openvoicev2 15% ·  · D(c) 10.41 · e.g. 
+        - **0.4.1.1.1** · 257 clips (2.1%) · 100% synthetic · your_tts 81%, xtts_v2 13%, openvoicev2 6% ·  · D(c) 13.1 · e.g. 
+        - **0.4.1.1.2** · 194 clips (1.6%) · 100% synthetic · xtts_v2 53%, openvoicev2 32%, your_tts 14% ·  · D(c) 14.43 · e.g. 
+        - **0.4.1.1.3** · 149 clips (1.2%) · 100% synthetic · xtts_v2 76%, unit_speech 11%, openvoicev2 8% ·  · D(c) 11.5 · e.g. 
+      - **0.4.1.2** · 522 clips (4.3%) · 100% synthetic · unit_speech 34%, your_tts 30%, xtts_v2 20% ·  · D(c) 8.24 · e.g. 
+        - **0.4.1.2.1** · 241 clips (2.0%) · 100% synthetic · unit_speech 34%, your_tts 30%, xtts_v2 20% ·  · D(c) 10.67 · e.g. 
+        - **0.4.1.2.2** · 169 clips (1.4%) · 100% synthetic · your_tts 44%, xtts_v2 24%, unit_speech 19% ·  · D(c) 10.48 · e.g. 
+      - **0.4.1.3** · 458 clips (3.8%) · 100% synthetic · openvoicev2 76%, your_tts 14%, unit_speech 6% ·  · D(c) 11.01 · e.g. 
+        - **0.4.1.3.1** · 221 clips (1.8%) · 100% synthetic · openvoicev2 82%, your_tts 10%, xtts_v2 5% ·  · D(c) 14.13 · e.g. 
+        - **0.4.1.3.2** · 150 clips (1.2%) · 99% synthetic · openvoicev2 74%, your_tts 25%, real:librispeech_other_speakers 1% ·  · D(c) 15.32 · e.g. 
+    - **0.4.2** · 318 clips (2.6%) · 95% synthetic · wavegrad2 14%, openvoicev2 14%, unit_speech 12% ·  · D(c) 14.56 · e.g. 
+      - **0.4.2.1** · 205 clips (1.7%) · 98% synthetic · openvoicev2 16%, wavegrad2 15%, diffgan_tts 13% ·  · D(c) 15.53 · e.g. 
+    - **0.4.3** · 153 clips (1.3%) · 99% synthetic · your_tts 18%, unit_speech 17%, xtts_v2 15% ·  · D(c) 18.65 · e.g. 
+      - **0.4.3.1** · 129 clips (1.1%) · 100% synthetic · your_tts 20%, unit_speech 19%, openvoicev2 16% ·  · D(c) 20.19 · e.g. 
+    - **0.4.4** · 123 clips (1.0%) · 59% synthetic · real:ljspeech 28%, real:librispeech_other_speakers 12%, elevenlabs 10% ·  · D(c) 37.16 · e.g. 
+  - **0.5** · 403 clips (3.4%) · 12% synthetic · real:ljspeech 58%, real:librispeech_other_speakers 26%, real:librispeech_cloned_speakers 5% ·  · D(c) 19.09 · e.g. 
+    - **0.5.1** · 170 clips (1.4%) · 4% synthetic · real:ljspeech 64%, real:librispeech_other_speakers 28%, real:librispeech_cloned_speakers 4% ·  · D(c) 18.42 · e.g. 
+    - **0.5.2** · 161 clips (1.3%) · 10% synthetic · real:ljspeech 58%, real:librispeech_other_speakers 28%, real:librispeech_cloned_speakers 5% ·  · D(c) 23.84 · e.g. 
