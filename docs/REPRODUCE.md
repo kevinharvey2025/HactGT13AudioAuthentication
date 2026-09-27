@@ -15,8 +15,9 @@ git.
 Two precisions:
 - **`--precision fp32`** (default, the reference) peaks at about 14.5 GB. On 8 CPU threads the NSA test set takes
   about 2 hours ([results/runtime.md](../results/runtime.md)).
-- **`--precision bf16`** is for machines or containers with 8 GB; its agreement with fp32 is measured in
-  `results/runtime.md`.
+- **`--precision bf16`** agrees with fp32 (100 NSA test clips: Spearman 0.998, every decision at P > 0.2
+  identical, max |ΔP| 0.043) but is not a memory fix on CPUs without native bf16: on Raven's IceLake nodes it peaked
+  at 13.2 GB (fp32: 14.4 GB) and took 1.6× as long. Budget about 15 GB either way.
 
 Every file is scored whole and alone, so a score never depends on the other files in the folder.
 
@@ -25,9 +26,9 @@ Every file is scored whole and alone, so a score never depends on the other file
 ```bash
 docker build -t sidequests-hearsay .                               # bakes artifacts/diffusion/ in if present
 docker run --rm --network none --memory 16g -v /path/to/audio:/data/input:ro -v $PWD/out:/data/output sidequests-hearsay
-# without baked weights: mount them;  on an 8 GB Docker Desktop: add --precision bf16 at the end
-docker run --rm --network none -v /path/to/weights:/app/artifacts/diffusion:ro \
-    -v /path/to/audio:/data/input:ro -v $PWD/out:/data/output sidequests-hearsay --precision bf16
+# without baked weights: mount them (Docker Desktop: raise the VM's memory to >= 16 GB first)
+docker run --rm --network none --memory 16g -v /path/to/weights:/app/artifacts/diffusion:ro \
+    -v /path/to/audio:/data/input:ro -v $PWD/out:/data/output sidequests-hearsay
 ```
 
 - **Pinned inputs:** the base image is pinned by digest, torch is the CPU wheel, and the other packages come from

@@ -22,7 +22,7 @@ Four rules decide what gets merged back into `main`:
 | # | Item | Done when |
 |---|---|---|
 | R1 | **Docker, verified (on Raven via Apptainer).** `Dockerfile` builds a CPU image (python:3.11-slim, ffmpeg, CPU torch, `predict.py` entrypoint, `--network none`). Pin the base image by digest. Make weights mountable at run time (`-v weights:/app/artifacts/diffusion:ro`) as well as bakeable. Record the image digest. | The image, run on the NSA test set, reproduces `runs/diffusion/predict_final_v3` (max abs difference ≤ 1e-4) on linux/amd64 and linux/arm64 |
-| R2 | **Memory.** Docker Desktop's default VM has 8 GB; fp32 inference peaks at 14.5 GB. Add `--precision bf16` (about 5 GB) and document both modes | bf16 agrees with fp32 (Spearman ≥ 0.998, decisions ≥ 99.5%) and fits in 8 GB |
+| R2 | **Memory.** Docker Desktop's default VM has 8 GB; fp32 inference peaks at 14.5 GB. `--precision bf16` was added. **Measured:** it agrees (Spearman 0.998, all decisions equal) but peaks at 13.2 GB on IceLake (no native bf16), so it is *not* the fix; next: score one model at a time with the others' weights unmapped, or dynamic int8 on the linear layers | bf16 agrees with fp32 (Spearman ≥ 0.998, decisions ≥ 99.5%) and fits in 8 GB |
 | R3 | **Weights distribution.** SHA-256 manifest for `artifacts/diffusion/`, model cards, hosting on the Hugging Face Hub (consumed by the Dockerfile's `WEIGHTS_REPO`) | `predict.py` refuses weights whose hashes do not match |
 | R4 | **Locked environments.** `uv pip compile --generate-hashes` lock files for the neural, concepts, DSP and Docker environments; record torch, CUDA and driver versions | a fresh venv from the lock reproduces the unit tests and a 100-clip golden run |
 | R5 | **Data manifests.** SHA-256 of every training and evaluation file (pool, copy-synthesis, In-the-Wild), plus `scripts/verify_data.py` | verification passes on Raven |
@@ -31,6 +31,11 @@ Four rules decide what gets merged back into `main`:
 | R8 | **Public per-clip scores.** Per-clip scores of every benchmarked system in `results/scores/`, with `evaluate.py --scores results/scores` | every table in `results/tables.md` regenerates on a laptop, without audio or GPUs |
 | R9 | **CI.** A GitHub Actions workflow runs the CPU unit tests on every push, and a Docker build smoke test without weights | green on `experimental-1` |
 | R10 | **One command per level.** `make test`; `make eval` (from scores); `mpcdf/pipeline.sh` (the Raven job chain, in order, with dependencies) | documented in REPRODUCE.md |
+
+**R1 status (2026-09-27): passed on linux/amd64.** Image `sha256:ab09aa0b…` (built from commit `1260aef`'s
+`predict.py`), run by Apptainer on Raven, scored all 1,671 NSA test clips: max |ΔP| 3.2e-6 against the stored CPU
+run, Spearman 0.99999999, every decision identical; 4 shards of ~19 min, 14.6 GB peak each. linux/arm64 is not
+verified yet.
 
 Our laptop has 19 GB of free disk, so the image is built without weights (672 MB, linux/amd64) and verified on
 Raven. The saved image is converted with Apptainer (`apptainer build hearsay.sif docker-archive://...`) and run with
@@ -59,6 +64,7 @@ calibration automatically.
 | D3 | **Short clips:** mixed 1–3 s crops in training; multi-crop averaging at test time for long clips | canonical view | clips under 2 s improve on T1 and T2 |
 | D4 | **A fourth ensemble member** (W2V-Large or HuBERT-XL with copy-synthesis) | the ensemble | paired improvement on T1 |
 | D5 | **bf16 inference** (see R2) | `predict.py` | agreement criteria in R2 |
+| D6 | **RawBoost** (Tak et al. 2022) on top of the channel chain, measured on a new unseen-channel view (100) nobody trains on; protocol and gates fixed in advance ([results/rawboost/decisions.md](../results/rawboost/decisions.md)) | augmentation + gentle fine-tuning | the predeclared gates pass for both seeds |
 
 ## I. Interpretability through concept formation (the headline)
 

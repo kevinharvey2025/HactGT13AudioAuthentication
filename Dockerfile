@@ -9,8 +9,9 @@
 #   1. the build context: artifacts/diffusion/ is copied into the image;
 #   2. a Hugging Face repo at build time: --build-arg WEIGHTS_REPO=<repo>;
 #   3. a mount at run time: -v /path/to/weights:/app/artifacts/diffusion:ro  (the image then needs no rebuild).
-# Memory: fp32 (the reference) peaks at ~14.5 GB, so give Docker >= 16 GB; append `--precision bf16` to the run
-# command for ~5 GB (Docker Desktop's default VM has 8 GB). CPU by default; with an NVIDIA runtime add --gpus all.
+# Memory: fp32 (the reference) peaks at ~14.5 GB, so give Docker >= 16 GB (Docker Desktop's default VM has 8 GB:
+# raise it). `--precision bf16` agrees with fp32 but, measured on CPUs without native bf16, still peaks at ~13 GB
+# and runs slower. CPU by default; with an NVIDIA runtime add --gpus all.
 # The base image is pinned by digest so every build starts from the same bytes.
 FROM python:3.11-slim@sha256:e41613d42d4891e4930f79523f93f81bbc7632584ec65e36ab055f41a800b41e
 RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg && rm -rf /var/lib/apt/lists/*

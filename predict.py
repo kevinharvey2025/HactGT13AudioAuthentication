@@ -58,7 +58,8 @@ class Detector(torch.nn.Module):
 def load_system(artifacts, s, device, precision="fp32"):
     """One fine-tuned detector. The architecture is built on the meta device (no memory) and its parameters become
     the checkpoint's own memory-mapped bf16 tensors; fp32 copies are made only when --precision fp32 asks for them.
-    Peak memory is therefore about one model at the chosen precision (XLS-R-2B: ~9 GB fp32, ~4.5 GB bf16)."""
+    Measured peak (Raven IceLake CPU, 100 clips): 14.4 GB fp32, 13.2 GB bf16; without native bf16 the CPU kernels
+    work in fp32, so bf16 saves little memory there and runs ~1.6x slower (results/runtime.md)."""
     ckpt = artifacts / Path(s["checkpoint"]).name
     if not ckpt.exists():
         ckpt = artifacts / s["name"] / "best.pt"
@@ -93,7 +94,7 @@ def main():
     ap.add_argument("--template", default="", help="prefilled TSV (filename<TAB>cm-score) defining rows and order")
     ap.add_argument("--device", default="auto")
     ap.add_argument("--precision", default="fp32", choices=["fp32", "bf16"],
-                    help="bf16 halves memory (~5 GB peak) for machines or containers with 8 GB; fp32 is the reference")
+                    help="bf16 weights; agrees with fp32 (Spearman 0.998) but saves little memory on CPUs without native bf16")
     ap.add_argument("--team", default=config.TEAM)
     ap.add_argument("--label", default="final")
     a = ap.parse_args()
