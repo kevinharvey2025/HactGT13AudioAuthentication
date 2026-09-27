@@ -108,7 +108,15 @@ Fine-tuning: test-like crops, channel augmentation on both classes, family-balan
 | **XLS-R-1B + D6-R copy-synthesis fakes (3)** | 0.000 / 0.075 | 0.042 / 0.139 | 1.92% |
 | **XLS-R-2B + D6-R copy-synthesis fakes (3)** | 0.000 / 0.074 | 0.041 / 0.103 | 1.68% |
 | XLS-R-2B WiSE-FT, α = 0.3 | 0.001 / 0.111 | 0.036 / 0.124 | 1.44% |
-| **Final ensemble** (the three rows above, mean of z-scored logits) | **0.000 / 0.068** | **0.028 / 0.095** | **1.12%** |
+| Ensemble v1: 2B + D6-R, 1B + D6-R, 2B WiSE (first interim TSV) | 0.000 / 0.068 | 0.028 / 0.095 | 1.12% |
+| XLS-R-2B + D6-R, all four vocoders incl. DiffWave (3) | 0.001 / 0.089 | 0.040 / 0.104 | — |
+| XLS-R-1B + D6-R, all four vocoders (2) | 0.000 / 0.072 | 0.040 / 0.140 | — |
+| MMS-1B + D6-R, all four vocoders (3) | 0.000 / 0.093 | 0.042 / 0.151 | — |
+| **Final ensemble v2** (the three all-vocoder models, mean of z-scored logits) | **0.000 / 0.073** | **0.028 / 0.082** | **1.20%** |
+
+The final ensemble through the Docker code path (`predict.py`, bf16 checkpoints, whole clips) on all 4,000 labeled
+In-the-Wild clips: **AUC 0.9994, EER 1.30%, minDCF 0.035**; it flags 28.3% of the NSA test clips at the Bayes
+threshold (P > 0.2 at the 30% prior).
 
 **What worked / what did not.**
 - Plain fine-tuning makes the detectors near-perfect in-domain and 2–5× more robust to channel perturbations, but
@@ -117,7 +125,9 @@ Fine-tuning: test-like crops, channel augmentation on both classes, family-balan
   used as extra fakes — reverses that: out-of-domain accuracy *improves* with training (XLS-R-1B ITW clean
   minDCF 0.093 without vs 0.042 with, at matched selection).
 - **WiSE-FT** (interpolating pretrained and fine-tuned weights, α = 0.3) keeps the pretrained model's clean
-  generality with part of the robustness; the ensemble of two D6-R models and the WiSE model is best on both.
+  generality with part of the robustness.
+- **All four vocoders** (adding DiffWave, the diffusion vocoder) make D6-R work for every backbone — MMS-1B, whose plain
+  fine-tune collapsed out of domain (ITW 0.111), reaches 0.042 — and the three-backbone ensemble of these is final.
 
 ### 5.3 Other tracks (gate: a branch joins the score only if it helps held-out minDCF)
 

@@ -1,33 +1,33 @@
 {
  "systems": [
   {
-   "name": "xlsr2b_d6r",
+   "name": "xlsr2b_d6rall",
    "backbone": "adf_xlsr_2b",
    "epoch": 3,
-   "checkpoint": "runs/diffusion/ft/xlsr2b_d6r/best.pt",
-   "z_mean": -1.9853794574737549,
-   "z_std": 9.482622146606445
+   "checkpoint": "runs/diffusion/ft/xlsr2b_d6rall/best.pt",
+   "z_mean": -1.9334971904754639,
+   "z_std": 9.068236351013184
   },
   {
-   "name": "xlsr1b_d6r",
+   "name": "xlsr1b_d6rall",
    "backbone": "adf_xlsr_1b",
-   "epoch": 3,
-   "checkpoint": "runs/diffusion/ft/xlsr1b_d6r/best.pt",
-   "z_mean": -1.9538052082061768,
-   "z_std": 9.88365364074707
+   "epoch": 2,
+   "checkpoint": "runs/diffusion/ft/xlsr1b_d6rall/best.pt",
+   "z_mean": -1.1191184520721436,
+   "z_std": 9.153610229492188
   },
   {
-   "name": "xlsr2b_wise030",
-   "backbone": "adf_xlsr_2b",
-   "epoch": 0,
-   "checkpoint": "runs/diffusion/ft/xlsr2b_wise030/best.pt",
-   "z_mean": -2.203425168991089,
-   "z_std": 8.833224296569824
+   "name": "mms1b_d6rall",
+   "backbone": "adf_mms_1b",
+   "epoch": 3,
+   "checkpoint": "runs/diffusion/ft/mms1b_d6rall/best.pt",
+   "z_mean": -1.5866365432739258,
+   "z_std": 8.449971199035645
   }
  ],
  "platt": {
-  "coef": 6.739576633142029,
-  "intercept": -1.1002153238326449,
+  "coef": 6.841168960067561,
+  "intercept": -2.604241113594078,
   "prior": 0.3
  },
  "team": "SideQuests",

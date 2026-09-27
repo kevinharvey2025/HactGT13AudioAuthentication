@@ -1,80 +1,80 @@
 {
  "runs": {
-  "xlsr2b_d6r@3": {
+  "xlsr2b_d6rall@3": {
+   "epoch": 3,
+   "val": {
+    "auc": 0.9996,
+    "eer": 0.0076,
+    "min_dcf": 0.0197
+   },
+   "holdout": {
+    "auc": 0.9991,
+    "eer": 0.0188,
+    "min_dcf": 0.0457
+   },
+   "itw": {
+    "auc": 0.9972,
+    "eer": 0.0272,
+    "min_dcf": 0.0732
+   }
+  },
+  "xlsr1b_d6rall@2": {
+   "epoch": 2,
+   "val": {
+    "auc": 0.9998,
+    "eer": 0.0076,
+    "min_dcf": 0.0176
+   },
+   "holdout": {
+    "auc": 0.9991,
+    "eer": 0.0184,
+    "min_dcf": 0.0382
+   },
+   "itw": {
+    "auc": 0.996,
+    "eer": 0.0352,
+    "min_dcf": 0.0934
+   }
+  },
+  "mms1b_d6rall@3": {
    "epoch": 3,
    "val": {
     "auc": 0.9997,
-    "eer": 0.0076,
-    "min_dcf": 0.018
+    "eer": 0.0098,
+    "min_dcf": 0.0197
    },
    "holdout": {
-    "auc": 0.9992,
-    "eer": 0.015,
-    "min_dcf": 0.0369
+    "auc": 0.9988,
+    "eer": 0.0192,
+    "min_dcf": 0.0474
    },
    "itw": {
-    "auc": 0.9969,
-    "eer": 0.0282,
-    "min_dcf": 0.0743
-   }
-  },
-  "xlsr1b_d6r@3": {
-   "epoch": 3,
-   "val": {
-    "auc": 0.9999,
-    "eer": 0.0059,
-    "min_dcf": 0.0122
-   },
-   "holdout": {
-    "auc": 0.9993,
-    "eer": 0.0142,
-    "min_dcf": 0.0373
-   },
-   "itw": {
-    "auc": 0.9954,
-    "eer": 0.0356,
-    "min_dcf": 0.0929
-   }
-  },
-  "xlsr2b_wise030@0": {
-   "epoch": 0,
-   "val": {
-    "auc": 0.9991,
-    "eer": 0.0159,
-    "min_dcf": 0.0362
-   },
-   "holdout": {
-    "auc": 0.9983,
-    "eer": 0.0232,
-    "min_dcf": 0.0565
-   },
-   "itw": {
-    "auc": 0.9964,
-    "eer": 0.03,
-    "min_dcf": 0.0805
+    "auc": 0.9952,
+    "eer": 0.038,
+    "min_dcf": 0.1003
    }
   }
  },
  "fused": {
   "val": {
-   "auc": 0.9998,
-   "eer": 0.0068,
-   "min_dcf": 0.0163
+   "auc": 0.9999,
+   "eer": 0.006,
+   "min_dcf": 0.0149
   },
   "holdout": {
    "auc": 0.9993,
-   "eer": 0.013,
-   "min_dcf": 0.0339
+   "eer": 0.015,
+   "min_dcf": 0.0366
   },
   "itw": {
-   "auc": 0.9979,
-   "eer": 0.0252,
-   "min_dcf": 0.0622
+   "auc": 0.9981,
+   "eer": 0.024,
+   "min_dcf": 0.0598
   }
  },
  "platt": {
-  "coef": 6.739576633142029,
-  "intercept": -1.1002153238326449,
+  "coef": 6.841168960067561,
+  "intercept": -2.604241113594078,
   "prior": 0.3
  },
  "dcf": {
@@ -84,19 +84,19 @@
  },
  "test": {
   "n": 1671,
-  "mean": 0.28132227104341523,
+  "mean": 0.2786704702617741,
   "quantiles": {
-   "q01": 0.0012,
-   "q05": 0.0015,
-   "q25": 0.0023,
-   "q50": 0.0036,
-   "q75": 0.9973,
-   "q95": 0.9998,
-   "q99": 0.9998
+   "q01": 0.0001,
+   "q05": 0.0001,
+   "q25": 0.0002,
+   "q50": 0.0003,
+   "q75": 0.9939,
+   "q95": 0.9987,
+   "q99": 0.9989
   },
   "frac_ge_0_5": 0.27827648114901254,
   "bayes_threshold": 0.2,
-  "frac_flagged_bayes": 0.2824655894673848
+  "frac_flagged_bayes": 0.2800718132854578
  },
  "calib_sets": [
   "val",
@@ -106,5 +106,5 @@
   "score_clean",
   "score_aug"
  ],
- "file": "/raven/ptmp/karthiksing/jobs/HackGT-13-Hearsay/code/bf812fb-dirty-097129ee/runs/diffusion/submission/SideQuests_predictions_final.tsv"
+ "file": "runs/diffusion/submission_v2/SideQuests_predictions_final.tsv"
 }
