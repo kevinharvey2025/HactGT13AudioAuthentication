@@ -73,8 +73,15 @@ compute it.
 | Best pretrained detector, zero-shot | 0.038 | 0.189 | – |
 | **Final ensemble** | **0.028** [0.017, 0.040] | **0.082** [0.064, 0.097] | **0.0317** (EER 1.44%) |
 
-minDCF at the organizers' costs (lower is better), with 95% bootstrap intervals. The exact inference path of the
-Docker image scores all 4,000 labelled In-the-Wild clips at AUC 0.9994, EER 1.3% and minDCF 0.033.
+minDCF at the organizers' costs (lower is better), with 95% bootstrap intervals.
+
+**A fully held-out confirmation.** We used 4,000 In-the-Wild clips to choose checkpoints and fit calibration. The other
+27,779 clips never influenced any choice. On them, the Docker inference path scores:
+- **minDCF 0.0274 [0.0231, 0.0306], EER 1.05%, AUC 0.9996;**
+- **actual DCF 0.0317 at our fixed threshold P > 0.2,** the same value as the official test score.
+
+The ensemble beats each of its members (0.033, 0.034, 0.041). Error concentrates in clips under 2 seconds (minDCF
+0.10); clips over 4 seconds are nearly error-free (0.003 or lower).
 
 ## Forensic techniques and what each one contributed
 
@@ -106,6 +113,10 @@ We did not build speaker-embedding drift detection.
   diffusion prototypes became part of the explanation layer.
 - **Concept formation as a scorer.** It stays below the detector, so it explains the score instead of producing it.
 - **Weak spots.** Reverberant real speech and clips shorter than 2 seconds cause most errors.
+- **RawBoost augmentation.** We tested it in a controlled experiment. We fixed the gates before training, selected
+  on validation data only, and ran two seeds for the baseline. Adding RawBoost to our channel augmentation reduced
+  perturbed In-the-Wild minDCF from 0.140 to 0.121 for the best variant. The paired interval included zero, so the
+  gain was not measurable. Our backbones had already been post-trained with RawBoost, which limits the gain.
 
 ## Why the system is not a black box
 
@@ -165,7 +176,8 @@ alone lacks, each measured against a baseline:
 - **Real room acoustics.** Measured room impulse responses in training, to address reverberation.
 - **Newer generators.** Test sets from 2025–26 open-weight systems.
 - **Speaker-embedding drift detection.**
-- **RawBoost.** A controlled experiment with predeclared gates is under way; we will report the result either way.
+- **Room acoustics.** A new evaluation view uses channels that no model trains on: simulated rooms, unseen codecs,
+  packet loss and gain control. It shows that simulated rooms are our largest remaining weakness (minDCF about 0.5).
 
 ## Built with
 
