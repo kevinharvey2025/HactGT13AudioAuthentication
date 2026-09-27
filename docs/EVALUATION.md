@@ -4,7 +4,7 @@ Every number here comes from `scripts/evaluate.py`, which reads the per-clip sco
 re-scores anything. It writes [results/tables.md](../results/tables.md) (all tables, generated) and the CSVs next
 to it. Reproduce with `mpcdf/evaluate.sbatch` (see [REPRODUCE.md](REPRODUCE.md)).
 
-## 1. Protocol
+## 1. Protocol and pipeline
 
 - **Metric:** the organizers' minDCF (ASVspoof 5 evaluation package, Pspoof 0.3, Cmiss 1, Cfa 4). In our polarity
   it is min over thresholds of FPR(real) + 1.714 · FNR(fake), normalized so that 1.0 = a constant decision. EER is
@@ -24,6 +24,38 @@ to it. Reproduce with `mpcdf/evaluate.sbatch` (see [REPRODUCE.md](REPRODUCE.md))
 - **Never used** for training, selection or calibration: test labels (we have none), test content matches, test
   file times, test-time adaptation.
 
+### The pipeline
+
+`scripts/evaluate.py` runs as one Raven job (`mpcdf/evaluate.sbatch`), after the unit tests. It reads the per-clip
+scores the runs saved and re-scores nothing:
+
+```text
+INPUTS
+  runs/diffusion/ft/<run>/{val,holdout,itw,test}_epoch<e>.parquet   every detector, every epoch, clean + perturbed scores
+  runs/diffusion/concepts/<emb>/scores_*.parquet, test_explanations.jsonl   cobweb and TTCG P(fake)
+  runs/dsp/..., runs/meta/...                                        DSP and metadata branches (their own out-of-fold scores)
+  runs/diffusion/predict_{itw,final}_v*/                             predict.py on all ITW clips and the NSA test set
+      |
+      v
+ 1. load_neural + znorm      align on common clips; z-statistics from val + ITW; ensembles = mean of z-scores
+ 2. load_concepts / dsp_meta add the other branches; concept fusions are fitted on val only
+ 3. replay                   rebuild every evaluation clip's crop and channel chain with the training RNG
+ 4. benchmark                AUC, EER, minDCF with stratified bootstrap CIs; paired delta vs the final ensemble
+ 5. breakdown                per fake generator, real source, channel condition, crop duration; FA / miss at P > 0.2
+ 6. calibration_table        Platt fitted on {val+ITW, val, ITW}, scored only on the other sets: actDCF, Cllr, ECE
+ 7. curves                   every run and epoch under the official metric
+ 8. fusion_gate              logistic fusion (effective prior 0.632) fitted on val, tested on holdout / ITW
+ 9. test_agreement           NSA test set without labels: Spearman and kappa vs final, flag rate, score vs duration
+10. docker_path              predict.py on all 4,000 ITW clips; router statistics
+      |
+      v
+OUTPUTS  results/tables.md, benchmark.csv, breakdown.csv, calibration.csv, curves.csv, fusion.csv,
+         test_agreement.csv, docker_path.json
+```
+
+The concept tests (E1–E6) come from `scripts/run_concepts.py` (`mpcdf/concepts.sbatch`, plus the CPU passes
+`--levels-only` and `--faithfulness-only`); see [APPROACH.md §4.9](APPROACH.md#49-can-the-explanations-be-trusted-tests-e1e6).
+
 ## 2. The final test matrix
 
 | # | Test | Question | Where | Result (details below) |
@@ -41,7 +73,7 @@ to it. Reproduce with `mpcdf/evaluate.sbatch` (see [REPRODUCE.md](REPRODUCE.md))
 | C2 | fusion gate (logistic, fitted on val) | do DSP / metadata / concepts add anything? | `fusion.csv` | no: DSP and metadata hurt or do nothing |
 | D1 | NSA test set, label-free: rank agreement, decision agreement, flag rate, score vs duration | do the systems agree where we cannot check? | `test_agreement.csv` | neural systems agree (κ ≥ 0.86); metadata tracks duration |
 | D2 | shipped code path (`predict.py`): stored-score agreement, order independence, all 4,000 ITW clips | is the TSV what we evaluated, and does a file's score depend on its neighbours? | `test_agreement.csv`, `docker_path.json` | submitted TSV vs stored scores: Spearman 0.999. After the whole-clip fix, a score moves < 3e-5 with the rest of the folder; ITW minDCF 0.033 |
-| E1-E6 | concept formation and diffusion prototypes: scores, basic level, leakage, stability, noise-depth, faithfulness | can the explanations be trusted? | [CONCEPTS.md](CONCEPTS.md) | TTCG within ~0.01 of its detector; faithful on 92% of mixed explanations; top source stable (94–95%); held-out basic level at depth 7 |
+| E1-E6 | concept formation and diffusion prototypes: scores, basic level, leakage, stability, noise-depth, faithfulness | can the explanations be trusted? | [APPROACH.md §4.9](APPROACH.md#49-can-the-explanations-be-trusted-tests-e1e6) | TTCG within ~0.01 of its detector; faithful on 92% of mixed explanations; top source stable (94–95%); held-out basic level at depth 7 |
 | F | forensic audit, shortcut checks | is the test set what it seems? | [DATA.md](DATA.md) | no reuse; metadata constant on test |
 | G1 | unit tests (89 across tracks) | does the code do what we say? | `tests/` | all pass (§5) |
 | G2 | runtime and memory of `predict.py` on CPU | can the judges run it? | [results/runtime.md](../results/runtime.md) | 1,671 clips in 21 min on one 72-core node; ~4.2 s per clip at 8 threads; peak 14.5 GB RAM |
@@ -136,9 +168,9 @@ clean, 0.085 vs 0.082 aug; prior-weighted ECE ≤ 0.016. Fitted on ITW alone and
   its batch neighbours: up to 0.18 difference on 100 clips. `predict.py` now scores every clip whole, alone, in
   fp32, and a clip's score moves by less than 3e-5 whatever else is in the folder. On the test set the two
   versions agree on 1,668 of 1,671 decisions (Spearman 0.998). One of the three changes is the clip in
-  [CONCEPTS.md](CONCEPTS.md) §3, which the concept explanations had flagged.
+  [APPROACH.md §4.8](APPROACH.md#48-a-worked-example), which the concept explanations had flagged.
 - **Concept explanations** flag 7 test clips (0.4%) whose score they contradict by more than 0.5. This is a
-  review list, not a score ([CONCEPTS.md](CONCEPTS.md)).
+  review list, not a score ([APPROACH.md §4.8](APPROACH.md#48-a-worked-example)).
 
 ## 5. Unit tests
 

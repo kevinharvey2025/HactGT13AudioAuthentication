@@ -22,7 +22,7 @@ For every audio file in --input (any container/codec ffmpeg reads):
        - confident score and clean container          -> stop (saves compute)
      Only the fused detector score is written to the TSV; the routed analyses explain it. Concept-level explanations
      (cobweb-private concepts + diffusion prototypes) come from scripts/run_concepts.py, which needs the lab's private
-     COBWEB build and is therefore not part of this image; see docs/CONCEPTS.md.
+     COBWEB build and is therefore not part of this image; see docs/APPROACH.md, section 4.
 Output rows follow --template (the organizers' prefilled TSV) when given, else sorted filenames; files that fail
 to decode are listed in <output>/failures.tsv and the export is refused (no invented scores).
 """
