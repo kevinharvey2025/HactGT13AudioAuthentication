@@ -15,11 +15,12 @@ machine + MPCDF Raven. It supersedes the ordering in the individual prompts, not
 
 ## 1. What changed since the handoffs
 
-1. **Official metric known.** The organizers' scoring package (`data/HackGTMinDCF`, the ASVspoof 5 evaluation package)
-   changes exactly two constants: `Pspoof 0.05 → 0.5`, `Cfa 10 → 4`. Primary metric: **minDCF = min over thresholds of
-   FPR(bona fide) + 4·FNR(spoof)** (normalized; 1.0 = constant decision); EER, CLLR, actDCF secondary.
-   `hearsay/metrics.py` reproduces their minDCF and EER to machine precision (200 random trials).
-   A missed fake costs 4× a false alarm, so the ROC's high-recall end decides the score.
+1. **Official metric known.** The organizers score with the ASVspoof 5 evaluation package (`calculate_metrics.py`)
+   using **`Pspoof = 0.3`, `Cfa = 4`** (defaults 0.05 / 10; confirmed by the organizers on Sep 26 night — the tarball
+   copy in `data/HackGTMinDCF` shows 0.5). Primary metric: **minDCF = min over thresholds of FPR(bona fide) +
+   1.714·FNR(spoof)** (normalized by min(Cmiss·0.7, Cfa·0.3) = 0.7; 1.0 = constant decision); EER, CLLR, actDCF
+   secondary. `hearsay/metrics.py` reproduces their minDCF and EER to machine precision (200 random trials).
+   Probabilities are calibrated at the 0.3 prior, so the Bayes decision is P(synthetic) > 0.2.
 2. **Targets.** Interim leaderboard (organizers, Sep 26 evening): minDCF/EER 0.0584/2.5%, 0.0753/3.53%, 0.178/6.92%,
    0.258/10.18%, 0.267/10.4%, 0.913/34.6%. **We must beat 0.0584.** The scores confirm the organizers evaluate with
    1.0 = synthetic (their package assumes the opposite polarity; they flip it). They re-analyse in the morning;
@@ -136,6 +137,7 @@ Full numbers: `plans/metadata_analysis_prompt.md` Addendum D.1 and `runs/forensi
    DiffSSD-based scores for AntiDeepfake backbones are flagged as contaminated in every table.
 3. **Fusion**: average of z-normalized logits of the 2–4 best systems (by ITW + val minDCF); logistic fusion with
    effective spoof prior 0.8 only if it beats the average on ITW. No test-set adaptation or normalization.
-4. **Final file**: `<team>_predictions_final.tsv`, calibrated probabilities (Platt, prior 0.5), no exact 0/1 ties.
+4. **Final file**: `SideQuests_predictions_final.tsv`, calibrated probabilities (Platt, shifted to the evaluation
+   prior 0.3), 10 decimals (no ties).
 5. **DSP (D0)** and **metadata (M0–M2)** run as documented tracks; they join the score only through WP5's gate.
 6. **Track D**: only D6-R (resynthesized reals as extra fakes) is evidence-backed; not run without approval.

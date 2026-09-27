@@ -926,8 +926,8 @@ weights, no fitted calibration) is kept for the **reference rows** of the benchm
 checkpoints happens under `diffusion_cf_prompt.md` (Track A) and is reported as a separate system.
 
 ### C.1 Verified facts
-- **Metric**: the organizers' ASVspoof 5 package with Pspoof 0.5 and Cfa 4 (primary minDCF; EER, CLLR, actDCF
-  secondary). Their package treats bona fide as the target class; our exports keep the brief's polarity (1 = synthetic),
+- **Metric**: the organizers' ASVspoof 5 package with **Pspoof 0.3** and Cfa 4 (confirmed by the organizers; primary
+  minDCF; EER, CLLR, actDCF secondary). Their package treats bona fide as the target class; our exports keep the brief's polarity (1 = synthetic),
   and the interim leaderboard (best minDCF 0.0584, EER 2.5%) shows they score it that way. Report minDCF with these
   costs next to AUC/EER (`hearsay/metrics.py` reproduces their numbers exactly).
 - **AntiDeepfake architecture (read from the official model card code)**: fairseq Wav2Vec2 (XLS-R/MMS/W2V: layer-norm

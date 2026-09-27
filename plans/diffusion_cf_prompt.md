@@ -648,11 +648,10 @@ Added after the move to MPCDF Raven. `plans/MASTER_PLAN.md` sequences all tracks
 for Track A (detector), fusion and Track D. Numbers are from the cited sources or from our own runs where marked.
 
 ### A.1 Verified facts that change this plan
-- **Metric.** The organizers' package (`data/HackGTMinDCF`) is ASVspoof 5's evaluation code with `Pspoof = 0.5`,
-  `Cfa = 4` (was 0.05 / 10). minDCF = min over thresholds of P_miss(bona fide) + 4·P_fa(spoof), i.e. in our polarity
-  FPR on reals + 4·FNR on fakes; `hearsay/metrics.py` matches their code exactly. EER at its own threshold costs 5×EER,
-  so the leader's **0.0584** needs roughly ≤1.5% missed fakes at ≤5.8% false alarms: the hardest ~1% of fakes decide
-  the ranking. Calibration does not change minDCF; it matters for fusion and actDCF only [S21].
+- **Metric.** The organizers score with ASVspoof 5's evaluation code using `Pspoof = 0.3`, `Cfa = 4` (defaults
+  0.05 / 10; confirmed by the organizers — the tarball copy shows 0.5). minDCF = min over thresholds of
+  P_miss(bona fide) + 1.714·P_fa(spoof), i.e. in our polarity FPR on reals + 1.714·FNR on fakes; `hearsay/metrics.py`
+  matches their code exactly. Calibration does not change minDCF; it matters for fusion and actDCF only [S21].
 - **External data allowed** (the brief lists ASVspoof, WaveFake, In-the-Wild, MLAAD, ADD, VCTK, LibriSpeech, VOiCES).
 - **Test pipeline (our forensic audit, `reports/forensics/audit.md`).** Every test file is the same ffmpeg-4.2 WAV
   (`Lavf58.29.100`). 98.0% of test lengths are exact multiples of 512 samples at 22.05 kHz (real corpora: 0–2.5%),

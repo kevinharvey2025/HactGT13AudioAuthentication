@@ -606,9 +606,9 @@ this track is **D0** (run unchanged; changes are separately named experiments). 
 implementation guide.
 
 ### B.1 Verified facts
-- **Metric**: the organizers' ASVspoof 5 package with Pspoof 0.5, Cfa 4 → minDCF = min over thresholds of
-  P_miss(bona fide) + 4·P_fa(spoof) (our polarity: FPR on reals + 4·FNR on fakes). Target: beat 0.0584 (EER 2.5%).
-  Calibrated-LLR Bayes threshold: ln 4 ≈ 1.39, i.e. flag as fake when P(fake) > 0.2.
+- **Metric**: the organizers' ASVspoof 5 package with **Pspoof 0.3**, Cfa 4 (confirmed by the organizers) → minDCF =
+  min over thresholds of P_miss(bona fide) + 1.714·P_fa(spoof) (our polarity: FPR on reals + 1.714·FNR on fakes).
+  Target: beat 0.0584 (EER 2.5%). With probabilities calibrated at the 0.3 prior, flag as fake when P(fake) > 0.2.
 - **Test pipeline** (our forensic audit): one ffmpeg-4.2 WAV layout for all 1,671 files; 98.0% of lengths are
   multiples of 512 samples at 22.05 kHz; start-trimmed, end hard-cut; steep resampler edge (−20 dB at 7.39 kHz,
   7.5–8 kHz ≈ 44 dB down). The 7 kHz feature cap (`features.max_hz`) is therefore right.
