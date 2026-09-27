@@ -24,15 +24,18 @@ below the interim's 0.0317.
 
 ## The three options (9/27, 5:10 AM EDT)
 
+Named in the organizers' format, `TeamName_predictions.tsv` with the final label: A is the verified option, B robustness, C
+breadth. Their fusion files are `fusion_B.json` and `fusion_C.json`; A's is `submission/fusion.json`.
+
 All three come from the same pipeline and the shipped fusion recipe (`scripts/candidate.sh`: z statistics and Platt at
 the 30% prior on val + In-the-Wild). All three are scored through `predict.py`, the Docker path. They differ only in
 the ensemble members.
 
 | File | SHA-256 (first 16) | Tactic | Members |
 |---|---|---|---|
-| `a_verified.tsv` | `8640b624cfbf2c96` | exact reproducibility (= `v3_final_wholeclip.tsv`) | XLS-R-2B@3, XLS-R-1B@2, MMS-1B@3 |
-| `b_robustness.tsv` | `cddd231828def976` | RawBoost augmentation in the XLS-R-1B member | XLS-R-2B@3, R3 (RawBoost LnL→ISD→SSI)@3, MMS-1B@3 |
-| `c_breadth.tsv` | `77e7cea28138076e` | more members across seeds and recipes | A's three + XLS-R-1B seed 1@3 + WiSE-FT XLS-R-2B (α 0.3) |
+| `SideQuests_predictions_final_A.tsv` | `8640b624cfbf2c96` | exact reproducibility (= `v3_final_wholeclip.tsv`) | XLS-R-2B@3, XLS-R-1B@2, MMS-1B@3 |
+| `SideQuests_predictions_final_B.tsv` | `cddd231828def976` | RawBoost augmentation in the XLS-R-1B member | XLS-R-2B@3, R3 (RawBoost LnL→ISD→SSI)@3, MMS-1B@3 |
+| `SideQuests_predictions_final_C.tsv` | `77e7cea28138076e` | more members across seeds and recipes | A's three + XLS-R-1B seed 1@3 + WiSE-FT XLS-R-2B (α 0.3) |
 
 `comparison.csv` (from `scripts/compare_candidates.py`) holds the comparison below. In-the-Wild minDCF (2,500 clips)
 is in-sample for calibration, as in the shipped recipe.
