@@ -2,7 +2,7 @@
 # The shipped inference path (predict.py, CPU, fp32: what the Docker image runs) over a large set, in parallel
 # shards of the template, merged in template order and validated. Run inside a CPU job, neural venv active:
 #   bash mpcdf/predict_cpu.sh INPUT_DIR TEMPLATE OUT_DIR LABEL [N_SHARDS]
-# Writes OUT_DIR/SideQuests_predictions_<LABEL>.tsv and OUT_DIR/traces.jsonl.
+# Writes OUT_DIR/SideQuests_predictions_<LABEL>.tsv and OUT_DIR/traces.jsonl. ARTIFACTS=DIR picks another fusion.json + checkpoints.
 set -eo pipefail
 IN=$1; TPL=$2; OUT=$3; LABEL=$4; N=${5:-4}
 mkdir -p "$OUT/shards"
@@ -17,7 +17,8 @@ THREADS=$(( ${SLURM_CPUS_PER_TASK:-72} / N ))
 pids=()
 for i in $(seq 0 $((N - 1))); do
   OMP_NUM_THREADS=$THREADS /usr/bin/time -v python predict.py --input "$IN" --output "$OUT/shards/$i" \
-      --template "$OUT/shards/template_$i.tsv" --device cpu --label "$LABEL" > "$OUT/shards/log_$i.txt" 2>&1 &
+      --template "$OUT/shards/template_$i.tsv" --device cpu --label "$LABEL" ${ARTIFACTS:+--artifacts "$ARTIFACTS"} \
+      > "$OUT/shards/log_$i.txt" 2>&1 &
   pids+=($!)
 done
 for p in "${pids[@]}"; do wait "$p"; done
