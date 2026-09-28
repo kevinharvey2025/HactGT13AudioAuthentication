@@ -1,0 +1,9 @@
+family,clips,share_of_test,median_P,flagged,mean_purity,prototypes,median_t,share_t_ge_150,median_concept_size,median_concept_depth,concept_p_fake,non_clean_channel,top_channels
+"Real LibriSpeech, cloned speakers",682,0.4081,0.0002,0.0000,0.8788,2009,50.0000,0.0333,8.0000,8.0000,0.0000,0.0249,clean 97%; tilt 1%; codec 1%
+"Real LibriSpeech, other speakers",508,0.3040,0.0003,0.0039,0.8469,1529,50.0000,0.0595,9.0000,7.0000,0.0001,0.0929,clean 89%; codec 8%; noise 1%
+Commercial cloner: ElevenLabs,122,0.0730,0.9971,0.9672,0.7941,345,50.0000,0.1304,6.0000,7.0000,0.9996,0.1449,clean 82%; tilt 4%; noise 4%
+"Open zero-shot cloners: XTTS v2, YourTTS",113,0.0676,0.9987,1.0000,0.7757,320,50.0000,0.0844,6.0000,7.0000,0.9984,0.2562,clean 69%; codec 22%; bandlimit 4%
+"Unit-based cloning and conversion: UnitSpeech, OpenVoice v2",108,0.0646,0.9986,1.0000,0.7458,319,50.0000,0.0627,7.0000,7.0000,0.9977,0.2414,clean 72%; codec 15%; bandlimit 6%
+Commercial cloner: PlayHT,87,0.0521,0.9981,0.9885,0.6959,259,50.0000,0.1429,6.0000,7.0000,1.0000,0.1506,clean 82%; codec 12%; noise 4%
+LJ-voice diffusion TTS,41,0.0245,0.9967,0.9756,0.7010,179,100.0000,0.3128,7.0000,7.0000,0.9989,0.4078,clean 53%; codec 33%; reverb 8%
+Real LJSpeech,10,0.0060,0.1410,0.4000,0.7137,53,225.0000,0.6792,7.0000,7.0000,0.0779,0.5472,reverb 48%; clean 40%; noise 8%

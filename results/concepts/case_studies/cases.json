@@ -1,0 +1,3989 @@
+{
+ "representative": {
+  "Real LibriSpeech, cloned speakers": [
+   {
+    "filename": "HGT4371552.wav",
+    "P": 0.0001,
+    "family": "Real LibriSpeech, cloned speakers",
+    "purity": 1.001,
+    "ttcg_p_fake": 0.0,
+    "basic": {
+     "depth": 9,
+     "size": 6,
+     "pmi": 22.024,
+     "p_fake": 0.0,
+     "sources": [
+      {
+       "source": "real:librispeech_cloned_speakers",
+       "share": 1.0
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.833
+      },
+      {
+       "channel": "bandlimit",
+       "share": 0.167
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.355,
+      "concept_depth": 11,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 75,
+      "share": 0.324,
+      "concept_depth": 9,
+      "concept_size": 6,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.833
+       },
+       {
+        "channel": "bandlimit",
+        "share": 0.167
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.322,
+      "concept_depth": 11,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 0.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT2597337.wav",
+    "P": 0.0001,
+    "family": "Real LibriSpeech, cloned speakers",
+    "purity": 1.001,
+    "ttcg_p_fake": 0.0,
+    "basic": {
+     "depth": 8,
+     "size": 8,
+     "pmi": 19.573,
+     "p_fake": 0.0,
+     "sources": [
+      {
+       "source": "real:librispeech_cloned_speakers",
+       "share": 1.0
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.875
+      },
+      {
+       "channel": "resample",
+       "share": 0.125
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 75,
+      "share": 0.382,
+      "concept_depth": 8,
+      "concept_size": 8,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.875
+       },
+       {
+        "channel": "resample",
+        "share": 0.125
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 75,
+      "share": 0.333,
+      "concept_depth": 8,
+      "concept_size": 8,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.875
+       },
+       {
+        "channel": "resample",
+        "share": 0.125
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 100,
+      "share": 0.286,
+      "concept_depth": 9,
+      "concept_size": 4,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.5
+       },
+       {
+        "channel": "codec",
+        "share": 0.5
+       }
+      ],
+      "concept_p_fake": 0.0
+     }
+    ]
+   }
+  ],
+  "Real LibriSpeech, other speakers": [
+   {
+    "filename": "HGT1108394.wav",
+    "P": 0.0001,
+    "family": "Real LibriSpeech, other speakers",
+    "purity": 1.001,
+    "ttcg_p_fake": 0.0,
+    "basic": {
+     "depth": 7,
+     "size": 15,
+     "pmi": 13.411,
+     "p_fake": 0.0,
+     "sources": [
+      {
+       "source": "real:librispeech_other_speakers",
+       "share": 0.667
+      },
+      {
+       "source": "real:librispeech_cloned_speakers",
+       "share": 0.333
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.667
+      },
+      {
+       "channel": "tilt",
+       "share": 0.133
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.339,
+      "concept_depth": 7,
+      "concept_size": 15,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.667
+       },
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.333
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.667
+       },
+       {
+        "channel": "tilt",
+        "share": 0.133
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 75,
+      "share": 0.444,
+      "concept_depth": 7,
+      "concept_size": 14,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.857
+       },
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.143
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.714
+       },
+       {
+        "channel": "hum",
+        "share": 0.143
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.218,
+      "concept_depth": 7,
+      "concept_size": 15,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.667
+       },
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.333
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.667
+       },
+       {
+        "channel": "tilt",
+        "share": 0.133
+       }
+      ],
+      "concept_p_fake": 0.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT4415806.wav",
+    "P": 0.0002,
+    "family": "Real LibriSpeech, other speakers",
+    "purity": 1.001,
+    "ttcg_p_fake": 0.0,
+    "basic": {
+     "depth": 8,
+     "size": 5,
+     "pmi": 15.299,
+     "p_fake": 0.0,
+     "sources": [
+      {
+       "source": "real:librispeech_other_speakers",
+       "share": 0.8
+      },
+      {
+       "source": "real:librispeech_cloned_speakers",
+       "share": 0.2
+      }
+     ],
+     "channels": [
+      {
+       "channel": "telephony",
+       "share": 0.6
+      },
+      {
+       "channel": "clean",
+       "share": 0.2
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 75,
+      "share": 0.318,
+      "concept_depth": 9,
+      "concept_size": 3,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.667
+       },
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.333
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.393,
+      "concept_depth": 8,
+      "concept_size": 5,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.8
+       },
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.2
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "telephony",
+        "share": 0.6
+       },
+       {
+        "channel": "clean",
+        "share": 0.2
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 75,
+      "share": 0.29,
+      "concept_depth": 7,
+      "concept_size": 25,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.68
+       },
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.32
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.52
+       },
+       {
+        "channel": "codec",
+        "share": 0.2
+       }
+      ],
+      "concept_p_fake": 0.0
+     }
+    ]
+   }
+  ],
+  "Commercial cloner: ElevenLabs": [
+   {
+    "filename": "HGT8649435.wav",
+    "P": 0.9985,
+    "family": "Commercial cloner: ElevenLabs",
+    "purity": 1.001,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 5,
+     "size": 23,
+     "pmi": 10.827,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "elevenlabs",
+       "share": 1.0
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.696
+      },
+      {
+       "channel": "bandlimit",
+       "share": 0.087
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.339,
+      "concept_depth": 6,
+      "concept_size": 13,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.769
+       },
+       {
+        "channel": "bandlimit",
+        "share": 0.077
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.35,
+      "concept_depth": 7,
+      "concept_size": 3,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.667
+       },
+       {
+        "channel": "tilt",
+        "share": 0.333
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.312,
+      "concept_depth": 5,
+      "concept_size": 23,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.696
+       },
+       {
+        "channel": "bandlimit",
+        "share": 0.087
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT4996299.wav",
+    "P": 0.9976,
+    "family": "Commercial cloner: ElevenLabs",
+    "purity": 1.001,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 4,
+     "size": 115,
+     "pmi": 10.421,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "elevenlabs",
+       "share": 0.904
+      },
+      {
+       "source": "playht",
+       "share": 0.078
+      },
+      {
+       "source": "unit_speech",
+       "share": 0.017
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.548
+      },
+      {
+       "channel": "hum",
+       "share": 0.122
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 75,
+      "share": 0.398,
+      "concept_depth": 7,
+      "concept_size": 3,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 75,
+      "share": 0.329,
+      "concept_depth": 7,
+      "concept_size": 22,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.773
+       },
+       {
+        "channel": "bandlimit",
+        "share": 0.045
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.274,
+      "concept_depth": 6,
+      "concept_size": 9,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.778
+       },
+       {
+        "channel": "bandlimit",
+        "share": 0.111
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   }
+  ],
+  "Open zero-shot cloners: XTTS v2, YourTTS": [
+   {
+    "filename": "HGT7411727.wav",
+    "P": 0.9988,
+    "family": "Open zero-shot cloners: XTTS v2, YourTTS",
+    "purity": 1.001,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 7,
+     "size": 1,
+     "pmi": 13.499,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "your_tts",
+       "share": 1.0
+      }
+     ],
+     "channels": [
+      {
+       "channel": "codec",
+       "share": 1.0
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.361,
+      "concept_depth": 7,
+      "concept_size": 6,
+      "concept_sources": [
+       {
+        "source": "your_tts",
+        "share": 0.833
+       },
+       {
+        "source": "xtts_v2",
+        "share": 0.167
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "codec",
+        "share": 0.5
+       },
+       {
+        "channel": "clean",
+        "share": 0.333
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.304,
+      "concept_depth": 7,
+      "concept_size": 6,
+      "concept_sources": [
+       {
+        "source": "your_tts",
+        "share": 0.833
+       },
+       {
+        "source": "xtts_v2",
+        "share": 0.167
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "codec",
+        "share": 0.5
+       },
+       {
+        "channel": "clean",
+        "share": 0.333
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 200,
+      "share": 0.336,
+      "concept_depth": 8,
+      "concept_size": 7,
+      "concept_sources": [
+       {
+        "source": "your_tts",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.571
+       },
+       {
+        "channel": "codec",
+        "share": 0.143
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT2432375.wav",
+    "P": 0.9988,
+    "family": "Open zero-shot cloners: XTTS v2, YourTTS",
+    "purity": 1.001,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 8,
+     "size": 2,
+     "pmi": 18.512,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "xtts_v2",
+       "share": 1.0
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.5
+      },
+      {
+       "channel": "resample",
+       "share": 0.5
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.457,
+      "concept_depth": 7,
+      "concept_size": 7,
+      "concept_sources": [
+       {
+        "source": "xtts_v2",
+        "share": 0.714
+       },
+       {
+        "source": "unit_speech",
+        "share": 0.143
+       },
+       {
+        "source": "your_tts",
+        "share": 0.143
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.857
+       },
+       {
+        "channel": "resample",
+        "share": 0.143
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 75,
+      "share": 0.334,
+      "concept_depth": 8,
+      "concept_size": 2,
+      "concept_sources": [
+       {
+        "source": "xtts_v2",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.5
+       },
+       {
+        "channel": "resample",
+        "share": 0.5
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.21,
+      "concept_depth": 8,
+      "concept_size": 2,
+      "concept_sources": [
+       {
+        "source": "xtts_v2",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.5
+       },
+       {
+        "channel": "resample",
+        "share": 0.5
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   }
+  ],
+  "Unit-based cloning and conversion: UnitSpeech, OpenVoice v2": [
+   {
+    "filename": "HGT7295430.wav",
+    "P": 0.9989,
+    "family": "Unit-based cloning and conversion: UnitSpeech, OpenVoice v2",
+    "purity": 1.001,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 6,
+     "size": 37,
+     "pmi": 11.928,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "openvoicev2",
+       "share": 0.73
+      },
+      {
+       "source": "your_tts",
+       "share": 0.243
+      },
+      {
+       "source": "unit_speech",
+       "share": 0.027
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.73
+      },
+      {
+       "channel": "codec",
+       "share": 0.108
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.435,
+      "concept_depth": 5,
+      "concept_size": 102,
+      "concept_sources": [
+       {
+        "source": "unit_speech",
+        "share": 0.725
+       },
+       {
+        "source": "playht",
+        "share": 0.157
+       },
+       {
+        "source": "xtts_v2",
+        "share": 0.108
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.765
+       },
+       {
+        "channel": "tilt",
+        "share": 0.069
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 100,
+      "share": 0.337,
+      "concept_depth": 8,
+      "concept_size": 2,
+      "concept_sources": [
+       {
+        "source": "openvoicev2",
+        "share": 0.5
+       },
+       {
+        "source": "your_tts",
+        "share": 0.5
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.5
+       },
+       {
+        "channel": "codec",
+        "share": 0.5
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.229,
+      "concept_depth": 7,
+      "concept_size": 10,
+      "concept_sources": [
+       {
+        "source": "openvoicev2",
+        "share": 0.9
+       },
+       {
+        "source": "your_tts",
+        "share": 0.1
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.7
+       },
+       {
+        "channel": "codec",
+        "share": 0.1
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT4407954.wav",
+    "P": 0.9988,
+    "family": "Unit-based cloning and conversion: UnitSpeech, OpenVoice v2",
+    "purity": 1.001,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 5,
+     "size": 45,
+     "pmi": 9.505,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "unit_speech",
+       "share": 0.689
+      },
+      {
+       "source": "xtts_v2",
+       "share": 0.111
+      },
+      {
+       "source": "your_tts",
+       "share": 0.111
+      }
+     ],
+     "channels": [
+      {
+       "channel": "codec",
+       "share": 0.244
+      },
+      {
+       "channel": "clean",
+       "share": 0.222
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 75,
+      "share": 0.378,
+      "concept_depth": 7,
+      "concept_size": 21,
+      "concept_sources": [
+       {
+        "source": "unit_speech",
+        "share": 0.667
+       },
+       {
+        "source": "playht",
+        "share": 0.286
+       },
+       {
+        "source": "xtts_v2",
+        "share": 0.048
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.619
+       },
+       {
+        "channel": "bandlimit",
+        "share": 0.095
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 75,
+      "share": 0.33,
+      "concept_depth": 5,
+      "concept_size": 45,
+      "concept_sources": [
+       {
+        "source": "unit_speech",
+        "share": 0.689
+       },
+       {
+        "source": "xtts_v2",
+        "share": 0.111
+       },
+       {
+        "source": "your_tts",
+        "share": 0.111
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "codec",
+        "share": 0.244
+       },
+       {
+        "channel": "clean",
+        "share": 0.222
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.293,
+      "concept_depth": 5,
+      "concept_size": 45,
+      "concept_sources": [
+       {
+        "source": "unit_speech",
+        "share": 0.689
+       },
+       {
+        "source": "xtts_v2",
+        "share": 0.111
+       },
+       {
+        "source": "your_tts",
+        "share": 0.111
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "codec",
+        "share": 0.244
+       },
+       {
+        "channel": "clean",
+        "share": 0.222
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   }
+  ],
+  "Commercial cloner: PlayHT": [
+   {
+    "filename": "HGT4834440.wav",
+    "P": 0.9986,
+    "family": "Commercial cloner: PlayHT",
+    "purity": 1.001,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 9,
+     "size": 2,
+     "pmi": 17.586,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "playht",
+       "share": 0.5
+      },
+      {
+       "source": "unit_speech",
+       "share": 0.5
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 1.0
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 75,
+      "share": 0.481,
+      "concept_depth": 7,
+      "concept_size": 5,
+      "concept_sources": [
+       {
+        "source": "playht",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "codec",
+        "share": 0.4
+       },
+       {
+        "channel": "bandlimit",
+        "share": 0.2
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.26,
+      "concept_depth": 6,
+      "concept_size": 18,
+      "concept_sources": [
+       {
+        "source": "playht",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.778
+       },
+       {
+        "channel": "hum",
+        "share": 0.111
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 75,
+      "share": 0.26,
+      "concept_depth": 7,
+      "concept_size": 6,
+      "concept_sources": [
+       {
+        "source": "playht",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.333
+       },
+       {
+        "channel": "hum",
+        "share": 0.333
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT8977595.wav",
+    "P": 0.9984,
+    "family": "Commercial cloner: PlayHT",
+    "purity": 1.001,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 7,
+     "size": 2,
+     "pmi": 15.467,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "playht",
+       "share": 0.5
+      },
+      {
+       "source": "unit_speech",
+       "share": 0.5
+      }
+     ],
+     "channels": [
+      {
+       "channel": "codec",
+       "share": 0.5
+      },
+      {
+       "channel": "tilt",
+       "share": 0.5
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 75,
+      "share": 0.413,
+      "concept_depth": 9,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "playht",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.289,
+      "concept_depth": 5,
+      "concept_size": 57,
+      "concept_sources": [
+       {
+        "source": "playht",
+        "share": 0.93
+       },
+       {
+        "source": "unit_speech",
+        "share": 0.053
+       },
+       {
+        "source": "wavegrad2",
+        "share": 0.018
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.456
+       },
+       {
+        "channel": "codec",
+        "share": 0.123
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.299,
+      "concept_depth": 7,
+      "concept_size": 2,
+      "concept_sources": [
+       {
+        "source": "playht",
+        "share": 0.5
+       },
+       {
+        "source": "unit_speech",
+        "share": 0.5
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "codec",
+        "share": 0.5
+       },
+       {
+        "channel": "tilt",
+        "share": 0.5
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   }
+  ],
+  "LJ-voice diffusion TTS": [
+   {
+    "filename": "HGT4901221.wav",
+    "P": 0.9936,
+    "family": "LJ-voice diffusion TTS",
+    "purity": 1.001,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 8,
+     "size": 2,
+     "pmi": 34.254,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "grad_tts",
+       "share": 1.0
+      }
+     ],
+     "channels": [
+      {
+       "channel": "codec",
+       "share": 0.5
+      },
+      {
+       "channel": "hum",
+       "share": 0.5
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 75,
+      "share": 0.412,
+      "concept_depth": 8,
+      "concept_size": 2,
+      "concept_sources": [
+       {
+        "source": "grad_tts",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "codec",
+        "share": 0.5
+       },
+       {
+        "channel": "hum",
+        "share": 0.5
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.271,
+      "concept_depth": 8,
+      "concept_size": 2,
+      "concept_sources": [
+       {
+        "source": "grad_tts",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "codec",
+        "share": 0.5
+       },
+       {
+        "channel": "hum",
+        "share": 0.5
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.318,
+      "concept_depth": 8,
+      "concept_size": 2,
+      "concept_sources": [
+       {
+        "source": "grad_tts",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "codec",
+        "share": 0.5
+       },
+       {
+        "channel": "hum",
+        "share": 0.5
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT6908742.wav",
+    "P": 0.9926,
+    "family": "LJ-voice diffusion TTS",
+    "purity": 1.001,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 7,
+     "size": 12,
+     "pmi": 15.229,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "grad_tts",
+       "share": 0.833
+      },
+      {
+       "source": "wavegrad2",
+       "share": 0.167
+      }
+     ],
+     "channels": [
+      {
+       "channel": "codec",
+       "share": 0.75
+      },
+      {
+       "channel": "telephony",
+       "share": 0.167
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.361,
+      "concept_depth": 8,
+      "concept_size": 3,
+      "concept_sources": [
+       {
+        "source": "grad_tts",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "codec",
+        "share": 0.667
+       },
+       {
+        "channel": "telephony",
+        "share": 0.333
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.386,
+      "concept_depth": 7,
+      "concept_size": 2,
+      "concept_sources": [
+       {
+        "source": "pro_diff",
+        "share": 0.5
+       },
+       {
+        "source": "playht",
+        "share": 0.5
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 75,
+      "share": 0.254,
+      "concept_depth": 6,
+      "concept_size": 16,
+      "concept_sources": [
+       {
+        "source": "wavegrad2",
+        "share": 0.938
+       },
+       {
+        "source": "grad_tts",
+        "share": 0.062
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.688
+       },
+       {
+        "channel": "clipping",
+        "share": 0.125
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   }
+  ],
+  "Real LJSpeech": [
+   {
+    "filename": "HGT6637430.wav",
+    "P": 0.4448,
+    "family": "Real LJSpeech",
+    "purity": 1.001,
+    "ttcg_p_fake": 0.0788,
+    "basic": {
+     "depth": 4,
+     "size": 40,
+     "pmi": 50.803,
+     "p_fake": 0.125,
+     "sources": [
+      {
+       "source": "real:ljspeech",
+       "share": 0.575
+      },
+      {
+       "source": "real:librispeech_other_speakers",
+       "share": 0.275
+      },
+      {
+       "source": "elevenlabs",
+       "share": 0.075
+      }
+     ],
+     "channels": [
+      {
+       "channel": "reverb",
+       "share": 0.6
+      },
+      {
+       "channel": "codec",
+       "share": 0.125
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 125,
+      "share": 0.37,
+      "concept_depth": 6,
+      "concept_size": 3,
+      "concept_sources": [
+       {
+        "source": "real:ljspeech",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "codec",
+        "share": 0.333
+       },
+       {
+        "channel": "hum",
+        "share": 0.333
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.254,
+      "concept_depth": 4,
+      "concept_size": 40,
+      "concept_sources": [
+       {
+        "source": "real:ljspeech",
+        "share": 0.575
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.275
+       },
+       {
+        "source": "elevenlabs",
+        "share": 0.075
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 0.6
+       },
+       {
+        "channel": "codec",
+        "share": 0.125
+       }
+      ],
+      "concept_p_fake": 0.125
+     },
+     {
+      "noise_level": 200,
+      "share": 0.377,
+      "concept_depth": 4,
+      "concept_size": 40,
+      "concept_sources": [
+       {
+        "source": "real:ljspeech",
+        "share": 0.575
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.275
+       },
+       {
+        "source": "elevenlabs",
+        "share": 0.075
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 0.6
+       },
+       {
+        "channel": "codec",
+        "share": 0.125
+       }
+      ],
+      "concept_p_fake": 0.125
+     }
+    ]
+   },
+   {
+    "filename": "HGT6091112.wav",
+    "P": 0.0041,
+    "family": "Real LJSpeech",
+    "purity": 1.0,
+    "ttcg_p_fake": 0.2044,
+    "basic": {
+     "depth": 3,
+     "size": 39,
+     "pmi": 56.439,
+     "p_fake": 0.179,
+     "sources": [
+      {
+       "source": "real:ljspeech",
+       "share": 0.769
+      },
+      {
+       "source": "elevenlabs",
+       "share": 0.103
+      },
+      {
+       "source": "pro_diff",
+       "share": 0.026
+      }
+     ],
+     "channels": [
+      {
+       "channel": "reverb",
+       "share": 0.692
+      },
+      {
+       "channel": "codec",
+       "share": 0.154
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.343,
+      "concept_depth": 3,
+      "concept_size": 39,
+      "concept_sources": [
+       {
+        "source": "real:ljspeech",
+        "share": 0.769
+       },
+       {
+        "source": "elevenlabs",
+        "share": 0.103
+       },
+       {
+        "source": "pro_diff",
+        "share": 0.026
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 0.692
+       },
+       {
+        "channel": "codec",
+        "share": 0.154
+       }
+      ],
+      "concept_p_fake": 0.179
+     },
+     {
+      "noise_level": 75,
+      "share": 0.351,
+      "concept_depth": 4,
+      "concept_size": 23,
+      "concept_sources": [
+       {
+        "source": "real:ljspeech",
+        "share": 0.739
+       },
+       {
+        "source": "elevenlabs",
+        "share": 0.087
+       },
+       {
+        "source": "pro_diff",
+        "share": 0.043
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 0.826
+       },
+       {
+        "channel": "codec",
+        "share": 0.087
+       }
+      ],
+      "concept_p_fake": 0.217
+     },
+     {
+      "noise_level": 50,
+      "share": 0.306,
+      "concept_depth": 4,
+      "concept_size": 23,
+      "concept_sources": [
+       {
+        "source": "real:ljspeech",
+        "share": 0.739
+       },
+       {
+        "source": "elevenlabs",
+        "share": 0.087
+       },
+       {
+        "source": "pro_diff",
+        "share": 0.043
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 0.826
+       },
+       {
+        "channel": "codec",
+        "share": 0.087
+       }
+      ],
+      "concept_p_fake": 0.217
+     }
+    ]
+   }
+  ]
+ },
+ "special": {
+  "counts": {
+   "mixed": 25,
+   "disagree": 8,
+   "uncertain": 17,
+   "clips": 1671,
+   "multi_family": 803,
+   "synthetic_channel_prototypes": 225,
+   "real_channel_prototypes": 155
+  },
+  "mixed": [
+   {
+    "filename": "HGT1925841.wav",
+    "P": 0.0001,
+    "family": "Real LibriSpeech, cloned speakers",
+    "purity": 0.392,
+    "ttcg_p_fake": 0.2961,
+    "basic": {
+     "depth": 8,
+     "size": 17,
+     "pmi": 13.733,
+     "p_fake": 0.0,
+     "sources": [
+      {
+       "source": "real:librispeech_cloned_speakers",
+       "share": 0.882
+      },
+      {
+       "source": "real:librispeech_other_speakers",
+       "share": 0.118
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.647
+      },
+      {
+       "channel": "resample",
+       "share": 0.176
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 75,
+      "share": 0.392,
+      "concept_depth": 9,
+      "concept_size": 4,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.5
+       },
+       {
+        "channel": "codec",
+        "share": 0.25
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 125,
+      "share": 0.312,
+      "concept_depth": 8,
+      "concept_size": 5,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 250,
+      "share": 0.296,
+      "concept_depth": 6,
+      "concept_size": 6,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.833
+       },
+       {
+        "channel": "tilt",
+        "share": 0.167
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT4598677.wav",
+    "P": 0.0001,
+    "family": "Real LibriSpeech, cloned speakers",
+    "purity": 0.417,
+    "ttcg_p_fake": 0.2845,
+    "basic": {
+     "depth": 7,
+     "size": 2,
+     "pmi": 19.156,
+     "p_fake": 0.0,
+     "sources": [
+      {
+       "source": "real:librispeech_cloned_speakers",
+       "share": 1.0
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 1.0
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.417,
+      "concept_depth": 7,
+      "concept_size": 2,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 100,
+      "share": 0.299,
+      "concept_depth": 6,
+      "concept_size": 17,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.647
+       },
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.353
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.882
+       },
+       {
+        "channel": "tilt",
+        "share": 0.118
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 275,
+      "share": 0.284,
+      "concept_depth": 7,
+      "concept_size": 11,
+      "concept_sources": [
+       {
+        "source": "pro_diff",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.909
+       },
+       {
+        "channel": "hum",
+        "share": 0.091
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT9040162.wav",
+    "P": 0.0002,
+    "family": "Real LibriSpeech, cloned speakers",
+    "purity": 0.703,
+    "ttcg_p_fake": 0.2966,
+    "basic": {
+     "depth": 8,
+     "size": 17,
+     "pmi": 14.445,
+     "p_fake": 0.0,
+     "sources": [
+      {
+       "source": "real:librispeech_cloned_speakers",
+       "share": 0.882
+      },
+      {
+       "source": "real:librispeech_other_speakers",
+       "share": 0.118
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.647
+      },
+      {
+       "channel": "resample",
+       "share": 0.176
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 100,
+      "share": 0.422,
+      "concept_depth": 8,
+      "concept_size": 17,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.882
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.118
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.647
+       },
+       {
+        "channel": "resample",
+        "share": 0.176
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.281,
+      "concept_depth": 7,
+      "concept_size": 6,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.833
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.167
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "resample",
+        "share": 0.333
+       },
+       {
+        "channel": "tilt",
+        "share": 0.333
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 225,
+      "share": 0.297,
+      "concept_depth": 7,
+      "concept_size": 10,
+      "concept_sources": [
+       {
+        "source": "pro_diff",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.9
+       },
+       {
+        "channel": "tilt",
+        "share": 0.1
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   }
+  ],
+  "disagree": [
+   {
+    "filename": "HGT3570254.wav",
+    "P": 0.006,
+    "family": "Commercial cloner: PlayHT",
+    "purity": 0.465,
+    "ttcg_p_fake": 0.7798,
+    "basic": {
+     "depth": 3,
+     "size": 39,
+     "pmi": 44.57,
+     "p_fake": 0.179,
+     "sources": [
+      {
+       "source": "real:ljspeech",
+       "share": 0.769
+      },
+      {
+       "source": "elevenlabs",
+       "share": 0.103
+      },
+      {
+       "source": "pro_diff",
+       "share": 0.026
+      }
+     ],
+     "channels": [
+      {
+       "channel": "reverb",
+       "share": 0.692
+      },
+      {
+       "channel": "codec",
+       "share": 0.154
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 100,
+      "share": 0.465,
+      "concept_depth": 6,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "playht",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "noise",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.283,
+      "concept_depth": 5,
+      "concept_size": 9,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 0.889
+       },
+       {
+        "source": "playht",
+        "share": 0.111
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "noise",
+        "share": 0.667
+       },
+       {
+        "channel": "codec",
+        "share": 0.111
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 325,
+      "share": 0.252,
+      "concept_depth": 5,
+      "concept_size": 8,
+      "concept_sources": [
+       {
+        "source": "real:ljspeech",
+        "share": 0.875
+       },
+       {
+        "source": "pro_diff",
+        "share": 0.125
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 0.75
+       },
+       {
+        "channel": "codec",
+        "share": 0.25
+       }
+      ],
+      "concept_p_fake": 0.125
+     }
+    ]
+   },
+   {
+    "filename": "HGT1538647.wav",
+    "P": 0.0091,
+    "family": "Commercial cloner: ElevenLabs",
+    "purity": 0.652,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 5,
+     "size": 9,
+     "pmi": 58.994,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "elevenlabs",
+       "share": 0.889
+      },
+      {
+       "source": "playht",
+       "share": 0.111
+      }
+     ],
+     "channels": [
+      {
+       "channel": "noise",
+       "share": 0.667
+      },
+      {
+       "channel": "codec",
+       "share": 0.111
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 75,
+      "share": 0.337,
+      "concept_depth": 5,
+      "concept_size": 9,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 0.889
+       },
+       {
+        "source": "playht",
+        "share": 0.111
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "noise",
+        "share": 0.667
+       },
+       {
+        "channel": "codec",
+        "share": 0.111
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 325,
+      "share": 0.348,
+      "concept_depth": 6,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "grad_tts",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "noise",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.315,
+      "concept_depth": 5,
+      "concept_size": 9,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 0.889
+       },
+       {
+        "source": "playht",
+        "share": 0.111
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "noise",
+        "share": 0.667
+       },
+       {
+        "channel": "codec",
+        "share": 0.111
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT5272056.wav",
+    "P": 0.0461,
+    "family": "Commercial cloner: ElevenLabs",
+    "purity": 0.751,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 8,
+     "size": 1,
+     "pmi": 33.454,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "elevenlabs",
+       "share": 1.0
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 1.0
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 75,
+      "share": 0.385,
+      "concept_depth": 8,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 75,
+      "share": 0.366,
+      "concept_depth": 8,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 300,
+      "share": 0.249,
+      "concept_depth": 9,
+      "concept_size": 6,
+      "concept_sources": [
+       {
+        "source": "grad_tts",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.833
+       },
+       {
+        "channel": "tilt",
+        "share": 0.167
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT2140666.wav",
+    "P": 0.0743,
+    "family": "Commercial cloner: ElevenLabs",
+    "purity": 1.0,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 3,
+     "size": 386,
+     "pmi": 1.319,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "elevenlabs",
+       "share": 0.601
+      },
+      {
+       "source": "playht",
+       "share": 0.337
+      },
+      {
+       "source": "unit_speech",
+       "share": 0.06
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.56
+      },
+      {
+       "channel": "tilt",
+       "share": 0.096
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.331,
+      "concept_depth": 3,
+      "concept_size": 386,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 0.601
+       },
+       {
+        "source": "playht",
+        "share": 0.337
+       },
+       {
+        "source": "unit_speech",
+        "share": 0.06
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.56
+       },
+       {
+        "channel": "tilt",
+        "share": 0.096
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 75,
+      "share": 0.31,
+      "concept_depth": 8,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 150,
+      "share": 0.359,
+      "concept_depth": 5,
+      "concept_size": 45,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 0.867
+       },
+       {
+        "source": "playht",
+        "share": 0.089
+       },
+       {
+        "source": "unit_speech",
+        "share": 0.044
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.4
+       },
+       {
+        "channel": "tilt",
+        "share": 0.178
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT3739624.wav",
+    "P": 0.1621,
+    "family": "Commercial cloner: ElevenLabs",
+    "purity": 1.0,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 5,
+     "size": 9,
+     "pmi": 38.3,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "elevenlabs",
+       "share": 0.889
+      },
+      {
+       "source": "playht",
+       "share": 0.111
+      }
+     ],
+     "channels": [
+      {
+       "channel": "noise",
+       "share": 0.667
+      },
+      {
+       "channel": "codec",
+       "share": 0.111
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 100,
+      "share": 0.384,
+      "concept_depth": 6,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "resample",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 100,
+      "share": 0.276,
+      "concept_depth": 8,
+      "concept_size": 2,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.5
+       },
+       {
+        "channel": "codec",
+        "share": 0.5
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 75,
+      "share": 0.34,
+      "concept_depth": 5,
+      "concept_size": 9,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 0.889
+       },
+       {
+        "source": "playht",
+        "share": 0.111
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "noise",
+        "share": 0.667
+       },
+       {
+        "channel": "codec",
+        "share": 0.111
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT9126800.wav",
+    "P": 0.217,
+    "family": "Commercial cloner: PlayHT",
+    "purity": 0.719,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 6,
+     "size": 29,
+     "pmi": 15.113,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "elevenlabs",
+       "share": 0.862
+      },
+      {
+       "source": "playht",
+       "share": 0.103
+      },
+      {
+       "source": "unit_speech",
+       "share": 0.034
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.586
+      },
+      {
+       "channel": "tilt",
+       "share": 0.207
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 100,
+      "share": 0.284,
+      "concept_depth": 7,
+      "concept_size": 6,
+      "concept_sources": [
+       {
+        "source": "playht",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 250,
+      "share": 0.435,
+      "concept_depth": 9,
+      "concept_size": 3,
+      "concept_sources": [
+       {
+        "source": "playht",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.281,
+      "concept_depth": 7,
+      "concept_size": 6,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "tilt",
+        "share": 0.667
+       },
+       {
+        "channel": "clean",
+        "share": 0.167
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT9417641.wav",
+    "P": 0.5614,
+    "family": "Real LibriSpeech, other speakers",
+    "purity": 0.631,
+    "ttcg_p_fake": 0.0,
+    "basic": {
+     "depth": 5,
+     "size": 1,
+     "pmi": 123.879,
+     "p_fake": 0.0,
+     "sources": [
+      {
+       "source": "real:librispeech_other_speakers",
+       "share": 1.0
+      }
+     ],
+     "channels": [
+      {
+       "channel": "reverb",
+       "share": 1.0
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 75,
+      "share": 0.232,
+      "concept_depth": 5,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.399,
+      "concept_depth": 5,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 300,
+      "share": 0.369,
+      "concept_depth": 4,
+      "concept_size": 7,
+      "concept_sources": [
+       {
+        "source": "real:ljspeech",
+        "share": 0.714
+       },
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.143
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.143
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 0.857
+       },
+       {
+        "channel": "noise",
+        "share": 0.143
+       }
+      ],
+      "concept_p_fake": 0.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT4957705.wav",
+    "P": 0.9713,
+    "family": "Real LJSpeech",
+    "purity": 0.653,
+    "ttcg_p_fake": 0.3998,
+    "basic": {
+     "depth": 5,
+     "size": 23,
+     "pmi": 80.754,
+     "p_fake": 0.13,
+     "sources": [
+      {
+       "source": "real:ljspeech",
+       "share": 0.565
+      },
+      {
+       "source": "real:librispeech_other_speakers",
+       "share": 0.304
+      },
+      {
+       "source": "elevenlabs",
+       "share": 0.13
+      }
+     ],
+     "channels": [
+      {
+       "channel": "reverb",
+       "share": 0.565
+      },
+      {
+       "channel": "noise",
+       "share": 0.13
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 75,
+      "share": 0.276,
+      "concept_depth": 3,
+      "concept_size": 37,
+      "concept_sources": [
+       {
+        "source": "real:ljspeech",
+        "share": 0.757
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.135
+       },
+       {
+        "source": "grad_tts",
+        "share": 0.027
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 0.514
+       },
+       {
+        "channel": "codec",
+        "share": 0.189
+       }
+      ],
+      "concept_p_fake": 0.081
+     },
+     {
+      "noise_level": 50,
+      "share": 0.377,
+      "concept_depth": 3,
+      "concept_size": 37,
+      "concept_sources": [
+       {
+        "source": "real:ljspeech",
+        "share": 0.757
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.135
+       },
+       {
+        "source": "grad_tts",
+        "share": 0.027
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 0.514
+       },
+       {
+        "channel": "codec",
+        "share": 0.189
+       }
+      ],
+      "concept_p_fake": 0.081
+     },
+     {
+      "noise_level": 250,
+      "share": 0.347,
+      "concept_depth": 6,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "grad_tts",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   }
+  ],
+  "uncertain": [
+   {
+    "filename": "HGT6569943.wav",
+    "P": 0.5113,
+    "family": "Commercial cloner: ElevenLabs",
+    "purity": 0.534,
+    "ttcg_p_fake": 0.9937,
+    "basic": {
+     "depth": 5,
+     "size": 27,
+     "pmi": 21.822,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "elevenlabs",
+       "share": 0.704
+      },
+      {
+       "source": "playht",
+       "share": 0.259
+      },
+      {
+       "source": "unit_speech",
+       "share": 0.037
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.259
+      },
+      {
+       "channel": "codec",
+       "share": 0.222
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 100,
+      "share": 0.237,
+      "concept_depth": 5,
+      "concept_size": 27,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 0.704
+       },
+       {
+        "source": "playht",
+        "share": 0.259
+       },
+       {
+        "source": "unit_speech",
+        "share": 0.037
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.259
+       },
+       {
+        "channel": "codec",
+        "share": 0.222
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 150,
+      "share": 0.466,
+      "concept_depth": 2,
+      "concept_size": 1177,
+      "concept_sources": [
+       {
+        "source": "xtts_v2",
+        "share": 0.313
+       },
+       {
+        "source": "your_tts",
+        "share": 0.308
+       },
+       {
+        "source": "unit_speech",
+        "share": 0.274
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.499
+       },
+       {
+        "channel": "codec",
+        "share": 0.15
+       }
+      ],
+      "concept_p_fake": 0.986
+     },
+     {
+      "noise_level": 50,
+      "share": 0.297,
+      "concept_depth": 5,
+      "concept_size": 27,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 0.704
+       },
+       {
+        "source": "playht",
+        "share": 0.259
+       },
+       {
+        "source": "unit_speech",
+        "share": 0.037
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.259
+       },
+       {
+        "channel": "codec",
+        "share": 0.222
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT6637430.wav",
+    "P": 0.4448,
+    "family": "Real LJSpeech",
+    "purity": 1.001,
+    "ttcg_p_fake": 0.0788,
+    "basic": {
+     "depth": 4,
+     "size": 40,
+     "pmi": 50.803,
+     "p_fake": 0.125,
+     "sources": [
+      {
+       "source": "real:ljspeech",
+       "share": 0.575
+      },
+      {
+       "source": "real:librispeech_other_speakers",
+       "share": 0.275
+      },
+      {
+       "source": "elevenlabs",
+       "share": 0.075
+      }
+     ],
+     "channels": [
+      {
+       "channel": "reverb",
+       "share": 0.6
+      },
+      {
+       "channel": "codec",
+       "share": 0.125
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 125,
+      "share": 0.37,
+      "concept_depth": 6,
+      "concept_size": 3,
+      "concept_sources": [
+       {
+        "source": "real:ljspeech",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "codec",
+        "share": 0.333
+       },
+       {
+        "channel": "hum",
+        "share": 0.333
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.254,
+      "concept_depth": 4,
+      "concept_size": 40,
+      "concept_sources": [
+       {
+        "source": "real:ljspeech",
+        "share": 0.575
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.275
+       },
+       {
+        "source": "elevenlabs",
+        "share": 0.075
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 0.6
+       },
+       {
+        "channel": "codec",
+        "share": 0.125
+       }
+      ],
+      "concept_p_fake": 0.125
+     },
+     {
+      "noise_level": 200,
+      "share": 0.377,
+      "concept_depth": 4,
+      "concept_size": 40,
+      "concept_sources": [
+       {
+        "source": "real:ljspeech",
+        "share": 0.575
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.275
+       },
+       {
+        "source": "elevenlabs",
+        "share": 0.075
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 0.6
+       },
+       {
+        "channel": "codec",
+        "share": 0.125
+       }
+      ],
+      "concept_p_fake": 0.125
+     }
+    ]
+   },
+   {
+    "filename": "HGT9417641.wav",
+    "P": 0.5614,
+    "family": "Real LibriSpeech, other speakers",
+    "purity": 0.631,
+    "ttcg_p_fake": 0.0,
+    "basic": {
+     "depth": 5,
+     "size": 1,
+     "pmi": 123.879,
+     "p_fake": 0.0,
+     "sources": [
+      {
+       "source": "real:librispeech_other_speakers",
+       "share": 1.0
+      }
+     ],
+     "channels": [
+      {
+       "channel": "reverb",
+       "share": 1.0
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 75,
+      "share": 0.232,
+      "concept_depth": 5,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.399,
+      "concept_depth": 5,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 300,
+      "share": 0.369,
+      "concept_depth": 4,
+      "concept_size": 7,
+      "concept_sources": [
+       {
+        "source": "real:ljspeech",
+        "share": 0.714
+       },
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.143
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.143
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "reverb",
+        "share": 0.857
+       },
+       {
+        "channel": "noise",
+        "share": 0.143
+       }
+      ],
+      "concept_p_fake": 0.0
+     }
+    ]
+   }
+  ],
+  "high_noise_level": [
+   {
+    "filename": "HGT8673879.wav",
+    "P": 0.0007,
+    "family": "Real LibriSpeech, cloned speakers",
+    "purity": 0.79,
+    "ttcg_p_fake": 0.2101,
+    "basic": {
+     "depth": 3,
+     "size": 598,
+     "pmi": 8.643,
+     "p_fake": 0.002,
+     "sources": [
+      {
+       "source": "real:librispeech_other_speakers",
+       "share": 0.656
+      },
+      {
+       "source": "real:librispeech_cloned_speakers",
+       "share": 0.343
+      },
+      {
+       "source": "elevenlabs",
+       "share": 0.002
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.599
+      },
+      {
+       "channel": "codec",
+       "share": 0.132
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.564,
+      "concept_depth": 6,
+      "concept_size": 58,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.914
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.086
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.724
+       },
+       {
+        "channel": "codec",
+        "share": 0.103
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 100,
+      "share": 0.226,
+      "concept_depth": 7,
+      "concept_size": 29,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.931
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.069
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.759
+       },
+       {
+        "channel": "codec",
+        "share": 0.138
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 375,
+      "share": 0.21,
+      "concept_depth": 9,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "pro_diff",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT1641894.wav",
+    "P": 0.0002,
+    "family": "LJ-voice diffusion TTS",
+    "purity": 0.399,
+    "ttcg_p_fake": 0.3989,
+    "basic": {
+     "depth": 6,
+     "size": 42,
+     "pmi": 15.111,
+     "p_fake": 0.0,
+     "sources": [
+      {
+       "source": "real:librispeech_other_speakers",
+       "share": 0.81
+      },
+      {
+       "source": "real:librispeech_cloned_speakers",
+       "share": 0.19
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.81
+      },
+      {
+       "channel": "tilt",
+       "share": 0.071
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.32,
+      "concept_depth": 8,
+      "concept_size": 6,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.833
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.167
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.833
+       },
+       {
+        "channel": "codec",
+        "share": 0.167
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 375,
+      "share": 0.399,
+      "concept_depth": 7,
+      "concept_size": 10,
+      "concept_sources": [
+       {
+        "source": "pro_diff",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.9
+       },
+       {
+        "channel": "tilt",
+        "share": 0.1
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.281,
+      "concept_depth": 6,
+      "concept_size": 42,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.81
+       },
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.19
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.81
+       },
+       {
+        "channel": "tilt",
+        "share": 0.071
+       }
+      ],
+      "concept_p_fake": 0.0
+     }
+    ]
+   }
+  ],
+  "synthetic_under_channel": [
+   {
+    "filename": "HGT8588733.wav",
+    "P": 0.9951,
+    "family": "Commercial cloner: ElevenLabs",
+    "purity": 0.744,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 5,
+     "size": 45,
+     "pmi": 11.143,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "elevenlabs",
+       "share": 0.867
+      },
+      {
+       "source": "playht",
+       "share": 0.089
+      },
+      {
+       "source": "unit_speech",
+       "share": 0.044
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.4
+      },
+      {
+       "channel": "tilt",
+       "share": 0.178
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.503,
+      "concept_depth": 7,
+      "concept_size": 6,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "tilt",
+        "share": 0.667
+       },
+       {
+        "channel": "clean",
+        "share": 0.167
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 125,
+      "share": 0.241,
+      "concept_depth": 8,
+      "concept_size": 2,
+      "concept_sources": [
+       {
+        "source": "elevenlabs",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.5
+       },
+       {
+        "channel": "tilt",
+        "share": 0.5
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 250,
+      "share": 0.256,
+      "concept_depth": 8,
+      "concept_size": 6,
+      "concept_sources": [
+       {
+        "source": "unit_speech",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT9030862.wav",
+    "P": 0.9964,
+    "family": "LJ-voice diffusion TTS",
+    "purity": 1.0,
+    "ttcg_p_fake": 1.0,
+    "basic": {
+     "depth": 6,
+     "size": 12,
+     "pmi": 7.729,
+     "p_fake": 1.0,
+     "sources": [
+      {
+       "source": "elevenlabs",
+       "share": 0.5
+      },
+      {
+       "source": "playht",
+       "share": 0.5
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.667
+      },
+      {
+       "channel": "telephony",
+       "share": 0.167
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.495,
+      "concept_depth": 8,
+      "concept_size": 3,
+      "concept_sources": [
+       {
+        "source": "wavegrad2",
+        "share": 0.667
+       },
+       {
+        "source": "grad_tts",
+        "share": 0.333
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "codec",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 75,
+      "share": 0.26,
+      "concept_depth": 8,
+      "concept_size": 2,
+      "concept_sources": [
+       {
+        "source": "wavegrad2",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "codec",
+        "share": 0.5
+       },
+       {
+        "channel": "resample",
+        "share": 0.5
+       }
+      ],
+      "concept_p_fake": 1.0
+     },
+     {
+      "noise_level": 200,
+      "share": 0.245,
+      "concept_depth": 6,
+      "concept_size": 49,
+      "concept_sources": [
+       {
+        "source": "wavegrad2",
+        "share": 0.959
+       },
+       {
+        "source": "diffgan_tts",
+        "share": 0.041
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.735
+       },
+       {
+        "channel": "tilt",
+        "share": 0.102
+       }
+      ],
+      "concept_p_fake": 1.0
+     }
+    ]
+   }
+  ],
+  "real_under_channel": [
+   {
+    "filename": "HGT6670327.wav",
+    "P": 0.0032,
+    "family": "Real LibriSpeech, cloned speakers",
+    "purity": 1.0,
+    "ttcg_p_fake": 0.0,
+    "basic": {
+     "depth": 8,
+     "size": 4,
+     "pmi": 12.42,
+     "p_fake": 0.0,
+     "sources": [
+      {
+       "source": "real:librispeech_cloned_speakers",
+       "share": 0.75
+      },
+      {
+       "source": "real:librispeech_other_speakers",
+       "share": 0.25
+      }
+     ],
+     "channels": [
+      {
+       "channel": "clean",
+       "share": 0.5
+      },
+      {
+       "channel": "telephony",
+       "share": 0.5
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.493,
+      "concept_depth": 8,
+      "concept_size": 2,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.5
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.5
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "hum",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.215,
+      "concept_depth": 8,
+      "concept_size": 4,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.75
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.25
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.5
+       },
+       {
+        "channel": "telephony",
+        "share": 0.5
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.292,
+      "concept_depth": 8,
+      "concept_size": 4,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.75
+       },
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.25
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.5
+       },
+       {
+        "channel": "telephony",
+        "share": 0.5
+       }
+      ],
+      "concept_p_fake": 0.0
+     }
+    ]
+   },
+   {
+    "filename": "HGT9772169.wav",
+    "P": 0.0003,
+    "family": "Real LibriSpeech, cloned speakers",
+    "purity": 0.767,
+    "ttcg_p_fake": 0.0,
+    "basic": {
+     "depth": 8,
+     "size": 1,
+     "pmi": 25.136,
+     "p_fake": 0.0,
+     "sources": [
+      {
+       "source": "real:librispeech_cloned_speakers",
+       "share": 1.0
+      }
+     ],
+     "channels": [
+      {
+       "channel": "resample",
+       "share": 1.0
+      }
+     ]
+    },
+    "prototypes": [
+     {
+      "noise_level": 50,
+      "share": 0.462,
+      "concept_depth": 8,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "resample",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 75,
+      "share": 0.233,
+      "concept_depth": 8,
+      "concept_size": 6,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_other_speakers",
+        "share": 0.833
+       },
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 0.167
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "clean",
+        "share": 0.833
+       },
+       {
+        "channel": "codec",
+        "share": 0.167
+       }
+      ],
+      "concept_p_fake": 0.0
+     },
+     {
+      "noise_level": 50,
+      "share": 0.305,
+      "concept_depth": 8,
+      "concept_size": 1,
+      "concept_sources": [
+       {
+        "source": "real:librispeech_cloned_speakers",
+        "share": 1.0
+       }
+      ],
+      "concept_channels": [
+       {
+        "channel": "resample",
+        "share": 1.0
+       }
+      ],
+      "concept_p_fake": 0.0
+     }
+    ]
+   }
+  ]
+ },
+ "noise_level_table": [
+  {
+   "tb": "50",
+   "prototypes": 2979,
+   "median_size": 8.0,
+   "median_depth": 7.0,
+   "synthetic_concepts": 0.24941255454850622
+  },
+  {
+   "tb": "75-100",
+   "prototypes": 1446,
+   "median_size": 7.0,
+   "median_depth": 8.0,
+   "synthetic_concepts": 0.2897648686030429
+  },
+  {
+   "tb": "125-200",
+   "prototypes": 489,
+   "median_size": 6.0,
+   "median_depth": 8.0,
+   "synthetic_concepts": 0.41922290388548056
+  },
+  {
+   "tb": "225-375",
+   "prototypes": 99,
+   "median_size": 5.0,
+   "median_depth": 8.0,
+   "synthetic_concepts": 0.5555555555555556
+  }
+ ]
+}

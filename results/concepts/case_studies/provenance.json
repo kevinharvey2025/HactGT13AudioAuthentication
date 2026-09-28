@@ -1,0 +1,20 @@
+{
+ "code_version": "e00435650610967f82a951007c4cc10e566b8e59",
+ "command": "scripts/prototype_case_studies.py --features /private/tmp/claude-501/-Users-karthiksing05-Documents-Independent-Projects-HackGT-13-Hearsay/82379ded-3e26-4cef-a418-86ae500519a0/scratchpad/test_dsp_features.tsv --boot 300",
+ "created": "2026-09-28T15:11:16-0400",
+ "python": "3.11.15",
+ "packages": {
+  "numpy": "2.4.6",
+  "pandas": "3.0.3",
+  "scikit-learn": "1.9.0",
+  "scipy": "1.17.1",
+  "torch": "2.12.0",
+  "cobweb": "0.0.1"
+ },
+ "inputs": {
+  "results/concepts/test_explanations.jsonl": "35e2f538c33d1c9624f66c82b40e49a9d36cf5c217da6f74c20e110c2a6d81a3",
+  "submission/candidates/SideQuests_predictions_final_A.tsv": "8640b624cfbf2c960879f3abc853de7e582a3ac15126f4445bc4d0b38ccc4b0f",
+  "/private/tmp/claude-501/-Users-karthiksing05-Documents-Independent-Projects-HackGT-13-Hearsay/82379ded-3e26-4cef-a418-86ae500519a0/scratchpad/test_dsp_features.tsv": "1f28b0fbdf3843bcd744553e40d18facf41ebb44116f326fe5aa51a8ba76d878"
+ },
+ "bootstrap_reps": 300
+}
